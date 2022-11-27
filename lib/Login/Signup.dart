@@ -1,10 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_manager/Login/Sigin.dart';
 
 class Signup extends StatelessWidget {
-
   final TextEditingController _email = TextEditingController();
   final TextEditingController _firstname = TextEditingController();
   final TextEditingController _lastname = TextEditingController();
@@ -17,11 +15,15 @@ class Signup extends StatelessWidget {
         decoration: BoxDecoration(color: Colors.orange[300]),
         child: Column(
           children: [
-              buildCreatAccount(context),
-              SizedBox(height: 27,),
-              buildFormCreateAccount(context),
-              SizedBox(height: 5,),
-              buildTextSignin(context)
+            buildCreatAccount(context),
+            const SizedBox(
+              height: 27,
+            ),
+            buildFormCreateAccount(context),
+            const SizedBox(
+              height: 5,
+            ),
+            buildTextSignin(context)
           ],
         ),
       ),
@@ -34,14 +36,14 @@ class Signup extends StatelessWidget {
       height: 308,
       decoration: BoxDecoration(
         color: Colors.blue[800],
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(0),
             topRight: Radius.circular(0),
             bottomLeft: Radius.circular(50),
             bottomRight: Radius.circular(50)),
       ),
       child: Container(
-        padding: EdgeInsets.fromLTRB(30, 121, 0, 0),
+        padding: const EdgeInsets.fromLTRB(30, 121, 0, 0),
         child: const Text(
           'Create \nAccount',
           style: TextStyle(
@@ -55,7 +57,7 @@ class Signup extends StatelessWidget {
 
   buildFormCreateAccount(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
       child: Form(
         // key: _formUserName,
         child: Column(children: [
@@ -72,8 +74,7 @@ class Signup extends StatelessWidget {
                 if (value == null || value.isEmpty)
                   return "Vui lòng nhập email";
                 else {
-                  if (value.length < 5)
-                    return "Email không đúng";
+                  if (value.length < 5) return "Email không đúng";
                 }
                 return null;
               },
@@ -82,7 +83,7 @@ class Signup extends StatelessWidget {
                 // prefixIcon: Icon(Icons.person),
                 focusColor: Colors.red,
                 border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
               ),
             ),
           ),
@@ -110,11 +111,13 @@ class Signup extends StatelessWidget {
                 hintText: "Password",
                 focusColor: Colors.red,
                 border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
               ),
             ),
           ),
-          const SizedBox(height: 30,),
+          const SizedBox(
+            height: 30,
+          ),
           //Lastname
           Container(
             decoration: BoxDecoration(
@@ -136,11 +139,13 @@ class Signup extends StatelessWidget {
                 hintText: "Lastname",
                 focusColor: Colors.red,
                 border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
               ),
             ),
           ),
-          const SizedBox(height: 30,),
+          const SizedBox(
+            height: 30,
+          ),
           //Password
           Container(
             decoration: BoxDecoration(
@@ -162,7 +167,7 @@ class Signup extends StatelessWidget {
                 hintText: "Password",
                 focusColor: Colors.red,
                 border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                    OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
               ),
             ),
           ),
@@ -187,13 +192,13 @@ class Signup extends StatelessWidget {
                 child: ElevatedButton(
                   //handle Login
                   onPressed: () {},
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_right_alt,
                     size: 40,
                   ),
                   style: ButtonStyle(
                       backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black),
+                          MaterialStateProperty.all<Color>(Colors.black),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(35)))),
@@ -207,8 +212,8 @@ class Signup extends StatelessWidget {
   }
 
   buildTextSignin(BuildContext context) {
-    return  Container(
-      padding: EdgeInsets.fromLTRB(30,0,0,0),
+    return Container(
+      padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -217,20 +222,17 @@ class Signup extends StatelessWidget {
               //  Chuyển qua signin
               Get.to(Signin());
             },
-            child: const Text("Sign up", style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              decoration: TextDecoration.underline,
-            ),),
+            child: const Text(
+              "Sign up",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                decoration: TextDecoration.underline,
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 }
-
-
-
-
-
-

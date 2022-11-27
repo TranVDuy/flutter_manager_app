@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_manager/Login/Signup.dart';
-import 'package:product_manager/navigation/navbar.dart';
-import 'package:product_manager/navigation/navbar.dart';
-import 'package:product_manager/pages/dashboard/dashboard.dart';
-import 'package:product_manager/pages/dashboard/dashboard_binding.dart';
+
+import '../pages/dashboard/dashboard.dart';
 
 class Signin extends StatelessWidget {
   final TextEditingController _userName = TextEditingController();
@@ -38,14 +36,14 @@ class Signin extends StatelessWidget {
       height: 375,
       decoration: BoxDecoration(
         color: Colors.blue[800],
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(0),
             topRight: Radius.circular(0),
             bottomLeft: Radius.circular(50),
             bottomRight: Radius.circular(50)),
       ),
       child: Container(
-        padding: EdgeInsets.fromLTRB(30, 121, 0, 0),
+        padding: const EdgeInsets.fromLTRB(30, 121, 0, 0),
         child: const Text(
           'Welcome \nBack',
           style: TextStyle(
@@ -59,7 +57,7 @@ class Signin extends StatelessWidget {
 
   buildSignForm(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
       child: Form(
         // key: _formUserName,
         child: Column(children: [
@@ -145,7 +143,7 @@ class Signin extends StatelessWidget {
                     // );
                     Get.to(Dashboard());
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_right_alt,
                     size: 40,
                   ),
@@ -165,26 +163,27 @@ class Signin extends StatelessWidget {
   }
 
   buildTextSignUp(BuildContext context) {
-    return  Container(
-      padding: EdgeInsets.fromLTRB(30,0,0,0),
+    return Container(
+      padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           GestureDetector(
             onTap: () {
               //  Chuyển qua signup
-                Get.to(Signup());
+              Get.to(Signup());
             },
-            child: const Text("Sign up", style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              decoration: TextDecoration.underline,
-            ),),
+            child: const Text(
+              "Sign up",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+                decoration: TextDecoration.underline,
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 }
-
-
