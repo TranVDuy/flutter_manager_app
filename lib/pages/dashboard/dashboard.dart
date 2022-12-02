@@ -8,8 +8,8 @@ import 'package:product_manager/pages/roles/roles.dart';
 import '../../home/home_page.dart';
 
 import '../../navigation/custom_animated_bottom_bar.dart';
-import '../../users/users_page.dart';
 import '../products/products.dart';
+import '../users/users.dart';
 
 class Dashboard extends StatefulWidget {
   @override
