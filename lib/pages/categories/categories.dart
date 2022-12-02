@@ -86,38 +86,53 @@ class _CategoriesPageState extends State<CategoriesPage> {
             ),
             Container(
               padding: const EdgeInsets.only(left: 16.0),
+              height: 56,
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                color: Colors.white,
+                color: Color.fromARGB(255, 223, 217, 217),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(16),
+                ),
               ),
-              child: TextField(
-                controller: searchController,
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Search',
-                    prefixIcon: SvgPicture.asset(
-                      'assets/icons/search_icon.svg',
-                      fit: BoxFit.scaleDown,
-                    )),
-                onChanged: (value) {
-                  if (value.isNotEmpty) {
-                    List<Category> tempList = [];
-                    for (var category in controller.categories) {
-                      if (category.category.toLowerCase().contains(value)) {
-                        tempList.add(category);
+              child: Center(
+                child: TextField(
+                  onChanged: (value) {
+                    if (value.isNotEmpty) {
+                      List<Category> tempList = [];
+                      for (var category in controller.categories) {
+                        if (category.category.toLowerCase().contains(value)) {
+                          tempList.add(category);
+                        }
                       }
+                      setState(() {
+                        searchResults = [];
+                        searchResults.addAll(tempList);
+                      });
+                    } else {
+                      setState(() {
+                        searchResults = [];
+                        searchResults.addAll(controller.categories);
+                      });
                     }
-                    setState(() {
-                      searchResults = [];
-                      searchResults.addAll(tempList);
-                    });
-                  } else {
-                    setState(() {
-                      searchResults = [];
-                      searchResults.addAll(controller.categories);
-                    });
-                  }
-                },
+                  },
+                  controller: searchController,
+                  decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    hintText: "Search User",
+                    prefixIcon: Icon(Icons.search),
+                    hintStyle: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFFBDBDBD),
+                    ),
+                    labelStyle: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF212121),
+                    ),
+                  ),
+                ),
               ),
             ),
             Flexible(
