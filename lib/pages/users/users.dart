@@ -186,7 +186,13 @@ class _UsersPageState extends State<UsersPage> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 16.0),
-                child: Text('Frequent Contacts'),
+                child: Text(
+                  'Recent Users',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: titleColor),
+                ),
               ),
               Expanded(
                   child: Center(
@@ -251,7 +257,13 @@ class _UsersPageState extends State<UsersPage> {
               )),
               Padding(
                 padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-                child: Text('Your Contacts'),
+                child: Text(
+                  'Our Users',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: titleColor),
+                ),
               ),
               Expanded(
                   flex: 2,

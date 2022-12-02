@@ -5,6 +5,8 @@ import 'package:product_manager/model/category.dart';
 import 'package:product_manager/pages/categories/categories_controller.dart';
 import 'package:product_manager/pages/categories/staggered_category_card.dart';
 
+import '../../app_properties.dart';
+
 class CategoriesPage extends StatefulWidget {
   @override
   _CategoriesPageState createState() => _CategoriesPageState();
@@ -77,10 +79,9 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 child: Text(
                   'Category List',
                   style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: titleColor),
                 ),
               ),
             ),
