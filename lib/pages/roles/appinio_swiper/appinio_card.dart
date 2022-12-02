@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../../model/appinio_item.dart';
+import '../../../model/role.dart';
 
 class AppinioCard extends StatelessWidget {
   final Role role;
