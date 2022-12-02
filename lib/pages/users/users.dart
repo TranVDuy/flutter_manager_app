@@ -184,8 +184,8 @@ class _UsersPageState extends State<UsersPage> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 16.0),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 16.0),
                 child: Text(
                   'Recent Users',
                   style: TextStyle(
@@ -197,7 +197,7 @@ class _UsersPageState extends State<UsersPage> {
               Expanded(
                   child: Center(
                 child: frequentUsers.length == 0
-                    ? CupertinoActivityIndicator()
+                    ? const CupertinoActivityIndicator()
                     : Container(
                         height: 150,
                         padding: const EdgeInsets.symmetric(
@@ -215,7 +215,7 @@ class _UsersPageState extends State<UsersPage> {
                                         height: 200,
                                         margin: const EdgeInsets.only(
                                             left: 8.0, right: 8.0),
-                                        decoration: BoxDecoration(
+                                        decoration: const BoxDecoration(
                                             color: Colors.white,
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(5))),
@@ -235,7 +235,7 @@ class _UsersPageState extends State<UsersPage> {
                                                       4.0, 16.0, 4.0, 0.0),
                                               child: Text(user.email,
                                                   textAlign: TextAlign.center,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 14.0,
                                                   )),
                                             ),
@@ -245,7 +245,8 @@ class _UsersPageState extends State<UsersPage> {
                                               child: Text(
                                                 user.phone,
                                                 textAlign: TextAlign.center,
-                                                style: TextStyle(fontSize: 10),
+                                                style: const TextStyle(
+                                                    fontSize: 10),
                                               ),
                                             ),
                                           ],
@@ -255,8 +256,8 @@ class _UsersPageState extends State<UsersPage> {
                         ),
                       ),
               )),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
                 child: Text(
                   'Our Users',
                   style: TextStyle(
@@ -269,7 +270,7 @@ class _UsersPageState extends State<UsersPage> {
                   flex: 2,
                   child: Center(
                     child: users.length == 0
-                        ? CupertinoActivityIndicator()
+                        ? const CupertinoActivityIndicator()
                         : Container(
                             color: Colors.white,
                             padding: const EdgeInsets.symmetric(
@@ -305,7 +306,7 @@ class _UsersPageState extends State<UsersPage> {
                                                           const EdgeInsets.only(
                                                               top: 16.0),
                                                       child: Text(user.email,
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               fontSize: 16.0,
                                                               fontWeight:
                                                                   FontWeight
@@ -322,17 +323,17 @@ class _UsersPageState extends State<UsersPage> {
                                                     ),
                                                   ],
                                                 ),
-                                                Spacer(),
-                                                Text(
+                                                const Spacer(),
+                                                const Text(
                                                   'Request',
                                                   style:
                                                       TextStyle(fontSize: 10.0),
                                                 )
                                               ],
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 64.0),
+                                            const Padding(
+                                              padding:
+                                                  EdgeInsets.only(left: 64.0),
                                               child: Divider(),
                                             )
                                           ],
