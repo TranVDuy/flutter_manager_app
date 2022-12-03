@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
         child: Center(
           child: Text(
             controller.title,
-            style: TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20),
           ),
         ),
       ),

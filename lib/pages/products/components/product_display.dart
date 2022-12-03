@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:product_manager/model/product.dart';
-import 'package:product_manager/app_properties.dart';
 
+import '../../../app_properties.dart';
+import '../../../model/product.dart';
 
 class ProductDisplay extends StatelessWidget {
   final Product product;
@@ -19,40 +19,40 @@ class ProductDisplay extends StatelessWidget {
             child: Container(
                 width: MediaQuery.of(context).size.width / 1.5,
                 height: 85,
-                padding: EdgeInsets.only(right: 24),
+                padding: const EdgeInsets.only(right: 24),
                 decoration: new BoxDecoration(
                     color: darkGrey,
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(8.0),
                         bottomLeft: Radius.circular(8.0)),
                     boxShadow: [
-                      BoxShadow(
+                      const BoxShadow(
                           color: Color.fromRGBO(0, 0, 0, 0.16),
                           offset: Offset(0, 3),
                           blurRadius: 6.0),
                     ]),
                 child: Align(
-                  alignment: Alignment(1, 0),
+                  alignment: const Alignment(1, 0),
                   child: RichText(
                       text: TextSpan(children: [
-                        TextSpan(
-                            text: '\$ ${product.price}',
-                            style: const TextStyle(
-                                color: const Color(0xFFFFFFFF),
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "Montserrat",
-                                fontSize: 36.0)),
-                        TextSpan(
-                            text: '.58',
-                            style: const TextStyle(
-                                color: const Color(0xFFFFFFFF),
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "Montserrat",
-                                fontSize: 18.0))
-                      ])),
+                    TextSpan(
+                        text: '\$ ${product.price}',
+                        style: const TextStyle(
+                            color: const Color(0xFFFFFFFF),
+                            fontWeight: FontWeight.w400,
+                            fontFamily: "Montserrat",
+                            fontSize: 36.0)),
+                    const TextSpan(
+                        text: '.58',
+                        style: TextStyle(
+                            color: Color(0xFFFFFFFF),
+                            fontWeight: FontWeight.w400,
+                            fontFamily: "Montserrat",
+                            fontSize: 18.0))
+                  ])),
                 ))),
         Align(
-          alignment: Alignment(-1, 0),
+          alignment: const Alignment(-1, 0),
           child: Padding(
             padding: const EdgeInsets.only(right: 20.0, left: 20.0),
             child: Container(
@@ -84,16 +84,15 @@ class ProductDisplay extends StatelessWidget {
           left: 20.0,
           bottom: 0.0,
           child: RawMaterialButton(
-            onPressed: () => {
-              // Navigator.of(context)
-              // .push(MaterialPageRoute(builder: (_) => RatingPage())),
-            } ,
+            // onPressed: () => Navigator.of(context)
+            //     .push(MaterialPageRoute(builder: (_) => RatingPage())),
+            onPressed: () => {},
             constraints: const BoxConstraints(minWidth: 45, minHeight: 45),
-            child:
-            Icon(Icons.favorite, color: Color.fromRGBO(255, 137, 147, 1)),
+            child: const Icon(Icons.favorite,
+                color: Color.fromRGBO(255, 137, 147, 1)),
             elevation: 0.0,
-            shape: CircleBorder(),
-            fillColor: Color.fromRGBO(255, 255, 255, 0.4),
+            shape: const CircleBorder(),
+            fillColor: const Color.fromRGBO(255, 255, 255, 0.4),
           ),
         )
       ],

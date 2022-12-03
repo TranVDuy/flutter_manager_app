@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:product_manager/app_properties.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+import '../../../app_properties.dart';
 
 class RatingBottomSheet extends StatefulWidget {
   @override
@@ -15,7 +16,7 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           color: Color.fromRGBO(255, 255, 255, 0.9),
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(24), topLeft: Radius.circular(24))),
@@ -34,9 +35,8 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                     border: Border.all(width: 8.0, color: Colors.white)),
                 child: Image.asset('assets/headphones.png'),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 72.0, vertical: 16.0),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 72.0, vertical: 16.0),
                 child: Text(
                   'Boat Rockerz 350 On-Ear Bluetooth Headphones',
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -45,14 +45,14 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
               )
             ],
           ),
-          Divider(),
+          const Divider(),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 40),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 16.0),
+                const Padding(
+                  padding: EdgeInsets.only(right: 16.0),
                   child: Text(
                     '4.8',
                     style: TextStyle(fontSize: 48),
@@ -67,16 +67,16 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                       itemSize: 20,
                       allowHalfRating: true,
                       initialRating: 1,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                       ratingWidget: RatingWidget(
-                        empty: Icon(Icons.favorite_border,
+                        empty: const Icon(Icons.favorite_border,
                             color: Color(0xffFF8993), size: 20),
-                        full: Icon(
+                        full: const Icon(
                           Icons.favorite,
                           color: Color(0xffFF8993),
                           size: 20,
                         ),
-                        half: SizedBox(),
+                        half: const SizedBox(),
                       ),
                       onRatingUpdate: (value) {
                         setState(() {
@@ -85,8 +85,8 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                         print(value);
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 4.0),
                       child: Text('from 25 people'),
                     )
                   ],
@@ -94,8 +94,8 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 16.0),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 16.0),
             child: Align(
                 alignment: Alignment(-1, 0), child: Text('Recent Reviews')),
           ),
@@ -103,105 +103,105 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
             children: <Widget>[
               ...ratings
                   .map((val) => Container(
-                  margin: const EdgeInsets.symmetric(vertical: 4.0),
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
-                        child: CircleAvatar(
-                          maxRadius: 14,
-                          backgroundImage:
-                          AssetImage('assets/background.jpg'),
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                      margin: const EdgeInsets.symmetric(vertical: 4.0),
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          const Padding(
+                            padding: EdgeInsets.only(right: 16.0),
+                            child: CircleAvatar(
+                              maxRadius: 14,
+                              backgroundImage:
+                                  AssetImage('assets/background.jpg'),
+                            ),
+                          ),
+                          Expanded(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
-                                  'Billy Holand',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    const Text(
+                                      'Billy Holand',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const Text(
+                                      '10 am, Via iOS',
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 10.0),
+                                    )
+                                  ],
                                 ),
-                                Text(
-                                  '10 am, Via iOS',
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: RatingBar(
+                                    ignoreGestures: true,
+                                    itemSize: 20,
+                                    allowHalfRating: true,
+                                    initialRating: val.toDouble(),
+                                    itemPadding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0),
+                                    ratingWidget: RatingWidget(
+                                      empty: const Icon(Icons.favorite_border,
+                                          color: Color(0xffFF8993), size: 20),
+                                      full: const Icon(
+                                        Icons.favorite,
+                                        color: Color(0xffFF8993),
+                                        size: 20,
+                                      ),
+                                      half: const SizedBox(),
+                                    ),
+                                    onRatingUpdate: (value) {
+                                      setState(() {
+                                        rating = value;
+                                      });
+                                      print(value);
+                                    },
+                                  ),
+                                ),
+                                const Text(
+                                  'Not as I expected! ... I`m really sad',
                                   style: TextStyle(
-                                      color: Colors.grey, fontSize: 10.0),
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 16.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        '21 likes',
+                                        style: TextStyle(
+                                            color: Colors.grey[400],
+                                            fontSize: 10.0),
+                                      ),
+                                      const Text(
+                                        '1 Comment',
+                                        style: TextStyle(
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 10.0),
+                                      )
+                                    ],
+                                  ),
                                 )
                               ],
                             ),
-                            Padding(
-                              padding:
-                              const EdgeInsets.symmetric(vertical: 8.0),
-                              child: RatingBar(
-                                ignoreGestures: true,
-                                itemSize: 20,
-                                allowHalfRating: true,
-                                initialRating: val.toDouble(),
-                                itemPadding:
-                                EdgeInsets.symmetric(horizontal: 4.0),
-                                ratingWidget: RatingWidget(
-                                  empty: Icon(Icons.favorite_border,
-                                      color: Color(0xffFF8993), size: 20),
-                                  full: Icon(
-                                    Icons.favorite,
-                                    color: Color(0xffFF8993),
-                                    size: 20,
-                                  ),
-                                  half: SizedBox(),
-                                ),
-                                onRatingUpdate: (value) {
-                                  setState(() {
-                                    rating = value;
-                                  });
-                                  print(value);
-                                },
-                              ),
-                            ),
-                            Text(
-                              'Not as I expected! ... I`m really sad',
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 16.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    '21 likes',
-                                    style: TextStyle(
-                                        color: Colors.grey[400],
-                                        fontSize: 10.0),
-                                  ),
-                                  Text(
-                                    '1 Comment',
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 10.0),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  )))
+                          )
+                        ],
+                      )))
                   .toList()
             ],
           )

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:product_manager/app_properties.dart';
+
+import '../../../app_properties.dart';
 
 class ColorList extends StatefulWidget {
   final List<Color> colorList;
@@ -21,8 +22,8 @@ class _ColorListState extends State<ColorList> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 8.0),
             child: Text(
               'Color',
               style: TextStyle(color: Colors.white, shadows: shadow),
@@ -70,7 +71,8 @@ class ColorOption extends StatelessWidget {
       width: 32,
       height: 32,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)), color: color),
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+          color: color),
     );
   }
 }

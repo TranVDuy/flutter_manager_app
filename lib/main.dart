@@ -7,9 +7,10 @@ import 'package:product_manager/home/home_controller.dart';
 import 'package:product_manager/pages/categories/categories_controller.dart';
 import 'package:product_manager/pages/dashboard/dashboard_controller.dart';
 import 'package:product_manager/pages/orders/orders_controller.dart';
-import 'package:product_manager/pages/products/products_controller.dart';
 import 'package:product_manager/pages/roles/roles_controller.dart';
 import 'package:product_manager/pages/users/users_controller.dart';
+
+import 'pages/products/products_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
