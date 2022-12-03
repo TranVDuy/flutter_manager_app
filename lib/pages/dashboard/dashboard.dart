@@ -4,6 +4,7 @@ import 'package:product_manager/pages/categories/categories.dart';
 import 'package:product_manager/pages/dashboard/dashboard_controller.dart';
 import 'package:product_manager/pages/orders/orders.dart';
 import 'package:product_manager/pages/roles/roles.dart';
+import 'package:product_manager/model/product.dart';
 
 import '../../home/home_page.dart';
 
@@ -12,13 +13,15 @@ import '../products/products.dart';
 import '../users/users.dart';
 
 class Dashboard extends StatefulWidget {
+  final Product product;
   @override
-  _DashboardState createState() => _DashboardState();
+  _DashboardState createState() => _DashboardState(product);
 }
 
 class _DashboardState extends State<Dashboard> {
   int _currentIndex = 0;
-
+  final Product product;
+  _DashboardState(this.product);
   final _inactiveColor = Colors.grey;
   @override
   Widget build(BuildContext context) {
@@ -96,7 +99,7 @@ class _DashboardState extends State<Dashboard> {
     List<Widget> pages = [
       // HomePage(),
       CategoriesPage(),
-      ProductsPage(),
+      ProductsPage(product: product),
       OrdersPage(),
       UsersPage(),
       RolesPage()
