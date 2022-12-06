@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class Role {
   String? name;
   String? image;

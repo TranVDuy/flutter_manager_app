@@ -71,11 +71,12 @@ class Signin extends StatelessWidget {
             child: TextFormField(
               controller: _userName,
               validator: (value) {
-                if (value == null || value.isEmpty)
+                if (value == null || value.isEmpty) {
                   return "Vui lòng nhập tên đăng nhập";
-                else {
-                  if (value.length < 5)
+                } else {
+                  if (value.length < 5) {
                     return "Tên đăng nhập phải lớn hơn 5 ký tự";
+                  }
                 }
                 return null;
               },
@@ -101,9 +102,9 @@ class Signin extends StatelessWidget {
             child: TextFormField(
               controller: _password,
               validator: (value) {
-                if (value == null || value.isEmpty)
+                if (value == null || value.isEmpty) {
                   return "Vui lòng nhập mật khẩu";
-                else {
+                } else {
                   if (value.length < 5) return "Mật khẩu không đúng";
                 }
                 return null;

@@ -39,9 +39,10 @@ class RolesPage extends StatelessWidget {
               const Text(
                 'Roles',
                 style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: titleColor),
+                  color: darkGrey,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               CupertinoPageScaffold(
                 child: Column(

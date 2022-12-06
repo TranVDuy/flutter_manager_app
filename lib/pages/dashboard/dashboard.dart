@@ -83,8 +83,8 @@ class _DashboardState extends State<Dashboard> {
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
-          icon: Icon(Icons.settings),
-          title: Text('Roles'),
+          icon: const Icon(Icons.settings),
+          title: const Text('Roles'),
           activeColor: Colors.blue,
           inactiveColor: _inactiveColor,
           textAlign: TextAlign.center,

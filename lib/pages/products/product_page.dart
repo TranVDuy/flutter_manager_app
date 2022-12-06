@@ -81,7 +81,7 @@ class _ProductPageState extends State<ProductPage> {
                   child: Text(
                     product.name,
                     style: const TextStyle(
-                        color: const Color(0xFFFEFEFE),
+                        color: Color(0xFFFEFEFE),
                         fontWeight: FontWeight.w600,
                         fontSize: 20.0),
                   ),
@@ -102,10 +102,10 @@ class _ProductPageState extends State<ProductPage> {
                           border: Border.all(
                               color: const Color(0xFFFFFFFF), width: 0.5),
                         ),
-                        child: Center(
-                          child: new Text("Details",
-                              style: const TextStyle(
-                                  color: const Color(0xeefefefe),
+                        child: const Center(
+                          child: Text("Details",
+                              style: TextStyle(
+                                  color: Color(0xeefefefe),
                                   fontWeight: FontWeight.w300,
                                   fontStyle: FontStyle.normal,
                                   fontSize: 12.0)),
@@ -122,7 +122,7 @@ class _ProductPageState extends State<ProductPage> {
                         left: 20.0, right: 40.0, bottom: 130),
                     child: new Text(product.description,
                         style: const TextStyle(
-                            color: const Color(0xfefefefe),
+                            color: Color(0xfefefefe),
                             fontWeight: FontWeight.w800,
                             fontFamily: "NunitoSans",
                             fontStyle: FontStyle.normal,

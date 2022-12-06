@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:product_manager/pages/products/view_product_page.dart';
 import 'package:rubber/rubber.dart';
@@ -73,6 +75,7 @@ class _SearchPageState extends State<SearchPage>
         lowerBoundValue: AnimationControllerValue(pixel: 50),
         duration: const Duration(milliseconds: 200));
     super.initState();
+    searchResults = products;
   }
 
   @override
@@ -87,90 +90,190 @@ class _SearchPageState extends State<SearchPage>
   Widget _getLowerLayer() {
     return Container(
       margin: const EdgeInsets.only(top: kToolbarHeight),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                const Text(
-                  'Search',
-                  style: TextStyle(
-                    color: darkGrey,
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const CloseButton()
-              ],
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            child: Text(
+              'Products List',
+              style: TextStyle(
+                color: darkGrey,
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.only(left: 16.0),
+            height: 56,
             decoration: const BoxDecoration(
-                border:
-                    Border(bottom: BorderSide(color: Colors.orange, width: 1))),
-            child: TextField(
-              controller: searchController,
-              onChanged: (value) {
-                if (value.isNotEmpty) {
-                  List<Product> tempList = [];
-                  products.forEach((product) {
-                    if (product.name.toLowerCase().contains(value)) {
-                      tempList.add(product);
-                    }
-                  });
-                  setState(() {
-                    searchResults.clear();
-                    searchResults.addAll(tempList);
-                  });
-                  return;
-                } else {
-                  setState(() {
-                    searchResults.clear();
-                    searchResults.addAll(products);
-                  });
-                }
-              },
-              cursorColor: darkGrey,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.zero,
-                border: InputBorder.none,
-                prefixIcon: SvgPicture.asset(
-                  'assets/icons/search_icon.svg',
-                  fit: BoxFit.scaleDown,
-                ),
-                suffix: TextButton(
-                  onPressed: () {
-                    searchController.clear();
-                    searchResults.clear();
-                  },
-                  child: const Text(
-                    'Clear',
-                    style: TextStyle(color: Colors.red),
+              color: Color.fromARGB(255, 223, 217, 217),
+              borderRadius: BorderRadius.all(
+                Radius.circular(16),
+              ),
+            ),
+            child: Center(
+              child: TextField(
+                controller: searchController,
+                onChanged: (value) {
+                  if (value.isNotEmpty) {
+                    List<Product> tempList = [];
+                    products.forEach((product) {
+                      if (product.name.toLowerCase().contains(value)) {
+                        tempList.add(product);
+                      }
+                    });
+                    setState(() {
+                      searchResults = [];
+                      searchResults.addAll(tempList);
+                    });
+                    return;
+                  } else {
+                    setState(() {
+                      searchResults = [];
+                      searchResults.addAll(products);
+                    });
+                  }
+                },
+                decoration: const InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  hintText: "Search User",
+                  prefixIcon: Icon(Icons.search),
+                  hintStyle: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFFBDBDBD),
+                  ),
+                  labelStyle: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF212121),
                   ),
                 ),
               ),
             ),
           ),
-          Flexible(
-            child: Container(
-              color: Colors.orange[50],
-              child: ListView.builder(
-                  itemCount: searchResults.length,
-                  itemBuilder: (_, index) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: ListTile(
-                        onTap: () =>
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => ViewProductPage(
-                                      product: searchResults[index],
-                                    ))),
-                        title: Text(searchResults[index].name),
-                      ))),
-            ),
-          )
+          // Flexible(
+          //   child: Container(
+          //     color: Colors.orange[50],
+          //     child: ListView.builder(
+          //         itemCount: searchResults.length,
+          //         itemBuilder: (_, index) => Padding(
+          //             padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          //             child: ListTile(
+          //               onTap: () =>
+          //                   Navigator.of(context).push(MaterialPageRoute(
+          //                       builder: (_) => ViewProductPage(
+          //                             product: searchResults[index],
+          //                           ))),
+          //               title: Text(searchResults[index].name),
+          //             ))),
+          //   ),
+          // )
+          Expanded(
+              flex: 2,
+              child: Center(
+                child: searchResults.length == 0
+                    ? const CupertinoActivityIndicator()
+                    : Container(
+                        color: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 8.0),
+                        child: ListView(
+                          children: searchResults
+                              .map((searchResult) => Slidable(
+                                    actionPane:
+                                        const SlidableDrawerActionPane(),
+                                    actionExtentRatio: 0.25,
+                                    secondaryActions: <Widget>[
+                                      IconSlideAction(
+                                        caption: 'Edit',
+                                        color: Colors.blueAccent,
+                                        icon: Icons.edit,
+                                        onTap: () => Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder: (_) => ViewProductPage(
+                                                      product: searchResult,
+                                                    ))),
+                                      ),
+                                      IconSlideAction(
+                                        caption: 'Delete',
+                                        color: Colors.red,
+                                        icon: Icons.delete,
+                                        onTap: () => showDeleteAlert(
+                                            context, searchResult),
+                                      )
+                                    ],
+                                    child: InkWell(
+                                      // onTap: () => Navigator.of(context).push(
+                                      //     MaterialPageRoute(
+                                      //         builder: (_) =>
+                                      //             RequestAmountPage(user))),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 16.0),
+                                                child: CircleAvatar(
+                                                  maxRadius: 24,
+                                                  backgroundImage: NetworkImage(
+                                                      searchResult.image),
+                                                ),
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 16.0),
+                                                    child: Text(
+                                                        searchResult.name,
+                                                        style: const TextStyle(
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 8.0,
+                                                            bottom: 16.0),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          searchResult.price
+                                                              .toString(),
+                                                        ),
+                                                        const Icon(Icons.money)
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          const Padding(
+                                            padding:
+                                                EdgeInsets.only(left: 64.0),
+                                            child: Divider(),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      ),
+              )),
         ],
       ),
     );
@@ -343,4 +446,42 @@ class _SearchPageState extends State<SearchPage>
       ),
     );
   }
+}
+
+showDeleteAlert(BuildContext context, item) {
+  // set up the buttons
+  Widget noButton = TextButton(
+    child: const Text(
+      "No",
+      style: TextStyle(color: Colors.blue),
+    ),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  Widget yesButton = TextButton(
+    child: const Text("Yes", style: TextStyle(color: Colors.red)),
+    onPressed: () {
+      Navigator.pop(context);
+      // deleteUser(item['id']);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: const Text("Message"),
+    content: const Text("Would you like to delete this product?"),
+    actions: [
+      noButton,
+      yesButton,
+    ],
+  );
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

@@ -111,10 +111,10 @@ class _ItemWidget extends StatelessWidget {
         ),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           child: Container(
             width: isSelected ? 130 : 50,
-            padding: EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -134,7 +134,7 @@ class _ItemWidget extends StatelessWidget {
                 if (isSelected)
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
                       child: DefaultTextStyle.merge(
                         style: TextStyle(
                           color: item.activeColor,

@@ -3,7 +3,7 @@ import 'package:product_manager/pages/dashboard/dashboard.dart';
 
 showMessage(BuildContext context, String contentMessage) {
   Widget yesButton = TextButton(
-    child: Text("OK", style: TextStyle(color: Colors.blue)),
+    child: const Text("OK", style: TextStyle(color: Colors.blue)),
     onPressed: () {
       Navigator.pop(context);
 
@@ -15,7 +15,7 @@ showMessage(BuildContext context, String contentMessage) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Message"),
+    title: const Text("Message"),
     content: Text(contentMessage),
     actions: [
       yesButton,

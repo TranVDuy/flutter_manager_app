@@ -18,6 +18,7 @@ class _UsersPageState extends State<UsersPage> {
   TextEditingController searchController = TextEditingController();
   List<User> frequentUsers = [];
   List<User> users = [];
+  List<User> searchResults = [];
 
   getFrequentUsers() async {
     // var temp = await ApiService.getUsers(nrUsers: 5);
@@ -81,49 +82,49 @@ class _UsersPageState extends State<UsersPage> {
     // var temp = await ApiService.getUsers(nrUsers: 5);
     var temp = [
       User(
-          email: "email",
+          email: "email1",
           password: "password",
           created_at: DateTime.now(),
           updated_at: DateTime.now(),
           profile_id: 1,
           phone: "123456"),
       User(
-          email: "email",
+          email: "email2",
           password: "password",
           created_at: DateTime.now(),
           updated_at: DateTime.now(),
           profile_id: 2,
           phone: "123456"),
       User(
-          email: "email",
+          email: "email3",
           password: "password",
           created_at: DateTime.now(),
           updated_at: DateTime.now(),
           profile_id: 3,
           phone: "123456"),
       User(
-          email: "email",
+          email: "email4",
           password: "password",
           created_at: DateTime.now(),
           updated_at: DateTime.now(),
           profile_id: 4,
           phone: "123456"),
       User(
-          email: "email",
+          email: "email5",
           password: "password",
           created_at: DateTime.now(),
           updated_at: DateTime.now(),
           profile_id: 5,
           phone: "123456"),
       User(
-          email: "email",
+          email: "email6",
           password: "password",
           created_at: DateTime.now(),
           updated_at: DateTime.now(),
           profile_id: 6,
           phone: "123456"),
       User(
-          email: "email",
+          email: "email7",
           password: "password",
           created_at: DateTime.now(),
           updated_at: DateTime.now(),
@@ -140,6 +141,7 @@ class _UsersPageState extends State<UsersPage> {
     super.initState();
     getUsers();
     getFrequentUsers();
+    searchResults = users;
   }
 
   @override
@@ -164,7 +166,25 @@ class _UsersPageState extends State<UsersPage> {
                 ),
                 child: Center(
                   child: TextField(
-                    onChanged: (value) {},
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        List<User> tempList = [];
+                        for (var user in users) {
+                          if (user.email.toLowerCase().contains(value)) {
+                            tempList.add(user);
+                          }
+                        }
+                        setState(() {
+                          searchResults = [];
+                          searchResults.addAll(tempList);
+                        });
+                      } else {
+                        setState(() {
+                          searchResults = [];
+                          searchResults.addAll(users);
+                        });
+                      }
+                    },
                     controller: searchController,
                     decoration: const InputDecoration(
                       contentPadding:
@@ -187,13 +207,14 @@ class _UsersPageState extends State<UsersPage> {
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 16.0),
+                padding: EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 16.0),
                 child: Text(
-                  'Recent Users',
+                  'Recent User',
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: titleColor),
+                    color: darkGrey,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               Expanded(
@@ -202,8 +223,8 @@ class _UsersPageState extends State<UsersPage> {
                     ? const CupertinoActivityIndicator()
                     : Container(
                         height: 150,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 8.0),
+                        padding: const EdgeInsets.only(
+                            top: 0.0, bottom: 0.0, right: 16.0),
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: frequentUsers
@@ -259,19 +280,23 @@ class _UsersPageState extends State<UsersPage> {
                       ),
               )),
               Padding(
-                padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                padding: const EdgeInsets.fromLTRB(0.0, 16.0, 0.0, 16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Our Users',
+                    const Text(
+                      'Users List',
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: titleColor),
+                        color: darkGrey,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     GestureDetector(
-                      child: Icon(Icons.add),
+                      child: const Icon(
+                        Icons.add,
+                        size: 22,
+                      ),
                       onTap: () => Navigator.of(context).push(
                           MaterialPageRoute(builder: (_) => UserCreate())),
                     )
@@ -281,14 +306,14 @@ class _UsersPageState extends State<UsersPage> {
               Expanded(
                   flex: 2,
                   child: Center(
-                    child: users.length == 0
+                    child: searchResults.length == 0
                         ? const CupertinoActivityIndicator()
                         : Container(
                             color: Colors.white,
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 8.0),
                             child: ListView(
-                              children: users
+                              children: searchResults
                                   .map((user) => Slidable(
                                         actionPane:
                                             const SlidableDrawerActionPane(),
@@ -386,7 +411,7 @@ class _UsersPageState extends State<UsersPage> {
 showDeleteAlert(BuildContext context, item) {
   // set up the buttons
   Widget noButton = TextButton(
-    child: Text(
+    child: const Text(
       "No",
       style: TextStyle(color: Colors.blue),
     ),
@@ -396,7 +421,7 @@ showDeleteAlert(BuildContext context, item) {
   );
 
   Widget yesButton = TextButton(
-    child: Text("Yes", style: TextStyle(color: Colors.red)),
+    child: const Text("Yes", style: TextStyle(color: Colors.red)),
     onPressed: () {
       Navigator.pop(context);
       // deleteUser(item['id']);
@@ -405,8 +430,8 @@ showDeleteAlert(BuildContext context, item) {
 
   // set up the AlertDialog
   AlertDialog alert = AlertDialog(
-    title: Text("Message"),
-    content: Text("Would you like to delete this user?"),
+    title: const Text("Message"),
+    content: const Text("Would you like to delete this user?"),
     actions: [
       noButton,
       yesButton,

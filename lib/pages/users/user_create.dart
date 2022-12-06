@@ -115,9 +115,9 @@ class _UserCreateState extends State<UserCreate> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "${title} is required";
+                    return "$title is required";
                   } else if (value.length < 6) {
-                    return "${title} is at least 6 character";
+                    return "$title is at least 6 character";
                   }
                   return null;
                 },

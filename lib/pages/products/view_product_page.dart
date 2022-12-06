@@ -40,7 +40,7 @@ class _ViewProductPageState extends State<ViewProductPage> {
               child: Card(
                 elevation: 3,
                 color: Colors.primaries[i],
-                child: SizedBox(
+                child: const SizedBox(
                   height: 32,
                   width: 32,
                 ),
@@ -62,7 +62,7 @@ class _ViewProductPageState extends State<ViewProductPage> {
         maxLines: 5,
         semanticsLabel: '...',
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(color: Color.fromRGBO(255, 255, 255, 0.6)),
+        style: const TextStyle(color: Color.fromRGBO(255, 255, 255, 0.6)),
       ),
     );
 
@@ -72,7 +72,7 @@ class _ViewProductPageState extends State<ViewProductPage> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          iconTheme: IconThemeData(color: darkGrey),
+          iconTheme: const IconThemeData(color: darkGrey),
           actions: <Widget>[
             IconButton(
               icon: new SvgPicture.asset(
@@ -84,9 +84,9 @@ class _ViewProductPageState extends State<ViewProductPage> {
               onPressed: () => {},
             )
           ],
-          title: Text(
+          title: const Text(
             'Headphones',
-            style: const TextStyle(
+            style: TextStyle(
                 color: darkGrey,
                 fontWeight: FontWeight.w500,
                 fontFamily: "Montserrat",
@@ -128,11 +128,11 @@ class _ViewProductPageState extends State<ViewProductPage> {
                       },
                       constraints:
                           const BoxConstraints(minWidth: 45, minHeight: 45),
-                      child: Icon(Icons.favorite,
+                      child: const Icon(Icons.favorite,
                           color: Color.fromRGBO(255, 137, 147, 1)),
                       elevation: 0.0,
-                      shape: CircleBorder(),
-                      fillColor: Color.fromRGBO(255, 255, 255, 0.4),
+                      shape: const CircleBorder(),
+                      fillColor: const Color.fromRGBO(255, 255, 255, 0.4),
                     ),
                   ]),
                 ),

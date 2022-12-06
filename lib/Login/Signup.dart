@@ -71,9 +71,9 @@ class Signup extends StatelessWidget {
             child: TextFormField(
               controller: _email,
               validator: (value) {
-                if (value == null || value.isEmpty)
+                if (value == null || value.isEmpty) {
                   return "Vui lòng nhập email";
-                else {
+                } else {
                   if (value.length < 5) return "Email không đúng";
                 }
                 return null;
@@ -100,15 +100,15 @@ class Signup extends StatelessWidget {
             child: TextFormField(
               controller: _firstname,
               validator: (value) {
-                if (value == null || value.isEmpty)
+                if (value == null || value.isEmpty) {
                   return "Vui lòng nhập Họ";
-                else {
+                } else {
                   if (value.length < 5) return "Mật khẩu không đúng";
                 }
                 return null;
               },
               decoration: InputDecoration(
-                hintText: "Password",
+                hintText: "Firstname",
                 focusColor: Colors.red,
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
@@ -128,9 +128,9 @@ class Signup extends StatelessWidget {
             child: TextFormField(
               controller: _lastname,
               validator: (value) {
-                if (value == null || value.isEmpty)
+                if (value == null || value.isEmpty) {
                   return "Vui lòng nhập Tên";
-                else {
+                } else {
                   if (value.length < 5) return "Tên không đúng";
                 }
                 return null;
@@ -156,9 +156,9 @@ class Signup extends StatelessWidget {
             child: TextFormField(
               controller: _password,
               validator: (value) {
-                if (value == null || value.isEmpty)
+                if (value == null || value.isEmpty) {
                   return "Vui lòng nhập mật khẩu";
-                else {
+                } else {
                   if (value.length < 5) return "Mật khẩu quá ngắn";
                 }
                 return null;
@@ -223,7 +223,7 @@ class Signup extends StatelessWidget {
               Get.to(Signin());
             },
             child: const Text(
-              "Sign up",
+              "Sign in",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,

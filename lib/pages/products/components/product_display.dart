@@ -20,13 +20,13 @@ class ProductDisplay extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 1.5,
                 height: 85,
                 padding: const EdgeInsets.only(right: 24),
-                decoration: new BoxDecoration(
+                decoration: const BoxDecoration(
                     color: darkGrey,
-                    borderRadius: const BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(8.0),
                         bottomLeft: Radius.circular(8.0)),
                     boxShadow: [
-                      const BoxShadow(
+                      BoxShadow(
                           color: Color.fromRGBO(0, 0, 0, 0.16),
                           offset: Offset(0, 3),
                           blurRadius: 6.0),
@@ -38,7 +38,7 @@ class ProductDisplay extends StatelessWidget {
                     TextSpan(
                         text: '\$ ${product.price}',
                         style: const TextStyle(
-                            color: const Color(0xFFFFFFFF),
+                            color: Color(0xFFFFFFFF),
                             fontWeight: FontWeight.w400,
                             fontFamily: "Montserrat",
                             fontSize: 36.0)),

@@ -2,7 +2,6 @@ import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_manager/Login/Sigin.dart';
-import 'package:get/get.dart';
 import 'package:product_manager/home/home_controller.dart';
 import 'package:product_manager/pages/categories/categories_controller.dart';
 import 'package:product_manager/pages/dashboard/dashboard_controller.dart';

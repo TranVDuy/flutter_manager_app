@@ -37,12 +37,13 @@ class _CategoriesPageState extends State<CategoriesPage> {
               alignment: Alignment(-1, 0),
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0),
-                child: Text(
-                  'Category List',
+                child: const Text(
+                  'Categories List',
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: titleColor),
+                    color: darkGrey,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
