@@ -60,22 +60,6 @@ class _ProductPageState extends State<ProductPage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         iconTheme: const IconThemeData(color: darkGrey),
-        actions: <Widget>[
-          IconButton(
-            icon: new SvgPicture.asset(
-              'assets/icons/search_icon.svg',
-              fit: BoxFit.scaleDown,
-            ),
-            // onPressed: () => Navigator.of(context)
-            //     .push(MaterialPageRoute(builder: (_) => SearchPage())),
-            onPressed: () => {},
-          )
-        ],
-        title: const Text(
-          'Headphones',
-          style: TextStyle(
-              color: darkGrey, fontWeight: FontWeight.w500, fontSize: 18.0),
-        ),
       ),
       body: Stack(
         children: <Widget>[

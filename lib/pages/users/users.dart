@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:product_manager/pages/users/user_create.dart';
+import 'package:product_manager/pages/users/user_edit.dart';
 import 'package:product_manager/pages/users/users_controller.dart';
 import '../../app_properties.dart';
 import '../../model/user.dart';
@@ -256,14 +258,24 @@ class _UsersPageState extends State<UsersPage> {
                         ),
                       ),
               )),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-                child: Text(
-                  'Our Users',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: titleColor),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Our Users',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: titleColor),
+                    ),
+                    GestureDetector(
+                      child: Icon(Icons.add),
+                      onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => UserCreate())),
+                    )
+                  ],
                 ),
               ),
               Expanded(
@@ -277,66 +289,86 @@ class _UsersPageState extends State<UsersPage> {
                                 horizontal: 16.0, vertical: 8.0),
                             child: ListView(
                               children: users
-                                  .map((user) => InkWell(
-                                        // onTap: () => Navigator.of(context).push(
-                                        //     MaterialPageRoute(
-                                        //         builder: (_) =>
-                                        //             RequestAmountPage(user))),
-                                        child: Column(
-                                          children: <Widget>[
-                                            Row(
-                                              children: <Widget>[
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 16.0),
-                                                  child: CircleAvatar(
-                                                    maxRadius: 24,
-                                                    backgroundImage:
-                                                        NetworkImage(
-                                                            user.picture!),
+                                  .map((user) => Slidable(
+                                        actionPane:
+                                            const SlidableDrawerActionPane(),
+                                        actionExtentRatio: 0.25,
+                                        secondaryActions: <Widget>[
+                                          IconSlideAction(
+                                            caption: 'Edit',
+                                            color: Colors.blueAccent,
+                                            icon: Icons.edit,
+                                            onTap: () => Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        UserEdit())),
+                                          ),
+                                          IconSlideAction(
+                                            caption: 'Delete',
+                                            color: Colors.red,
+                                            icon: Icons.delete,
+                                            onTap: () =>
+                                                showDeleteAlert(context, user),
+                                          )
+                                        ],
+                                        child: InkWell(
+                                          // onTap: () => Navigator.of(context).push(
+                                          //     MaterialPageRoute(
+                                          //         builder: (_) =>
+                                          //             RequestAmountPage(user))),
+                                          child: Column(
+                                            children: <Widget>[
+                                              Row(
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 16.0),
+                                                    child: CircleAvatar(
+                                                      maxRadius: 24,
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                              user.picture!),
+                                                    ),
                                                   ),
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 16.0),
-                                                      child: Text(user.email,
-                                                          style: const TextStyle(
-                                                              fontSize: 16.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold)),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              top: 8.0,
-                                                              bottom: 16.0),
-                                                      child: Text(
-                                                        user.phone,
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                top: 16.0),
+                                                        child: Text(user.email,
+                                                            style: const TextStyle(
+                                                                fontSize: 16.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold)),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const Spacer(),
-                                                const Text(
-                                                  'Request',
-                                                  style:
-                                                      TextStyle(fontSize: 10.0),
-                                                )
-                                              ],
-                                            ),
-                                            const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 64.0),
-                                              child: Divider(),
-                                            )
-                                          ],
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                top: 8.0,
+                                                                bottom: 16.0),
+                                                        child: Text(
+                                                          user.phone,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              const Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 64.0),
+                                                child: Divider(),
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ))
                                   .toList(),
@@ -349,4 +381,42 @@ class _UsersPageState extends State<UsersPage> {
       ),
     );
   }
+}
+
+showDeleteAlert(BuildContext context, item) {
+  // set up the buttons
+  Widget noButton = TextButton(
+    child: Text(
+      "No",
+      style: TextStyle(color: Colors.blue),
+    ),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  Widget yesButton = TextButton(
+    child: Text("Yes", style: TextStyle(color: Colors.red)),
+    onPressed: () {
+      Navigator.pop(context);
+      // deleteUser(item['id']);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Message"),
+    content: Text("Would you like to delete this user?"),
+    actions: [
+      noButton,
+      yesButton,
+    ],
+  );
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
