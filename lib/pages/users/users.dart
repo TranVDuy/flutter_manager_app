@@ -325,8 +325,9 @@ class _UsersPageState extends State<UsersPage> {
                                             icon: Icons.edit,
                                             onTap: () => Navigator.of(context)
                                                 .push(MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        UserEdit())),
+                                                    builder: (_) => UserEdit(
+                                                          user: user,
+                                                        ))),
                                           ),
                                           IconSlideAction(
                                             caption: 'Delete',

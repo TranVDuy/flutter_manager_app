@@ -6,7 +6,6 @@ import '../../app_properties.dart';
 import '../../model/user.dart';
 import 'display_image/display_image.dart';
 
-// This class handles the Page to dispaly the user's info on the "Edit Profile" Screen
 class UserCreate extends StatefulWidget {
   @override
   _UserCreateState createState() => _UserCreateState();
@@ -56,7 +55,7 @@ class _UserCreateState extends State<UserCreate> {
                   child: Padding(
                       padding: EdgeInsets.only(bottom: 20),
                       child: Text(
-                        'Edit Profile',
+                        'Edit User',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,

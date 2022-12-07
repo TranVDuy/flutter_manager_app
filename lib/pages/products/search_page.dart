@@ -209,10 +209,11 @@ class _SearchPageState extends State<SearchPage>
                                       )
                                     ],
                                     child: InkWell(
-                                      // onTap: () => Navigator.of(context).push(
-                                      //     MaterialPageRoute(
-                                      //         builder: (_) =>
-                                      //             RequestAmountPage(user))),
+                                      onTap: () => Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                              builder: (_) => ViewProductPage(
+                                                    product: searchResult,
+                                                  ))),
                                       child: Column(
                                         children: <Widget>[
                                           Row(

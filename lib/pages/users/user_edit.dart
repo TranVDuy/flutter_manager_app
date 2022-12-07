@@ -6,34 +6,40 @@ import '../../app_properties.dart';
 import '../../model/user.dart';
 import 'display_image/display_image.dart';
 
-// This class handles the Page to dispaly the user's info on the "Edit Profile" Screen
 class UserEdit extends StatefulWidget {
+  final User user;
+
+  const UserEdit({super.key, required this.user});
+
   @override
   _UserEditState createState() => _UserEditState();
 }
 
 class _UserEditState extends State<UserEdit> {
-  final user = User(
-      email: "email",
-      password: "password",
-      created_at: DateTime.now(),
-      updated_at: DateTime.now(),
-      profile_id: 3,
-      phone: "123456");
+  // final user = User(
+  //     email: "email",
+  //     password: "password",
+  //     created_at: DateTime.now(),
+  //     updated_at: DateTime.now(),
+  //     profile_id: 3,
+  //     phone: "123456");
   final _formKey = GlobalKey<FormState>();
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerPhone = TextEditingController();
   final TextEditingController controllerPassword = TextEditingController();
   @override
   void initState() {
+    controllerEmail.text = widget.user.email;
+    controllerPhone.text = widget.user.phone;
+    controllerPassword.text = widget.user.password;
     super.initState();
-    controllerEmail.text = user.email;
-    controllerPhone.text = user.phone;
-    controllerPassword.text = user.password;
   }
 
   @override
   Widget build(BuildContext context) {
+    // controllerEmail.text = user.email;
+    // controllerPhone.text = user.phone;
+    // controllerPassword.text = user.password;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -56,7 +62,7 @@ class _UserEditState extends State<UserEdit> {
                   child: Padding(
                       padding: EdgeInsets.only(bottom: 20),
                       child: Text(
-                        'Edit Profile',
+                        'Edit User',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
@@ -65,7 +71,7 @@ class _UserEditState extends State<UserEdit> {
                       ))),
               InkWell(
                   child: DisplayImage(
-                imagePath: user.picture!,
+                imagePath: widget.user.picture!,
                 onPressed: () {},
               )),
               buildUserInfoDisplay(

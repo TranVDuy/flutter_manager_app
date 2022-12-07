@@ -7,12 +7,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(
-          child: Text(
-            controller.title,
-            style: const TextStyle(fontSize: 20),
-          ),
+      body: Center(
+        child: Text(
+          controller.title,
+          style: const TextStyle(fontSize: 20),
         ),
       ),
     );

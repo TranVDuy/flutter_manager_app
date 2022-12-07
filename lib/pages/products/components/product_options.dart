@@ -72,7 +72,9 @@ class ProductOption extends StatelessWidget {
                   InkWell(
                     onTap: () {
                       scaffoldKey.currentState!.showBottomSheet((context) {
-                        return ShopBottomSheet();
+                        return ShopBottomSheet(
+                          product: product,
+                        );
                       });
                     },
                     child: Container(

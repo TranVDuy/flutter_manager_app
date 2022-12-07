@@ -5,20 +5,15 @@ import '../../../model/product.dart';
 import 'shop_product.dart';
 
 class ShopBottomSheet extends StatefulWidget {
+  final Product product;
+
+  const ShopBottomSheet({super.key, required this.product});
+
   @override
   _ShopBottomSheetState createState() => _ShopBottomSheetState();
 }
 
 class _ShopBottomSheetState extends State<ShopBottomSheet> {
-  List<Product> products = [
-    Product('assets/headphones.png',
-        'Boat roackerz 400 On-Ear Bluetooth Headphones', 'description', 45.3),
-    Product('assets/headphones_2.png',
-        'Boat roackerz 100 On-Ear Bluetooth Headphones', 'description', 22.3),
-    Product('assets/headphones_3.png',
-        'Boat roackerz 300 On-Ear Bluetooth Headphones', 'description', 58.3)
-  ];
-
   @override
   Widget build(BuildContext context) {
     Widget confirmButton = InkWell(
@@ -78,29 +73,9 @@ class _ShopBottomSheetState extends State<ShopBottomSheet> {
             ),
             SizedBox(
               height: 300,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: products.length,
-                  itemBuilder: (_, index) {
-                    return Row(
-                      children: <Widget>[
-                        ShopProduct(
-                          products[index],
-                          onRemove: () {
-                            setState(() {
-                              products.remove(products[index]);
-                            });
-                          },
-                        ),
-                        index == 4
-                            ? const SizedBox()
-                            : Container(
-                                width: 2,
-                                height: 200,
-                                color: const Color.fromRGBO(100, 100, 100, 0.1))
-                      ],
-                    );
-                  }),
+              child: ShopProduct(
+                widget.product,
+              ),
             ),
             confirmButton
           ],

@@ -5,12 +5,10 @@ import '../../../model/product.dart';
 
 class ShopProduct extends StatelessWidget {
   final Product product;
-  final VoidCallback onRemove;
 
   const ShopProduct(
-    this.product, {
-    required this.onRemove,
-  });
+    this.product,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +17,7 @@ class ShopProduct extends StatelessWidget {
         width: MediaQuery.of(context).size.width / 2,
         child: Column(
           children: <Widget>[
-            ShopProductDisplay(
-              product,
-              onPressed: onRemove,
-            ),
+            ShopProductDisplay(product),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -46,9 +41,10 @@ class ShopProduct extends StatelessWidget {
 
 class ShopProductDisplay extends StatelessWidget {
   final Product product;
-  final VoidCallback onPressed;
 
-  const ShopProductDisplay(this.product, {required this.onPressed});
+  const ShopProductDisplay(
+    this.product,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +54,7 @@ class ShopProductDisplay extends StatelessWidget {
       child: Stack(children: <Widget>[
         Positioned(
           left: 25,
+          top: 30,
           child: SizedBox(
             height: 150,
             width: 150,
@@ -71,23 +68,15 @@ class ShopProductDisplay extends StatelessWidget {
           left: 50,
           top: 5,
           child: SizedBox(
-              height: 80,
-              width: 80,
+              height: 100,
+              width: 100,
               child: Image.asset(
                 '${product.image}',
                 fit: BoxFit.contain,
+                width: 100,
+                height: 100,
               )),
         ),
-        Positioned(
-          right: 30,
-          bottom: 25,
-          child: Align(
-            child: IconButton(
-              icon: Image.asset('assets/red_clear.png'),
-              onPressed: onPressed,
-            ),
-          ),
-        )
       ]),
     );
   }
