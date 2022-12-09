@@ -1,34 +1,33 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
+import 'package:product_manager/model/product.dart';
 import '../../app_properties.dart';
-import '../../model/user.dart';
-import 'display_image/display_image.dart';
+import '../users/display_image/display_image.dart';
 
-class UserCreate extends StatefulWidget {
+class ProductEdit extends StatefulWidget {
+  final Product product;
+
+  const ProductEdit({super.key, required this.product});
+
   @override
-  _UserCreateState createState() => _UserCreateState();
+  _ProductEditState createState() => _ProductEditState();
 }
 
-class _UserCreateState extends State<UserCreate> {
-  final user = User(
-      email: "",
-      password: "",
-      created_at: DateTime.now(),
-      updated_at: DateTime.now(),
-      profile_id: 1,
-      phone: "");
+class _ProductEditState extends State<ProductEdit> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController controllerEmail = TextEditingController();
-  final TextEditingController controllerPhone = TextEditingController();
-  final TextEditingController controllerPassword = TextEditingController();
+  final TextEditingController controllerName = TextEditingController();
+  final TextEditingController controllerPrice = TextEditingController();
+  final TextEditingController controllerImage = TextEditingController();
+  final TextEditingController controllerDescription = TextEditingController();
   @override
   void initState() {
+    controllerName.text = widget.product.name;
+    controllerPrice.text = widget.product.price.toString();
+    controllerImage.text = widget.product.image;
+    controllerDescription.text = widget.product.description;
+
     super.initState();
-    controllerEmail.text = user.email;
-    controllerPhone.text = user.phone;
-    controllerPassword.text = user.password;
   }
 
   @override
@@ -40,22 +39,16 @@ class _UserCreateState extends State<UserCreate> {
         iconTheme: const IconThemeData(color: darkGrey),
       ),
       body: Container(
-        margin: const EdgeInsets.only(top: kToolbarHeight),
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                toolbarHeight: 10,
-              ),
               const Center(
                   child: Padding(
                       padding: EdgeInsets.only(bottom: 20),
                       child: Text(
-                        'Edit User',
+                        'Edit Product',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
@@ -64,16 +57,17 @@ class _UserCreateState extends State<UserCreate> {
                       ))),
               InkWell(
                   child: DisplayImage(
-                imagePath: user.picture!,
+                imagePath: widget.product.image,
                 onPressed: () {},
-                canEdit: false,
+                canEdit: true,
               )),
-              buildUserInfoDisplay(
-                  'Email', controllerEmail, const Icon(Icons.email)),
-              buildUserInfoDisplay(
-                  'Phone', controllerPhone, const Icon(Icons.phone)),
-              buildUserInfoDisplay(
-                  'Password', controllerPassword, const Icon(Icons.key)),
+              buildProductInfoDisplay(
+                  'Name', controllerName, const Icon(Icons.people)),
+              buildProductInfoDisplay(
+                  'Price', controllerPrice, const Icon(Icons.money)),
+              buildProductInfoDisplay(
+                  'Password', controllerImage, const Icon(Icons.key)),
+              buildDescription(controllerDescription),
               const SizedBox(height: 10),
               buidSubmit(context)
             ],
@@ -83,8 +77,49 @@ class _UserCreateState extends State<UserCreate> {
     );
   }
 
+  // Widget builds the About Me Section
+  Widget buildDescription(TextEditingController textController) =>
+      SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Description',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 1),
+            Container(
+                width: 350,
+                height: 200,
+                decoration: const BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                  color: Colors.grey,
+                  width: 1,
+                ))),
+                child: Expanded(
+                    child: TextFormField(
+                        controller: textController,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        maxLines: 8,
+                        style: const TextStyle(color: Colors.black),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          hintText: "Description",
+                        )))),
+          ],
+        ),
+      );
+
   // Widget builds the display item with the proper formatting to display the user's info
-  Widget buildUserInfoDisplay(
+  Widget buildProductInfoDisplay(
           String title, TextEditingController textController, Icon icon) =>
       Padding(
           padding: const EdgeInsets.only(bottom: 10),
@@ -138,12 +173,13 @@ class _UserCreateState extends State<UserCreate> {
               const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
       onPressed: () {
         if (_formKey.currentState!.validate()) {
-          final email = controllerEmail.text;
-          final phone = controllerPhone.text;
-          final password = controllerPassword.text;
+          final name = controllerName.text;
+          final price = controllerPrice.text;
+          final description = controllerDescription.text;
+          final image = controllerImage.text;
         }
       },
-      child: const Text("Create"),
+      child: const Text("Update"),
     );
   }
 }

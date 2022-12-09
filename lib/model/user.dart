@@ -17,7 +17,16 @@ class User {
     this.picture = "https://robohash.org/${this.profile_id}";
   }
 
-  // factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory User.fromJson(Map<String, dynamic> obj) {
+    return User(
+      email: obj["email"],
+      password: obj["password"],
+      created_at: obj["created_at"].toDouble(),
+      updated_at: obj["updated_at"],
+      phone: obj["phone"],
+      profile_id: obj["profile_id"].toDouble(),
+    );
+  }
 
   // Map<String, dynamic> toJson() => _$UserToJson(this);
 }

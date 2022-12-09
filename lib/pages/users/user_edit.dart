@@ -16,13 +16,6 @@ class UserEdit extends StatefulWidget {
 }
 
 class _UserEditState extends State<UserEdit> {
-  // final user = User(
-  //     email: "email",
-  //     password: "password",
-  //     created_at: DateTime.now(),
-  //     updated_at: DateTime.now(),
-  //     profile_id: 3,
-  //     phone: "123456");
   final _formKey = GlobalKey<FormState>();
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerPhone = TextEditingController();
@@ -37,9 +30,6 @@ class _UserEditState extends State<UserEdit> {
 
   @override
   Widget build(BuildContext context) {
-    // controllerEmail.text = user.email;
-    // controllerPhone.text = user.phone;
-    // controllerPassword.text = user.password;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -47,17 +37,11 @@ class _UserEditState extends State<UserEdit> {
         iconTheme: const IconThemeData(color: darkGrey),
       ),
       body: Container(
-        margin: const EdgeInsets.only(top: kToolbarHeight),
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                toolbarHeight: 10,
-              ),
               const Center(
                   child: Padding(
                       padding: EdgeInsets.only(bottom: 20),
@@ -73,6 +57,7 @@ class _UserEditState extends State<UserEdit> {
                   child: DisplayImage(
                 imagePath: widget.user.picture!,
                 onPressed: () {},
+                canEdit: false,
               )),
               buildUserInfoDisplay(
                   'Email', controllerEmail, const Icon(Icons.email)),
