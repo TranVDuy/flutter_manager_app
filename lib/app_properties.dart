@@ -22,4 +22,4 @@ screenAwareSize(int size, BuildContext context) {
   return size * MediaQuery.of(context).size.height / baseHeight;
 }
 
-const BASE_API = "http://localhost:8000/api/";
+const BASE_API = "https://79fe-104-28-249-55.ap.ngrok.io/api/";

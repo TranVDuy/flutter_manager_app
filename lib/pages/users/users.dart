@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -21,118 +23,17 @@ class _UsersPageState extends State<UsersPage> {
   List<User> searchResults = [];
 
   getFrequentUsers() async {
-    // var temp = await ApiService.getUsers(nrUsers: 5);
-    var temp = [
-      User(
-          email: "email",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 1,
-          phone: "123456"),
-      User(
-          email: "email",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 2,
-          phone: "123456"),
-      User(
-          email: "email",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 3,
-          phone: "123456"),
-      User(
-          email: "email",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 4,
-          phone: "123456"),
-      User(
-          email: "email",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 5,
-          phone: "123456"),
-      User(
-          email: "email",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 6,
-          phone: "123456"),
-      User(
-          email: "email",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 7,
-          phone: "123456"),
-    ];
+    var temp = await controller.getUsers(1, "");
     setState(() {
       frequentUsers = temp;
     });
   }
 
   getUsers() async {
-    // var temp = await ApiService.getUsers(nrUsers: 5);
-    var temp = [
-      User(
-          email: "email1",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 1,
-          phone: "123456"),
-      User(
-          email: "email2",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 2,
-          phone: "123456"),
-      User(
-          email: "email3",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 3,
-          phone: "123456"),
-      User(
-          email: "email4",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 4,
-          phone: "123456"),
-      User(
-          email: "email5",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 5,
-          phone: "123456"),
-      User(
-          email: "email6",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 6,
-          phone: "123456"),
-      User(
-          email: "email7",
-          password: "password",
-          created_at: DateTime.now(),
-          updated_at: DateTime.now(),
-          profile_id: 7,
-          phone: "123456"),
-    ];
+    var temp = await controller.getUsers(1, "");
     setState(() {
       users = temp;
+      searchResults = users;
     });
   }
 
@@ -141,7 +42,6 @@ class _UsersPageState extends State<UsersPage> {
     super.initState();
     getUsers();
     getFrequentUsers();
-    searchResults = users;
   }
 
   @override
@@ -257,7 +157,6 @@ class _UsersPageState extends State<UsersPage> {
                                                   const EdgeInsets.fromLTRB(
                                                       4.0, 16.0, 4.0, 0.0),
                                               child: Text(user.email,
-                                                  textAlign: TextAlign.center,
                                                   style: const TextStyle(
                                                     fontSize: 14.0,
                                                   )),

@@ -1,4 +1,5 @@
 class Role {
+  num? id;
   String? name;
   String? image;
 
