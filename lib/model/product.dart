@@ -2,7 +2,7 @@ class Product {
   String image;
   String name;
   String description;
-  double price;
+  String price;
 
   Product(
       {required this.image,
@@ -12,10 +12,10 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> obj) {
     return Product(
-      image: obj["image"],
-      name: obj["name"],
-      description: obj["description"],
-      price: obj["price"],
+      image: obj["image"].toString(),
+      name: obj["name"].toString(),
+      description: obj["description"].toString(),
+      price: obj["price"].toString(),
     );
   }
 }
