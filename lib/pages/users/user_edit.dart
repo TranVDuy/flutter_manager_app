@@ -24,7 +24,7 @@ class _UserEditState extends State<UserEdit> {
   void initState() {
     controllerEmail.text = widget.user.email;
     controllerPhone.text = widget.user.phone;
-    controllerPassword.text = widget.user.password;
+    controllerPassword.text = widget.user.password!;
     super.initState();
   }
 

@@ -14,10 +14,12 @@ class UserCreate extends StatefulWidget {
 class _UserCreateState extends State<UserCreate> {
   final user = User(
       email: "",
-      password: "",
-      created_at: DateTime.now(),
-      updated_at: DateTime.now(),
-      profile_id: 1,
+      firstname: "",
+      lastname: "",
+      address: "",
+      //password: "",
+      created_at: "",
+      updated_at: "",
       phone: "");
   final _formKey = GlobalKey<FormState>();
   final TextEditingController controllerEmail = TextEditingController();
@@ -28,7 +30,7 @@ class _UserCreateState extends State<UserCreate> {
     super.initState();
     controllerEmail.text = user.email;
     controllerPhone.text = user.phone;
-    controllerPassword.text = user.password;
+    controllerPassword.text = user.password!;
   }
 
   @override
