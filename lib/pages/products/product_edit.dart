@@ -57,7 +57,7 @@ class _ProductEditState extends State<ProductEdit> {
                       ))),
               InkWell(
                   child: DisplayImage(
-                imagePath: widget.product.image,
+                imagePath: '${BASE_IMG}${widget.product.image}',
                 onPressed: () {},
                 canEdit: true,
               )),
@@ -65,8 +65,8 @@ class _ProductEditState extends State<ProductEdit> {
                   'Name', controllerName, const Icon(Icons.people)),
               buildProductInfoDisplay(
                   'Price', controllerPrice, const Icon(Icons.money)),
-              buildProductInfoDisplay(
-                  'Password', controllerImage, const Icon(Icons.key)),
+              // buildProductInfoDisplay(
+              //     'Password', controllerImage, const Icon(Icons.key)),
               buildDescription(controllerDescription),
               const SizedBox(height: 10),
               buidSubmit(context)
