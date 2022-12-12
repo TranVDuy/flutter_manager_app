@@ -22,7 +22,7 @@ screenAwareSize(int size, BuildContext context) {
   return size * MediaQuery.of(context).size.height / baseHeight;
 }
 
-const localhost = "ae93-104-28-249-53.ap.ngrok.io";
+const localhost = "0be1-2001-ee0-4c0c-1d50-7cb3-cd1d-9f4e-bdcb.ap.ngrok.io";
 
 const BASE_API = 'https://${localhost}/api/';
 const BASE_IMG = 'https://${localhost}';

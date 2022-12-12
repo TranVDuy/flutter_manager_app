@@ -15,10 +15,10 @@ class ProductsController extends GetxController {
     var url = "";
 
     if((option == null || option == "") && (column==null || column == "")){
-      url = "${BASE_API}products?search=$search&category=[]&page=$pageNum&limit=20";
+      url = "${BASE_API}products?search=$search&category=${category.toString()}&page=$pageNum&limit=20";
     }
     else{
-      url = "${BASE_API}products?search=$search&column=$column&options=$option&category=[]&page=$pageNum&limit=20";
+      url = "${BASE_API}products?search=$search&column=$column&options=$option&category=${category.toString()}&page=$pageNum&limit=20";
     }
 
     var response = await http.get(url);

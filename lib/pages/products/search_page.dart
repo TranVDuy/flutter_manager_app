@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:product_manager/model/category.dart';
 import 'package:product_manager/pages/products/product_edit.dart';
 import 'package:product_manager/pages/products/products_controller.dart';
 import 'package:product_manager/pages/products/view_product_page.dart';
@@ -47,8 +50,23 @@ class _SearchPageState extends State<SearchPage>
   ];
   List<Product> searchResults = [];
 
-  getListProduct() async {
-    var temp = await controller.getProducts(1, "", "", "", []);
+  getListProduct(String selectedCategory, String search,String Column, String Option) async {
+    String sort = "";
+    var temp;
+    if(Column == "name"){
+      sort = Option == "A-Z" ? "asc" : "desc";
+    }
+    else{
+      sort = Option == "Low to High" ? "asc" : "desc";
+    }
+
+    if(selectedCategory == "0"){
+      temp = await controller.getProducts(1, search, Column, sort, []);
+    }
+    else{
+      temp = await controller.getProducts(1, search, Column, sort, [selectedCategory]);
+    }
+
     setState(() {
       // products = temp;
       searchResults = temp;
@@ -60,24 +78,21 @@ class _SearchPageState extends State<SearchPage>
     'Z-A',
   ];
 
-  List<String> categoryFilter = [
-    'Headphone',
-    'Clothes',
-    'Shoes',
-    'Caps',
-    'Bags',
-    'Appliances',
+  List<Category> categoryFilter = [
+    Category(
+      const Color(0xffFCE183),
+      const Color(0xffF68D7F),
+      0,
+      'All',
+      '',
+    ),
   ];
 
-  // var listCategories = Get.find<CategoriesController>().categories;
-  //
-  // listCategories.map(e => ({
-  //   categoryFilter.add(e.category);
-  // )});
-
-  List<String> priceFilter = ['High to Low', 'Low to High'];
+  List<String> priceFilter = ['Low to High', 'High to Low'];
 
   TextEditingController searchController = TextEditingController();
+  Timer? _debounce;
+  String searchValue = "";
 
   late RubberAnimationController _controller;
 
@@ -89,12 +104,20 @@ class _SearchPageState extends State<SearchPage>
         upperBoundValue: AnimationControllerValue(percentage: 0.4),
         lowerBoundValue: AnimationControllerValue(pixel: 50),
         duration: const Duration(milliseconds: 200));
+    categoryFilter.addAll(categoriesController.categories);
+    selectedPeriod = "A-Z";
+    selectedPrice = "";
+    selectedCategory = "0";
+    searchValue = "";
+    getListProduct("0", searchValue, "name", selectedPeriod);
+
     super.initState();
-    getListProduct();
   }
 
   @override
   void dispose() {
+    searchController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
@@ -129,28 +152,33 @@ class _SearchPageState extends State<SearchPage>
                 Radius.circular(16),
               ),
             ),
+
+            //Search-Product
+
             child: Center(
               child: TextField(
                 controller: searchController,
                 onChanged: (value) {
-                  if (value.isNotEmpty) {
-                    List<Product> tempList = [];
-                    products.forEach((product) {
-                      if (product.name.toLowerCase().contains(value)) {
-                        tempList.add(product);
-                      }
-                    });
-                    setState(() {
-                      searchResults = [];
-                      searchResults.addAll(tempList);
-                    });
-                    return;
-                  } else {
-                    setState(() {
-                      searchResults = [];
-                      searchResults.addAll(products);
-                    });
-                  }
+                  // if (value.isNotEmpty) {
+                  //   List<Product> tempList = [];
+                  //   products.forEach((product) {
+                  //     if (product.name.toLowerCase().contains(value)) {
+                  //       tempList.add(product);
+                  //     }
+                  //   });
+                  //   setState(() {
+                  //     searchResults = [];
+                  //     searchResults.addAll(tempList);
+                  //   });
+                  //   return;
+                  // } else {
+                  //   setState(() {
+                  //     searchResults = [];
+                  //     searchResults.addAll(products);
+                  //   });
+                  // }
+                  // OnSearchChanged(value);
+                  OnSearchChanged(value);
                 },
                 decoration: const InputDecoration(
                   contentPadding:
@@ -209,11 +237,6 @@ class _SearchPageState extends State<SearchPage>
                                         caption: 'Edit',
                                         color: Colors.blueAccent,
                                         icon: Icons.edit,
-                                        // onTap: () => Navigator.of(context)
-                                        //     .push(MaterialPageRoute(
-                                        //         builder: (_) => ViewProductPage(
-                                        //               product: searchResult,
-                                        //             ))),
                                         onTap: () => Navigator.of(context)
                                             .push(MaterialPageRoute(
                                                 builder: (_) => ProductEdit(
@@ -256,7 +279,10 @@ class _SearchPageState extends State<SearchPage>
                                                         const EdgeInsets.only(
                                                             top: 16.0),
                                                     child: Text(
-                                                        searchResult.name,
+                                                        searchResult.name.length > 20 ?
+                                                        '${searchResult.name.substring(0, 20)}...' :
+                                                        searchResult.name
+                                                        ,
                                                         style: const TextStyle(
                                                             fontSize: 16.0,
                                                             fontWeight:
@@ -271,10 +297,14 @@ class _SearchPageState extends State<SearchPage>
                                                     child: Row(
                                                       children: [
                                                         Text(
-                                                          searchResult.price
-                                                              .toString(),
+                                                          '\$${searchResult.price.toString()}',
+                                                            style: const TextStyle(
+                                                                fontSize: 16.0,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.red
+                                                            )
                                                         ),
-                                                        const Icon(Icons.money)
+                                                        // const Icon(Icons.money)
                                                       ],
                                                     ),
                                                   ),
@@ -322,7 +352,7 @@ class _SearchPageState extends State<SearchPage>
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 'Filters',
-                style: TextStyle(color: Colors.grey[300]),
+                style: TextStyle(color: Colors.grey[500]),
               ),
             ),
           ),
@@ -336,6 +366,8 @@ class _SearchPageState extends State<SearchPage>
               ),
             ),
           ),
+
+          //Sort name A-Z or Z-A
           Container(
             height: 50,
             child: ListView.builder(
@@ -348,6 +380,8 @@ class _SearchPageState extends State<SearchPage>
                     onTap: () {
                       setState(() {
                         selectedPeriod = nameFilter[index];
+                        selectedPrice = "";
+                        getListProduct(selectedCategory, searchValue, "name", selectedPeriod);
                       });
                     },
                     child: Container(
@@ -368,6 +402,8 @@ class _SearchPageState extends State<SearchPage>
               scrollDirection: Axis.horizontal,
             ),
           ),
+
+          //Filter by category
           Container(
             height: 50,
             child: ListView.builder(
@@ -379,20 +415,26 @@ class _SearchPageState extends State<SearchPage>
                 child: InkWell(
                     onTap: () {
                       setState(() {
-                        selectedCategory = categoryFilter[index];
+                        selectedCategory = categoryFilter[index].id.toString();
+                        if(selectedPeriod != ""){
+                          getListProduct(selectedCategory, searchValue,"name", selectedPeriod);
+                        }
+                        else{
+                          getListProduct(selectedCategory, searchValue,"price", selectedPrice);
+                        }
                       });
                     },
                     child: Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 4.0, horizontal: 20.0),
-                        decoration: selectedCategory == categoryFilter[index]
+                        decoration: selectedCategory == categoryFilter[index].id.toString()
                             ? const BoxDecoration(
                                 color: Color(0xffFDB846),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(45)))
                             : const BoxDecoration(),
                         child: Text(
-                          categoryFilter[index],
+                          categoryFilter[index].category,
                           style: const TextStyle(fontSize: 16.0),
                         ))),
               )),
@@ -400,6 +442,8 @@ class _SearchPageState extends State<SearchPage>
               scrollDirection: Axis.horizontal,
             ),
           ),
+
+          //Sort by Price Low to high OR High to low
           Container(
             height: 50,
             child: ListView.builder(
@@ -412,6 +456,8 @@ class _SearchPageState extends State<SearchPage>
                     onTap: () {
                       setState(() {
                         selectedPrice = priceFilter[index];
+                        selectedPeriod = "";
+                        getListProduct(selectedCategory, searchValue ,"price", selectedPrice);
                       });
                     },
                     child: Container(
@@ -465,6 +511,26 @@ class _SearchPageState extends State<SearchPage>
           animationController: _controller, // The one we created earlier
         )),
       ),
+    );
+  }
+
+  //Tìm kiếm sản phẩm
+  OnSearchChanged(value){
+    if(_debounce?.isActive ?? false) _debounce?.cancel();
+      _debounce = Timer(const Duration(milliseconds: 500), (){
+        if(this.searchValue != searchController.text){
+          setState(() {
+            searchValue = value;
+            if(selectedPeriod != ""){
+              getListProduct(selectedCategory, searchValue,"name", selectedPeriod);
+            }
+            else{
+              getListProduct(selectedCategory, searchValue,"price", selectedPrice);
+            }
+          });
+        }
+        this.searchValue = searchController.text;
+      }
     );
   }
 }

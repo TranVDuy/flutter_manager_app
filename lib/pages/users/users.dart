@@ -156,7 +156,8 @@ class _UsersPageState extends State<UsersPage> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       4.0, 16.0, 4.0, 0.0),
-                                              child: Text(user.email,
+                                              child: Text(
+                                                  user.email,
                                                   style: const TextStyle(
                                                     fontSize: 14.0,
                                                   )),
@@ -266,7 +267,11 @@ class _UsersPageState extends State<UsersPage> {
                                                             const EdgeInsets
                                                                     .only(
                                                                 top: 16.0),
-                                                        child: Text(user.email,
+                                                        child: Text(
+                                                            (user.firstname + " " + user.lastname).length > 20 ?
+                                                            '${(user.firstname + " " + user.lastname).substring(0,20)}...' :
+                                                            user.firstname + " " + user.lastname
+                                                            ,
                                                             style: const TextStyle(
                                                                 fontSize: 16.0,
                                                                 fontWeight:
