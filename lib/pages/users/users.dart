@@ -1,5 +1,6 @@
+import 'dart:convert';
 import 'dart:html';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -9,6 +10,7 @@ import 'package:product_manager/pages/users/user_edit.dart';
 import 'package:product_manager/pages/users/users_controller.dart';
 import '../../app_properties.dart';
 import '../../model/user.dart';
+import '../../utils/utils.dart';
 
 class UsersPage extends StatefulWidget {
   @override
@@ -21,20 +23,89 @@ class _UsersPageState extends State<UsersPage> {
   List<User> frequentUsers = [];
   List<User> users = [];
   List<User> searchResults = [];
+  var page = 1;
+  String deleteResult = "";
 
   getFrequentUsers() async {
-    var temp = await controller.getUsers(1, "");
+    var temp = await controller.getUsers(page, "");
     setState(() {
       frequentUsers = temp;
     });
   }
 
   getUsers() async {
-    var temp = await controller.getUsers(1, "");
+    var temp = await controller.getUsers(page, "");
     setState(() {
       users = temp;
       searchResults = users;
     });
+  }
+
+  showDeleteAlert(BuildContext context, User item) {
+    // set up the buttons
+    Widget noButton = TextButton(
+      child: const Text(
+        "No",
+        style: TextStyle(color: Colors.blue),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    Widget yesButton = TextButton(
+        child: const Text("Yes", style: TextStyle(color: Colors.red)),
+        onPressed: () async {
+          var result = await controller.deleteUser(item.id);
+          if (result != "") showError(context, result);
+          List<User> data = [];
+          for (int i = 1; i <= page; i++) {
+            var temp = await controller.getUsers(page, searchController.text);
+            data.addAll(temp);
+          }
+          setState(() {
+            searchResults = data;
+          });
+          Navigator.pop(context);
+        });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Message"),
+      content: const Text("Would you like to delete this user?"),
+      actions: [
+        noButton,
+        yesButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showError(BuildContext context, String result) {
+    AlertDialog alert = AlertDialog(
+      title: const Text("Message"),
+      content: Text(result),
+      actions: [
+        TextButton(
+          child: Text("Close", style: TextStyle(color: Colors.red)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -47,7 +118,6 @@ class _UsersPageState extends State<UsersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
       body: Container(
         margin: const EdgeInsets.only(top: kToolbarHeight),
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -157,10 +227,15 @@ class _UsersPageState extends State<UsersPage> {
                                                   const EdgeInsets.fromLTRB(
                                                       4.0, 16.0, 4.0, 0.0),
                                               child: Text(
-                                                  (user.firstname + " " + user.lastname).length > 20 ?
-                                                  '${(user.firstname + " " + user.lastname).substring(0,20)}...' :
-                                                  user.firstname + " " + user.lastname
-                                                  ,
+                                                  (user.firstname +
+                                                                  " " +
+                                                                  user.lastname)
+                                                              .length >
+                                                          20
+                                                      ? '${(user.firstname + " " + user.lastname).substring(0, 20)}...'
+                                                      : user.firstname +
+                                                          " " +
+                                                          user.lastname,
                                                   style: const TextStyle(
                                                     fontSize: 14.0,
                                                   )),
@@ -238,7 +313,7 @@ class _UsersPageState extends State<UsersPage> {
                                             icon: Icons.delete,
                                             onTap: () =>
                                                 showDeleteAlert(context, user),
-                                          )
+                                          ),
                                         ],
                                         child: InkWell(
                                           // onTap: () => Navigator.of(context).push(
@@ -271,10 +346,17 @@ class _UsersPageState extends State<UsersPage> {
                                                                     .only(
                                                                 top: 16.0),
                                                         child: Text(
-                                                            (user.firstname + " " + user.lastname).length > 20 ?
-                                                            '${(user.firstname + " " + user.lastname).substring(0,20)}...' :
-                                                            user.firstname + " " + user.lastname
-                                                            ,
+                                                            (user.firstname +
+                                                                            " " +
+                                                                            user
+                                                                                .lastname)
+                                                                        .length >
+                                                                    20
+                                                                ? '${(user.firstname + " " + user.lastname).substring(0, 20)}...'
+                                                                : user.firstname +
+                                                                    " " +
+                                                                    user
+                                                                        .lastname,
                                                             style: const TextStyle(
                                                                 fontSize: 16.0,
                                                                 fontWeight:
@@ -314,42 +396,4 @@ class _UsersPageState extends State<UsersPage> {
       ),
     );
   }
-}
-
-showDeleteAlert(BuildContext context, item) {
-  // set up the buttons
-  Widget noButton = TextButton(
-    child: const Text(
-      "No",
-      style: TextStyle(color: Colors.blue),
-    ),
-    onPressed: () {
-      Navigator.pop(context);
-    },
-  );
-
-  Widget yesButton = TextButton(
-    child: const Text("Yes", style: TextStyle(color: Colors.red)),
-    onPressed: () {
-      Navigator.pop(context);
-      // deleteUser(item['id']);
-    },
-  );
-
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: const Text("Message"),
-    content: const Text("Would you like to delete this user?"),
-    actions: [
-      noButton,
-      yesButton,
-    ],
-  );
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
 }

@@ -12,6 +12,7 @@ class UsersController extends GetxController {
   Future<List<User>> getUsers(int pageNum, String search) async {
     var url =
         "${BASE_API}user?page=${pageNum.toString()}&limit=20&role=[]&search=${search.toString()}";
+    print(url);
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -63,68 +64,58 @@ class UsersController extends GetxController {
     }
     return showMessage(context, "All fields is required");
   }
-}
 
-Future<Widget> editUser(
-  BuildContext context,
-  String userId,
-  String firstName,
-  String lastName,
-  String email,
-  String phone,
-  String address,
-  List roles,
-) async {
-  if (firstName.isNotEmpty &&
-      email.isNotEmpty &&
-      lastName.isNotEmpty &&
-      phone.isNotEmpty &&
-      address.isNotEmpty) {
-    var url = "${BASE_API}user/$userId";
-    var bodyData = jsonEncode({
-      "firstname": firstName.toString(),
-      "lastname": lastName.toString(),
-      "email": email.toString(),
-      "phone": phone.toString(),
-      "address": address.toString(),
-      "roles": roles,
-    });
-    var response = await http.put(url,
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: bodyData);
-    if (response.statusCode == 200) {
-      var messageSuccess = json.decode(response.body)['message'];
-      showMessage(context, messageSuccess);
-    } else {
-      var messageError = "Can not update this user!!";
-      showMessage(context, messageError);
-    }
-  }
-  return showMessage(context, "All fields is required");
-}
-
-void deleteUser(int pageNum, String userId, String search) async {
-  var url = "${BASE_API}user/$userId";
-  var response = await http.delete(url, headers: {
-    "Content-Type": "application/json",
-    "Accept": "application/json"
-  });
-  if (response.statusCode == 200) {
-    List<User> result = [];
-    for (int i = 1; i <= pageNum; i++) {
-      var url = "${BASE_API}user?page=$pageNum&limit=20&role=[]&search=$search";
-      var response = await http.get(url);
+  Future<Widget> editUser(
+    BuildContext context,
+    String userId,
+    String firstName,
+    String lastName,
+    String email,
+    String phone,
+    String address,
+    List roles,
+  ) async {
+    if (firstName.isNotEmpty &&
+        email.isNotEmpty &&
+        lastName.isNotEmpty &&
+        phone.isNotEmpty &&
+        address.isNotEmpty) {
+      var url = "${BASE_API}user/$userId";
+      var bodyData = jsonEncode({
+        "firstname": firstName.toString(),
+        "lastname": lastName.toString(),
+        "email": email.toString(),
+        "phone": phone.toString(),
+        "address": address.toString(),
+        "roles": roles,
+      });
+      var response = await http.put(url,
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: bodyData);
       if (response.statusCode == 200) {
-        var jsonObject = jsonDecode(response.body)['data'];
-        var usersObject = jsonObject as List;
-        List<User> items = usersObject.map((e) {
-          return User.fromJson(e);
-        }).toList();
-        result.addAll(items);
+        var messageSuccess = json.decode(response.body)['message'];
+        showMessage(context, messageSuccess);
+      } else {
+        var messageError = "Can not update this user!!";
+        showMessage(context, messageError);
       }
+    }
+    return showMessage(context, "All fields is required");
+  }
+
+  Future<String> deleteUser(String userId) async {
+    var url = "${BASE_API}user/$userId";
+    var response = await http.delete(url, headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    });
+    if (response.statusCode == 200) {
+      return "";
+    } else {
+      return json.decode(response.body)['message'];
     }
   }
 }

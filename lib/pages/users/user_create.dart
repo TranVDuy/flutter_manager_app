@@ -12,25 +12,18 @@ class UserCreate extends StatefulWidget {
 }
 
 class _UserCreateState extends State<UserCreate> {
-  final user = User(
-      email: "",
-      firstname: "",
-      lastname: "",
-      address: "",
-      //password: "",
-      created_at: "",
-      updated_at: "",
-      phone: "");
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController controllerFirstName = TextEditingController();
+  final TextEditingController controllerLastName = TextEditingController();
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerPhone = TextEditingController();
-  final TextEditingController controllerPassword = TextEditingController();
   @override
   void initState() {
+    controllerFirstName.text = "";
+    controllerLastName.text = "";
+    controllerEmail.text = "";
+    controllerPhone.text = "";
     super.initState();
-    controllerEmail.text = user.email;
-    controllerPhone.text = user.phone;
-    controllerPassword.text = user.password!;
   }
 
   @override
@@ -66,16 +59,18 @@ class _UserCreateState extends State<UserCreate> {
                       ))),
               InkWell(
                   child: DisplayImage(
-                imagePath: user.picture!,
+                imagePath: "https://robohash.org/${1}"!,
                 onPressed: () {},
                 canEdit: false,
               )),
               buildUserInfoDisplay(
+                  'First Name', controllerFirstName, const Icon(Icons.people)),
+              buildUserInfoDisplay(
+                  'Last Name', controllerLastName, const Icon(Icons.people)),
+              buildUserInfoDisplay(
                   'Email', controllerEmail, const Icon(Icons.email)),
               buildUserInfoDisplay(
                   'Phone', controllerPhone, const Icon(Icons.phone)),
-              buildUserInfoDisplay(
-                  'Password', controllerPassword, const Icon(Icons.key)),
               const SizedBox(height: 10),
               buidSubmit(context)
             ],
@@ -140,9 +135,10 @@ class _UserCreateState extends State<UserCreate> {
               const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
       onPressed: () {
         if (_formKey.currentState!.validate()) {
+          final firstname = controllerFirstName.text;
+          final lastname = controllerLastName.text;
           final email = controllerEmail.text;
           final phone = controllerPhone.text;
-          final password = controllerPassword.text;
         }
       },
       child: const Text("Create"),
