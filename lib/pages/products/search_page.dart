@@ -75,6 +75,7 @@ class _SearchPageState extends State<SearchPage>
     });
   }
 
+
   List<String> nameFilter = [
     'A-Z',
     'Z-A',
@@ -98,6 +99,7 @@ class _SearchPageState extends State<SearchPage>
 
   late RubberAnimationController _controller;
 
+
   @override
   void initState() {
     _controller = RubberAnimationController(
@@ -112,8 +114,7 @@ class _SearchPageState extends State<SearchPage>
     selectedCategory = "0";
     searchValue = "";
     page = 1;
-    getListProduct(page ,"0", searchValue, "name", selectedPeriod);
-
+    getListProduct(page , selectedCategory, searchValue, "name", selectedPeriod);
     super.initState();
   }
 
@@ -537,47 +538,98 @@ class _SearchPageState extends State<SearchPage>
     );
   }
 
-  void firstLoad() async{
-    setState(() {
-      isLoading = true;
-    });
+  //Show Snackbar
+  buildFlashMessage(String status, String message) {
+    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Container(
+          height: 70,
+          padding: EdgeInsets.all(18),
+          decoration: BoxDecoration(
+              color: (status == "success" ? Colors.green : Colors.red),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                message,
+                style:
+                const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              (status == "success"
+                  ? const Icon(Icons.check_circle_outline_outlined,
+                  color: Colors.white, size: 20)
+                  : const Icon(
+                Icons.error_outline,
+                color: Colors.white,
+                size: 30,
+              ))
+            ],
+          )),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    ));
   }
+
+  DeleteProduct(BuildContext context, item) async {
+    bool check;
+    check = await controller.deleteProduct(item.id);
+    check ? buildFlashMessage("success", 'Xóa thành công!') : buildFlashMessage("error", 'Xóa thất bại!');
+    if(selectedPeriod != ""){
+      getListProduct(page, selectedCategory, searchValue,"name", selectedPeriod);
+    }
+    else{
+      getListProduct(page, selectedCategory, searchValue,"price", selectedPrice);
+    }
+  }
+
+  showDeleteAlert(BuildContext context, item) {
+    // set up the buttons
+    Widget noButton = TextButton(
+      child: const Text(
+        "No",
+        style: TextStyle(color: Colors.blue),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    Widget yesButton = TextButton(
+      child: const Text("Yes", style: TextStyle(color: Colors.red)),
+      onPressed: () {
+        Navigator.pop(context);
+        // deleteUser(item['id']);
+        DeleteProduct(context, item);
+
+      },
+    );
+
+
+
+
+
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Message"),
+      content: const Text("Would you like to delete this product?"),
+      actions: [
+        noButton,
+        yesButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
 }
 
-showDeleteAlert(BuildContext context, item) {
-  // set up the buttons
-  Widget noButton = TextButton(
-    child: const Text(
-      "No",
-      style: TextStyle(color: Colors.blue),
-    ),
-    onPressed: () {
-      Navigator.pop(context);
-    },
-  );
 
-  Widget yesButton = TextButton(
-    child: const Text("Yes", style: TextStyle(color: Colors.red)),
-    onPressed: () {
-      Navigator.pop(context);
-      // deleteUser(item['id']);
-    },
-  );
 
-  // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: const Text("Message"),
-    content: const Text("Would you like to delete this product?"),
-    actions: [
-      noButton,
-      yesButton,
-    ],
-  );
-  // show the dialog
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
+
