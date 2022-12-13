@@ -117,7 +117,9 @@ class _ViewProductPageState extends State<ViewProductPage> {
                     ),
                   ]),
                 ),
-                MoreProducts()
+                MoreProducts(
+                  product: widget.product,
+                )
               ],
             ),
           ),

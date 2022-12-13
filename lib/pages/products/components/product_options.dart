@@ -20,8 +20,8 @@ class ProductOption extends StatelessWidget {
         children: <Widget>[
           Positioned(
             left: 16.0,
-            child: Image.asset(
-              product.image,
+            child: Image.network(
+              '${BASE_IMG}${product.image}',
               height: 200,
               width: 200,
             ),
@@ -58,12 +58,13 @@ class ProductOption extends StatelessWidget {
                               topLeft: Radius.circular(10.0),
                               bottomLeft: Radius.circular(10.0))),
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: const Center(
+                      child: Center(
                         child: Text(
-                          'Buy Now',
+                          '\$${product.price.toString()}',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
+                            fontSize: 23,
                           ),
                         ),
                       ),

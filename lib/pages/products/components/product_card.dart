@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../app_properties.dart';
 import '../../../model/product.dart';
 
 class ProductCard extends StatelessWidget {
@@ -26,8 +27,8 @@ class ProductCard extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     width: MediaQuery.of(context).size.width / 2 - 64,
                     height: MediaQuery.of(context).size.width / 2 - 64,
-                    child: Image.asset(
-                      product.image,
+                    child: Image.network(
+                      '${BASE_IMG}${product.image}',
                     ),
                   ),
                 ),

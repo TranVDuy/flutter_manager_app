@@ -68,14 +68,14 @@ class ShopProductDisplay extends StatelessWidget {
           left: 50,
           top: 5,
           child: SizedBox(
+            height: 100,
+            width: 100,
+            child: Image.network(
+              '${BASE_IMG}${product.image}',
               height: 100,
               width: 100,
-              child: Image.asset(
-                '${product.image}',
-                fit: BoxFit.contain,
-                width: 100,
-                height: 100,
-              )),
+            ),
+          ),
         ),
       ]),
     );
