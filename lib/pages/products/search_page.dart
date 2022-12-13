@@ -23,6 +23,7 @@ class _SearchPageState extends State<SearchPage>
     with SingleTickerProviderStateMixin {
   var controller = Get.find<ProductsController>();
   var categoriesController = Get.find<CategoriesController>();
+  bool isLoading = false;
 
   String selectedPeriod = "";
   String selectedCategory = "";
@@ -49,8 +50,9 @@ class _SearchPageState extends State<SearchPage>
     //     price: 152.99),
   ];
   List<Product> searchResults = [];
+  int page = 1;
 
-  getListProduct(String selectedCategory, String search,String Column, String Option) async {
+  getListProduct(int Page, String selectedCategory, String search,String Column, String Option) async {
     String sort = "";
     var temp;
     if(Column == "name"){
@@ -61,10 +63,10 @@ class _SearchPageState extends State<SearchPage>
     }
 
     if(selectedCategory == "0"){
-      temp = await controller.getProducts(1, search, Column, sort, []);
+      temp = await controller.getProducts(Page, search, Column, sort, []);
     }
     else{
-      temp = await controller.getProducts(1, search, Column, sort, [selectedCategory]);
+      temp = await controller.getProducts(Page, search, Column, sort, [selectedCategory]);
     }
 
     setState(() {
@@ -109,7 +111,8 @@ class _SearchPageState extends State<SearchPage>
     selectedPrice = "";
     selectedCategory = "0";
     searchValue = "";
-    getListProduct("0", searchValue, "name", selectedPeriod);
+    page = 1;
+    getListProduct(page ,"0", searchValue, "name", selectedPeriod);
 
     super.initState();
   }
@@ -216,7 +219,7 @@ class _SearchPageState extends State<SearchPage>
           //               title: Text(searchResults[index].name),
           //             ))),
           //   ),
-          // )
+          // ),
           Expanded(
               flex: 2,
               child: Center(
@@ -381,7 +384,7 @@ class _SearchPageState extends State<SearchPage>
                       setState(() {
                         selectedPeriod = nameFilter[index];
                         selectedPrice = "";
-                        getListProduct(selectedCategory, searchValue, "name", selectedPeriod);
+                        getListProduct(page, selectedCategory, searchValue, "name", selectedPeriod);
                       });
                     },
                     child: Container(
@@ -417,10 +420,10 @@ class _SearchPageState extends State<SearchPage>
                       setState(() {
                         selectedCategory = categoryFilter[index].id.toString();
                         if(selectedPeriod != ""){
-                          getListProduct(selectedCategory, searchValue,"name", selectedPeriod);
+                          getListProduct(page, selectedCategory, searchValue,"name", selectedPeriod);
                         }
                         else{
-                          getListProduct(selectedCategory, searchValue,"price", selectedPrice);
+                          getListProduct(page, selectedCategory, searchValue,"price", selectedPrice);
                         }
                       });
                     },
@@ -457,7 +460,7 @@ class _SearchPageState extends State<SearchPage>
                       setState(() {
                         selectedPrice = priceFilter[index];
                         selectedPeriod = "";
-                        getListProduct(selectedCategory, searchValue ,"price", selectedPrice);
+                        getListProduct(page, selectedCategory, searchValue ,"price", selectedPrice);
                       });
                     },
                     child: Container(
@@ -522,16 +525,22 @@ class _SearchPageState extends State<SearchPage>
           setState(() {
             searchValue = value;
             if(selectedPeriod != ""){
-              getListProduct(selectedCategory, searchValue,"name", selectedPeriod);
+              getListProduct(page, selectedCategory, searchValue,"name", selectedPeriod);
             }
             else{
-              getListProduct(selectedCategory, searchValue,"price", selectedPrice);
+              getListProduct(page, selectedCategory, searchValue,"price", selectedPrice);
             }
           });
         }
         this.searchValue = searchController.text;
       }
     );
+  }
+
+  void firstLoad() async{
+    setState(() {
+      isLoading = true;
+    });
   }
 }
 
