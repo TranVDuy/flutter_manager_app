@@ -26,7 +26,7 @@ class _UsersPageState extends State<UsersPage> {
   var page = 1;
   String deleteResult = "";
   ScrollController scrollController = ScrollController();
-  bool isLoading = false;
+  int totalRecord = 0;
 
   getFrequentUsers() async {
     var temp = await controller.getUsers(page, "");
@@ -142,6 +142,9 @@ class _UsersPageState extends State<UsersPage> {
   }
 
   void _scrollListener() async {
+    if (totalRecord == users.length) {
+      return;
+    }
     if (scrollController.position.extentAfter <= 0) {
       setState(() {
         page++;
@@ -149,9 +152,12 @@ class _UsersPageState extends State<UsersPage> {
       var url = BASE_API +
           "user?page=" +
           page.toString() +
-          "&limit=5&role=[]&search=";
+          "&limit=5&role=[]&search=${searchController.text}";
       var response = await http.get(url);
       if (response.statusCode == 200) {
+        setState(() {
+          totalRecord = json.decode(response.body)['totalCount'];
+        });
         var jsonObject = jsonDecode(response.body)['data'];
         var usersObject = jsonObject as List;
         var items = usersObject.map((e) {
@@ -162,6 +168,17 @@ class _UsersPageState extends State<UsersPage> {
         });
       }
     }
+  }
+
+  OnSearchChanged(value) async {
+    page = 1;
+    print(
+        "sdhajkdhasjkdahsdjkashdjkah     sdajkdahskj ${searchController.text}");
+    var temp = await controller.getUsers(page, value);
+    setState(() {
+      users = temp;
+      searchResults = users;
+    });
   }
 
   @override
@@ -186,23 +203,24 @@ class _UsersPageState extends State<UsersPage> {
                 child: Center(
                   child: TextField(
                     onChanged: (value) {
-                      if (value.isNotEmpty) {
-                        List<User> tempList = [];
-                        for (var user in users) {
-                          if (user.email.toLowerCase().contains(value)) {
-                            tempList.add(user);
-                          }
-                        }
-                        setState(() {
-                          searchResults = [];
-                          searchResults.addAll(tempList);
-                        });
-                      } else {
-                        setState(() {
-                          searchResults = [];
-                          searchResults.addAll(users);
-                        });
-                      }
+                      // if (value.isNotEmpty) {
+                      //   List<User> tempList = [];
+                      //   for (var user in users) {
+                      //     if (user.email.toLowerCase().contains(value)) {
+                      //       tempList.add(user);
+                      //     }
+                      //   }
+                      //   setState(() {
+                      //     searchResults = [];
+                      //     searchResults.addAll(tempList);
+                      //   });
+                      // } else {
+                      //   setState(() {
+                      //     searchResults = [];
+                      //     searchResults.addAll(users);
+                      //   });
+                      // }
+                      OnSearchChanged(value);
                     },
                     controller: searchController,
                     decoration: const InputDecoration(
