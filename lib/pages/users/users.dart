@@ -25,6 +25,8 @@ class _UsersPageState extends State<UsersPage> {
   List<User> searchResults = [];
   var page = 1;
   String deleteResult = "";
+  ScrollController scrollController = ScrollController();
+  bool isLoading = false;
 
   getFrequentUsers() async {
     var temp = await controller.getUsers(page, "");
@@ -128,8 +130,38 @@ class _UsersPageState extends State<UsersPage> {
   @override
   void initState() {
     super.initState();
+    scrollController = ScrollController()..addListener(_scrollListener);
     getUsers();
     getFrequentUsers();
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  void _scrollListener() async {
+    if (scrollController.position.extentAfter <= 0) {
+      setState(() {
+        page++;
+      });
+      var url = BASE_API +
+          "user?page=" +
+          page.toString() +
+          "&limit=5&role=[]&search=";
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        var jsonObject = jsonDecode(response.body)['data'];
+        var usersObject = jsonObject as List;
+        var items = usersObject.map((e) {
+          return User.fromJson(e);
+        }).toList();
+        setState(() {
+          users.addAll(items);
+        });
+      }
+    }
   }
 
   @override
@@ -308,6 +340,7 @@ class _UsersPageState extends State<UsersPage> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 8.0),
                             child: ListView(
+                              controller: scrollController,
                               children: searchResults
                                   .map((user) => Slidable(
                                         actionPane:
