@@ -12,7 +12,6 @@ class UsersController extends GetxController {
   Future<List<User>> getUsers(int pageNum, String search) async {
     var url =
         "${BASE_API}user?page=${pageNum.toString()}&limit=20&role=[]&search=${search.toString()}";
-    print(url);
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -106,16 +105,19 @@ class UsersController extends GetxController {
     return showMessage(context, "All fields is required");
   }
 
-  Future<String> deleteUser(String userId) async {
+  Future<bool> deleteUser(String userId) async {
     var url = "${BASE_API}user/$userId";
     var response = await http.delete(url, headers: {
       "Content-Type": "application/json",
       "Accept": "application/json"
     });
     if (response.statusCode == 200) {
-      return "";
+      if (json.decode(response.body)['statusCode'].toString() != 200) {
+        return false;
+      }
+      return true;
     } else {
-      return json.decode(response.body)['message'];
+      return false;
     }
   }
 }

@@ -55,18 +55,9 @@ class _UsersPageState extends State<UsersPage> {
 
     Widget yesButton = TextButton(
         child: const Text("Yes", style: TextStyle(color: Colors.red)),
-        onPressed: () async {
-          var result = await controller.deleteUser(item.id);
-          if (result != "") showError(context, result);
-          List<User> data = [];
-          for (int i = 1; i <= page; i++) {
-            var temp = await controller.getUsers(page, searchController.text);
-            data.addAll(temp);
-          }
-          setState(() {
-            searchResults = data;
-          });
+        onPressed: () {
           Navigator.pop(context);
+          DeleteUser(context, item);
         });
 
     // set up the AlertDialog
@@ -87,25 +78,51 @@ class _UsersPageState extends State<UsersPage> {
     );
   }
 
-  showError(BuildContext context, String result) {
-    AlertDialog alert = AlertDialog(
-      title: const Text("Message"),
-      content: Text(result),
-      actions: [
-        TextButton(
-          child: Text("Close", style: TextStyle(color: Colors.red)),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        )
-      ],
-    );
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+  DeleteUser(BuildContext context, item) async {
+    bool check;
+    check = await controller.deleteUser(item.id);
+    check
+        ? buildFlashMessage("success", 'Xóa thành công!')
+        : buildFlashMessage("error", 'Xóa thất bại!');
+    // if (selectedPeriod != "") {
+    //   getListProduct(
+    //       page, selectedCategory, searchValue, "name", selectedPeriod);
+    // } else {
+    //   getListProduct(
+    //       page, selectedCategory, searchValue, "price", selectedPrice);
+    // }
+  }
+
+  buildFlashMessage(String status, String message) {
+    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Container(
+          height: 70,
+          padding: EdgeInsets.all(18),
+          decoration: BoxDecoration(
+              color: (status == "success" ? Colors.green : Colors.red),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                message,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              (status == "success"
+                  ? const Icon(Icons.check_circle_outline_outlined,
+                      color: Colors.white, size: 20)
+                  : const Icon(
+                      Icons.error_outline,
+                      color: Colors.white,
+                      size: 30,
+                    ))
+            ],
+          )),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    ));
   }
 
   @override
