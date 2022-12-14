@@ -95,8 +95,9 @@ class _UserEditState extends State<UserEdit> {
               InkWell(
                   child: DisplayImage(
                 imagePath: widget.user.picture!,
-                onPressed: () {},
+                callback: () {},
                 canEdit: false,
+                webImage: null,
               )),
               buildUserInfoDisplay(
                   'First Name', controllerFirstName, const Icon(Icons.people)),

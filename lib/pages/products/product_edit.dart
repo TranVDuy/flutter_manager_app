@@ -1,6 +1,8 @@
 import 'dart:async';
-
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:product_manager/model/product.dart';
 import '../../app_properties.dart';
 import '../users/display_image/display_image.dart';
@@ -20,6 +22,33 @@ class _ProductEditState extends State<ProductEdit> {
   final TextEditingController controllerPrice = TextEditingController();
   final TextEditingController controllerImage = TextEditingController();
   final TextEditingController controllerDescription = TextEditingController();
+  final ImagePicker picker = ImagePicker();
+  File? pickedImage;
+  Uint8List? webImage;
+
+  Future<void> _pickImage() async {
+    if (!kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var selected = File(image.path);
+        setState(() {
+          pickedImage = selected;
+        });
+      }
+    } else if (kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var f = await image.readAsBytes();
+        setState(() {
+          webImage = f;
+          pickedImage = File("a");
+        });
+      }
+    }
+  }
+
   @override
   void initState() {
     controllerName.text = widget.product.name;
@@ -57,10 +86,10 @@ class _ProductEditState extends State<ProductEdit> {
                       ))),
               InkWell(
                   child: DisplayImage(
-                imagePath: '${BASE_IMG}${widget.product.image}',
-                onPressed: () {},
-                canEdit: true,
-              )),
+                      imagePath: '${BASE_IMG}${widget.product.image}',
+                      callback: _pickImage,
+                      canEdit: true,
+                      webImage: webImage)),
               buildProductInfoDisplay(
                   'Name', controllerName, const Icon(Icons.people)),
               buildProductInfoDisplay(

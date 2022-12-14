@@ -631,8 +631,8 @@ class _SearchPageState extends State<SearchPage>
     bool check;
     check = await controller.deleteProduct(item.id);
     check
-        ? buildFlashMessage("success", 'Xóa thành công!')
-        : buildFlashMessage("error", 'Xóa thất bại!');
+        ? buildFlashMessage("success", 'Xóa product thành công!')
+        : buildFlashMessage("error", 'Xóa product thất bại!');
     if (selectedPeriod != "") {
       getListProduct(
           page, selectedCategory, searchValue, "name", selectedPeriod);

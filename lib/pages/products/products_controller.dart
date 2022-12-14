@@ -22,7 +22,7 @@ class ProductsController extends GetxController {
       url =
           "${BASE_API}products?search=$search&column=$column&options=$option&category=${category.toString()}&page=$pageNum&limit=10";
     }
-    var response = await http.get(url);
+    var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       var jsonObject = jsonDecode(response.body)['data'];
@@ -45,7 +45,7 @@ class ProductsController extends GetxController {
         "description": description.toString(),
         "price": price,
       });
-      var response = await http.post(url,
+      var response = await http.post(Uri.parse(url),
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
@@ -72,7 +72,7 @@ class ProductsController extends GetxController {
         "description": description.toString(),
         "price": price,
       });
-      var response = await http.put(url,
+      var response = await http.put(Uri.parse(url),
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
@@ -91,7 +91,7 @@ class ProductsController extends GetxController {
 
   Future<bool> deleteProduct(String productId) async {
     var url = "${BASE_API}products/$productId";
-    var response = await http.delete(url, headers: {
+    var response = await http.delete(Uri.parse(url), headers: {
       "Content-Type": "application/json",
       "Accept": "application/json"
     });

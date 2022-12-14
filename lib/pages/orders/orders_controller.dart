@@ -12,7 +12,7 @@ class OrdersController extends GetxController {
       int pageNum, String search, String key, String sort) async {
     var url =
         "${BASE_API}orders?search=$search&key=$key&sort=$sort&page=$pageNum&limit=20";
-    var response = await http.get(url);
+    var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       var jsonObject = jsonDecode(response.body)['data'];
@@ -32,7 +32,7 @@ class OrdersController extends GetxController {
   void deleteOrder(int pageNum, String orderId, String search, String key,
       String sort) async {
     var url = "${BASE_API}orders/$orderId";
-    var response = await http.delete(url, headers: {
+    var response = await http.delete(Uri.parse(url), headers: {
       "Content-Type": "application/json",
       "Accept": "application/json"
     });
@@ -41,7 +41,7 @@ class OrdersController extends GetxController {
       for (int i = 1; i <= pageNum; i++) {
         var url =
             "${BASE_API}orders?search=$search&key=$key&sort=$sort&page=$pageNum&limit=20";
-        var response = await http.get(url);
+        var response = await http.get(Uri.parse(url));
         if (response.statusCode == 200) {
           var jsonObject = jsonDecode(response.body)['data'];
           var productsObject = jsonObject as List;

@@ -96,8 +96,9 @@ class _UserCreateState extends State<UserCreate> {
               InkWell(
                   child: DisplayImage(
                 imagePath: "https://robohash.org/${1}",
-                onPressed: () {},
+                callback: () {},
                 canEdit: false,
+                webImage: null,
               )),
               buildUserInfoDisplay(
                   'First Name', controllerFirstName, const Icon(Icons.people)),
