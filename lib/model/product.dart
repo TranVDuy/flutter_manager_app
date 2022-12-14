@@ -3,12 +3,15 @@ class Product {
   String name;
   String description;
   String price;
+  String id;
 
   Product(
       {required this.image,
       required this.name,
       required this.description,
-      required this.price});
+      required this.price,
+      required this.id
+      });
 
   factory Product.fromJson(Map<String, dynamic> obj) {
     return Product(
@@ -16,6 +19,7 @@ class Product {
       name: obj["name"].toString(),
       description: obj["description"].toString(),
       price: obj["price"].toString(),
+      id: obj['id'].toString()
     );
   }
 }

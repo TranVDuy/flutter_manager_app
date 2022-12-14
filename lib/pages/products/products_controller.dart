@@ -1,4 +1,5 @@
 import 'dart:convert';
+// import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -88,28 +89,31 @@ class ProductsController extends GetxController {
     return showMessage(context, "All fields is required");
   }
 
-  void deleteProduct(int pageNum, String productId, String search,
-      String column, String option, List category) async {
+  Future<bool> deleteProduct(String productId) async {
     var url = "${BASE_API}products/$productId";
     var response = await http.delete(url, headers: {
       "Content-Type": "application/json",
       "Accept": "application/json"
     });
     if (response.statusCode == 200) {
-      List<Product> result = [];
-      for (int i = 1; i <= pageNum; i++) {
-        var url =
-            "${BASE_API}products?search=$search&column=$column&options=$option&category=$category&page=$pageNum&limit=20";
-        var response = await http.get(url);
-        if (response.statusCode == 200) {
-          var jsonObject = jsonDecode(response.body)['data'];
-          var productsObject = jsonObject as List;
-          List<Product> items = productsObject.map((e) {
-            return Product.fromJson(e);
-          }).toList();
-          result.addAll(items);
-        }
-      }
+      // List<Product> result = [];
+      // for (int i = 1; i <= pageNum; i++) {
+      //   var url =
+      //       "${BASE_API}products?search=$search&column=$column&options=$option&category=$category&page=$pageNum&limit=20";
+      //   var response = await http.get(url);
+      //   if (response.statusCode == 200) {
+      //     var jsonObject = jsonDecode(response.body)['data'];
+      //     var productsObject = jsonObject as List;
+      //     List<Product> items = productsObject.map((e) {
+      //       return Product.fromJson(e);
+      //     }).toList();
+      //     result.addAll(items);
+      //   }
+      // }
+      return true;
+    }
+    else{
+      return false;
     }
   }
 }
