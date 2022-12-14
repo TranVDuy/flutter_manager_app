@@ -225,12 +225,25 @@ class _SearchPageState extends State<SearchPage>
               flex: 2,
               child: Center(
                 child: searchResults.length == 0
-                    ? const CupertinoActivityIndicator()
+                    ? Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "No Results",
+                        style: TextStyle(color: Colors.grey.shade400 ),
+                      ),
+                    )
                     : Container(
                         color: Colors.white,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 8.0),
-                        child: ListView(
+                        child: isLoading ? Opacity(
+                            opacity:  0.80,
+                            child: Container(
+                              alignment: Alignment.center,
+                              color: Colors.white70,
+                              child: const CircularProgressIndicator(),
+                              )
+                            )  : ListView(
                           children: searchResults
                               .map((searchResult) => Slidable(
                                     actionPane:
@@ -571,15 +584,31 @@ class _SearchPageState extends State<SearchPage>
     ));
   }
 
-  DeleteProduct(BuildContext context, item) async {
-    bool check;
-    check = await controller.deleteProduct(item.id);
-    check ? buildFlashMessage("success", 'Xóa thành công!') : buildFlashMessage("error", 'Xóa thất bại!');
+  //Load list product
+  RerenderList(){
     if(selectedPeriod != ""){
       getListProduct(page, selectedCategory, searchValue,"name", selectedPeriod);
     }
     else{
       getListProduct(page, selectedCategory, searchValue,"price", selectedPrice);
+    }
+  }
+
+  DeleteProduct(BuildContext context, item) async {
+    bool check;
+    setState(() {
+      isLoading = true;
+    });
+    check = await controller.deleteProduct(item.id);
+    setState(() {
+      isLoading = false;
+    });
+    if(check){
+      RerenderList();
+      buildFlashMessage("success", 'Xóa thành công!');
+    }
+    else{
+      buildFlashMessage("error", 'Xóa thất bại!');
     }
   }
 
@@ -601,14 +630,8 @@ class _SearchPageState extends State<SearchPage>
         Navigator.pop(context);
         // deleteUser(item['id']);
         DeleteProduct(context, item);
-
       },
     );
-
-
-
-
-
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
