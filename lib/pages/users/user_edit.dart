@@ -1,15 +1,16 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
+import 'package:product_manager/pages/users/users_controller.dart';
 import '../../app_properties.dart';
 import '../../model/user.dart';
 import 'display_image/display_image.dart';
 
 class UserEdit extends StatefulWidget {
   final User user;
+  final Function callBack;
 
-  const UserEdit({required this.user});
+  const UserEdit({required this.user, required this.callBack});
 
   @override
   _UserEditState createState() => _UserEditState();
@@ -17,10 +18,44 @@ class UserEdit extends StatefulWidget {
 
 class _UserEditState extends State<UserEdit> {
   final _formKey = GlobalKey<FormState>();
+  var controller = Get.find<UsersController>();
   final TextEditingController controllerFirstName = TextEditingController();
   final TextEditingController controllerLastName = TextEditingController();
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerPhone = TextEditingController();
+  final TextEditingController controllerAddress = TextEditingController();
+
+  buildFlashMessage(String status, String message) {
+    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Container(
+          height: 70,
+          padding: EdgeInsets.all(18),
+          decoration: BoxDecoration(
+              color: (status == "success" ? Colors.green : Colors.red),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                message,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              (status == "success"
+                  ? const Icon(Icons.check_circle_outline_outlined,
+                      color: Colors.white, size: 20)
+                  : const Icon(
+                      Icons.error_outline,
+                      color: Colors.white,
+                      size: 30,
+                    ))
+            ],
+          )),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    ));
+  }
 
   @override
   void initState() {
@@ -28,6 +63,7 @@ class _UserEditState extends State<UserEdit> {
     controllerPhone.text = widget.user.phone;
     controllerFirstName.text = widget.user.firstname;
     controllerLastName.text = widget.user.lastname;
+    controllerAddress.text = widget.user.address;
     super.initState();
   }
 
@@ -70,6 +106,8 @@ class _UserEditState extends State<UserEdit> {
                   'Email', controllerEmail, const Icon(Icons.email)),
               buildUserInfoDisplay(
                   'Phone', controllerPhone, const Icon(Icons.phone)),
+              buildUserInfoDisplay(
+                  'Address', controllerAddress, const Icon(Icons.house)),
               const SizedBox(height: 10),
               buidSubmit(context)
             ],
@@ -112,8 +150,8 @@ class _UserEditState extends State<UserEdit> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "$title is required";
-                  } else if (value.length < 6) {
-                    return "$title is at least 6 character";
+                  } else if (value.length < 2) {
+                    return "$title is at least 2 character";
                   }
                   return null;
                 },
@@ -132,12 +170,21 @@ class _UserEditState extends State<UserEdit> {
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           textStyle:
               const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-      onPressed: () {
+      onPressed: () async {
         if (_formKey.currentState!.validate()) {
-          final firstname = controllerFirstName.text;
-          final lastname = controllerLastName.text;
+          final firstName = controllerFirstName.text;
+          final lastName = controllerLastName.text;
           final email = controllerEmail.text;
           final phone = controllerPhone.text;
+          final address = controllerAddress.text;
+
+          var check = await controller.editUser(
+              widget.user.id, firstName, lastName, email, phone, address, [57]);
+          check
+              ? buildFlashMessage("success", 'Sửa user thành công!')
+              : buildFlashMessage("error", 'Sửa user thất bại!');
+          if (check) await widget.callBack();
+          Navigator.pop(context);
         }
       },
       child: const Text("Update"),

@@ -140,6 +140,14 @@ class _UsersPageState extends State<UsersPage> {
     super.dispose();
   }
 
+  void editCallback() async {
+    page = 1;
+    var temp = await controller.getUsers(page, searchController.text);
+    setState(() {
+      searchResults = temp;
+    });
+  }
+
   void _scrollListener() async {
     if (totalRecord == searchResults.length) {
       return;
@@ -362,15 +370,19 @@ class _UsersPageState extends State<UsersPage> {
                                         actionExtentRatio: 0.25,
                                         secondaryActions: <Widget>[
                                           IconSlideAction(
-                                            caption: 'Edit',
-                                            color: Colors.blueAccent,
-                                            icon: Icons.edit,
-                                            onTap: () => Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                    builder: (_) => UserEdit(
-                                                          user: user,
-                                                        ))),
-                                          ),
+                                              caption: 'Edit',
+                                              color: Colors.blueAccent,
+                                              icon: Icons.edit,
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            UserEdit(
+                                                              user: user,
+                                                              callBack:
+                                                                  editCallback,
+                                                            )));
+                                              }),
                                           IconSlideAction(
                                             caption: 'Delete',
                                             color: Colors.red,

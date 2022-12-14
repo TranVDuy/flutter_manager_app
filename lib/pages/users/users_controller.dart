@@ -25,14 +25,8 @@ class UsersController extends GetxController {
     }
   }
 
-  Future<Widget> createUser(
-      BuildContext context,
-      String firstName,
-      String lastName,
-      String email,
-      String phone,
-      String address,
-      List roles) async {
+  Future<bool> createUser(String firstName, String lastName, String email,
+      String phone, String address, List roles) async {
     if (firstName.isNotEmpty &&
         email.isNotEmpty &&
         lastName.isNotEmpty &&
@@ -54,18 +48,15 @@ class UsersController extends GetxController {
           },
           body: bodyData);
       if (response.statusCode == 201) {
-        var message = json.decode(response.body)['message'];
-        return showMessage(context, message);
+        return true;
       } else {
-        var messageError = "Can not create new user!!";
-        return showMessage(context, messageError);
+        return false;
       }
     }
-    return showMessage(context, "All fields is required");
+    return false;
   }
 
-  Future<Widget> editUser(
-    BuildContext context,
+  Future<bool> editUser(
     String userId,
     String firstName,
     String lastName,
@@ -95,14 +86,12 @@ class UsersController extends GetxController {
           },
           body: bodyData);
       if (response.statusCode == 200) {
-        var messageSuccess = json.decode(response.body)['message'];
-        showMessage(context, messageSuccess);
+        return true;
       } else {
-        var messageError = "Can not update this user!!";
-        showMessage(context, messageError);
+        return false;
       }
     }
-    return showMessage(context, "All fields is required");
+    return true;
   }
 
   Future<bool> deleteUser(String userId) async {
