@@ -9,7 +9,7 @@ import 'display_image/display_image.dart';
 class UserEdit extends StatefulWidget {
   final User user;
 
-  const UserEdit({super.key, required this.user});
+  const UserEdit({required this.user});
 
   @override
   _UserEditState createState() => _UserEditState();
@@ -17,14 +17,17 @@ class UserEdit extends StatefulWidget {
 
 class _UserEditState extends State<UserEdit> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController controllerFirstName = TextEditingController();
+  final TextEditingController controllerLastName = TextEditingController();
   final TextEditingController controllerEmail = TextEditingController();
   final TextEditingController controllerPhone = TextEditingController();
-  final TextEditingController controllerPassword = TextEditingController();
+
   @override
   void initState() {
     controllerEmail.text = widget.user.email;
     controllerPhone.text = widget.user.phone;
-    controllerPassword.text = widget.user.password!;
+    controllerFirstName.text = widget.user.firstname;
+    controllerLastName.text = widget.user.lastname;
     super.initState();
   }
 
@@ -60,11 +63,13 @@ class _UserEditState extends State<UserEdit> {
                 canEdit: false,
               )),
               buildUserInfoDisplay(
+                  'First Name', controllerFirstName, const Icon(Icons.people)),
+              buildUserInfoDisplay(
+                  'Last Name', controllerLastName, const Icon(Icons.people)),
+              buildUserInfoDisplay(
                   'Email', controllerEmail, const Icon(Icons.email)),
               buildUserInfoDisplay(
                   'Phone', controllerPhone, const Icon(Icons.phone)),
-              buildUserInfoDisplay(
-                  'Password', controllerPassword, const Icon(Icons.key)),
               const SizedBox(height: 10),
               buidSubmit(context)
             ],
@@ -129,9 +134,10 @@ class _UserEditState extends State<UserEdit> {
               const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
       onPressed: () {
         if (_formKey.currentState!.validate()) {
+          final firstname = controllerFirstName.text;
+          final lastname = controllerLastName.text;
           final email = controllerEmail.text;
           final phone = controllerPhone.text;
-          final password = controllerPassword.text;
         }
       },
       child: const Text("Update"),

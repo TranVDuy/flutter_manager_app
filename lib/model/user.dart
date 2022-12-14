@@ -1,7 +1,7 @@
 import 'package:product_manager/model/role.dart';
 
 class User {
-  num? id;
+  String id;
   String email;
   String firstname;
   String lastname;
@@ -14,7 +14,8 @@ class User {
   String? picture;
 
   User(
-      {required this.email,
+      {required this.id,
+      required this.email,
       required this.firstname,
       required this.lastname,
       required this.phone,
@@ -26,6 +27,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> obj) {
     return User(
+      id: obj["id"].toString(),
       email: obj["email"].toString(),
       firstname: obj["firstname"].toString(),
       lastname: obj["lastname"].toString(),
