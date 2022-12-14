@@ -1,5 +1,6 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -24,49 +25,51 @@ class _SearchPageState extends State<SearchPage>
   var controller = Get.find<ProductsController>();
   var categoriesController = Get.find<CategoriesController>();
   bool isLoading = false;
+  ScrollController scrollController = ScrollController();
+  int totalRecord = 0;
 
   String selectedPeriod = "";
   String selectedCategory = "";
   String selectedPrice = "";
 
-  List<Product> products = [
-    // Product(
-    //     image: 'assets/headphones_2.png',
-    //     name: 'Skullcandy headset L325',
-    //     description:
-    //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut labore et dolore magna aliqua. Nec nam aliquam sem et tortor consequat id porta nibh. Orci porta non pulvinar neque laoreet suspendisse. Id nibh tortor id aliquet. Dui sapien eget mi proin. Viverra vitae congue eu consequat ac felis donec. Etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus. Vulputate mi sit amet mauris commodo quis imperdiet. Vel fringilla est ullamcorper eget nulla facilisi etiam dignissim. Sit amet cursus sit amet dictum sit amet justo. Mattis pellentesque id nibh tortor. Sed blandit libero volutpat sed cras ornare arcu dui. Fermentum et sollicitudin ac orci phasellus. Ipsum nunc aliquet bibendum enim facilisis gravida. Viverra suspendisse potenti nullam ac tortor. Dapibus ultrices in iaculis nunc sed. Nisi porta lorem mollis aliquam ut porttitor leo a. Phasellus egestas tellus rutrum tellus pellentesque. Et malesuada fames ac turpis egestas maecenas pharetra convallis. Commodo ullamcorper a lacus vestibulum sed arcu non odio. Urna id volutpat lacus laoreet non curabitur gravida arcu ac. Eros in cursus turpis massa. Eget mauris pharetra et ultrices neque.',
-    //     price: 102.99),
-    // Product(
-    //     image: 'assets/headphones_3.png',
-    //     name: 'Skullcandy headset X25',
-    //     description:
-    //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut labore et dolore magna aliqua. Nec nam aliquam sem et tortor consequat id porta nibh. Orci porta non pulvinar neque laoreet suspendisse. Id nibh tortor id aliquet. Dui sapien eget mi proin. Viverra vitae congue eu consequat ac felis donec. Etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus. Vulputate mi sit amet mauris commodo quis imperdiet. Vel fringilla est ullamcorper eget nulla facilisi etiam dignissim. Sit amet cursus sit amet dictum sit amet justo. Mattis pellentesque id nibh tortor. Sed blandit libero volutpat sed cras ornare arcu dui. Fermentum et sollicitudin ac orci phasellus. Ipsum nunc aliquet bibendum enim facilisis gravida. Viverra suspendisse potenti nullam ac tortor. Dapibus ultrices in iaculis nunc sed. Nisi porta lorem mollis aliquam ut porttitor leo a. Phasellus egestas tellus rutrum tellus pellentesque. Et malesuada fames ac turpis egestas maecenas pharetra convallis. Commodo ullamcorper a lacus vestibulum sed arcu non odio. Urna id volutpat lacus laoreet non curabitur gravida arcu ac. Eros in cursus turpis massa. Eget mauris pharetra et ultrices neque.',
-    //     price: 55.99),
-    // Product(
-    //     image: 'assets/headphones.png',
-    //     name: 'Blackzy PRO hedphones M003',
-    //     description:
-    //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut labore et dolore magna aliqua. Nec nam aliquam sem et tortor consequat id porta nibh. Orci porta non pulvinar neque laoreet suspendisse. Id nibh tortor id aliquet. Dui sapien eget mi proin. Viverra vitae congue eu consequat ac felis donec. Etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus. Vulputate mi sit amet mauris commodo quis imperdiet. Vel fringilla est ullamcorper eget nulla facilisi etiam dignissim. Sit amet cursus sit amet dictum sit amet justo. Mattis pellentesque id nibh tortor. Sed blandit libero volutpat sed cras ornare arcu dui. Fermentum et sollicitudin ac orci phasellus. Ipsum nunc aliquet bibendum enim facilisis gravida. Viverra suspendisse potenti nullam ac tortor. Dapibus ultrices in iaculis nunc sed. Nisi porta lorem mollis aliquam ut porttitor leo a. Phasellus egestas tellus rutrum tellus pellentesque. Et malesuada fames ac turpis egestas maecenas pharetra convallis. Commodo ullamcorper a lacus vestibulum sed arcu non odio. Urna id volutpat lacus laoreet non curabitur gravida arcu ac. Eros in cursus turpis massa. Eget mauris pharetra et ultrices neque.',
-    //     price: 152.99),
-  ];
+  // List<Product> products = [
+  //   // Product(
+  //   //     image: 'assets/headphones_2.png',
+  //   //     name: 'Skullcandy headset L325',
+  //   //     description:
+  //   //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut labore et dolore magna aliqua. Nec nam aliquam sem et tortor consequat id porta nibh. Orci porta non pulvinar neque laoreet suspendisse. Id nibh tortor id aliquet. Dui sapien eget mi proin. Viverra vitae congue eu consequat ac felis donec. Etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus. Vulputate mi sit amet mauris commodo quis imperdiet. Vel fringilla est ullamcorper eget nulla facilisi etiam dignissim. Sit amet cursus sit amet dictum sit amet justo. Mattis pellentesque id nibh tortor. Sed blandit libero volutpat sed cras ornare arcu dui. Fermentum et sollicitudin ac orci phasellus. Ipsum nunc aliquet bibendum enim facilisis gravida. Viverra suspendisse potenti nullam ac tortor. Dapibus ultrices in iaculis nunc sed. Nisi porta lorem mollis aliquam ut porttitor leo a. Phasellus egestas tellus rutrum tellus pellentesque. Et malesuada fames ac turpis egestas maecenas pharetra convallis. Commodo ullamcorper a lacus vestibulum sed arcu non odio. Urna id volutpat lacus laoreet non curabitur gravida arcu ac. Eros in cursus turpis massa. Eget mauris pharetra et ultrices neque.',
+  //   //     price: 102.99),
+  //   // Product(
+  //   //     image: 'assets/headphones_3.png',
+  //   //     name: 'Skullcandy headset X25',
+  //   //     description:
+  //   //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut labore et dolore magna aliqua. Nec nam aliquam sem et tortor consequat id porta nibh. Orci porta non pulvinar neque laoreet suspendisse. Id nibh tortor id aliquet. Dui sapien eget mi proin. Viverra vitae congue eu consequat ac felis donec. Etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus. Vulputate mi sit amet mauris commodo quis imperdiet. Vel fringilla est ullamcorper eget nulla facilisi etiam dignissim. Sit amet cursus sit amet dictum sit amet justo. Mattis pellentesque id nibh tortor. Sed blandit libero volutpat sed cras ornare arcu dui. Fermentum et sollicitudin ac orci phasellus. Ipsum nunc aliquet bibendum enim facilisis gravida. Viverra suspendisse potenti nullam ac tortor. Dapibus ultrices in iaculis nunc sed. Nisi porta lorem mollis aliquam ut porttitor leo a. Phasellus egestas tellus rutrum tellus pellentesque. Et malesuada fames ac turpis egestas maecenas pharetra convallis. Commodo ullamcorper a lacus vestibulum sed arcu non odio. Urna id volutpat lacus laoreet non curabitur gravida arcu ac. Eros in cursus turpis massa. Eget mauris pharetra et ultrices neque.',
+  //   //     price: 55.99),
+  //   // Product(
+  //   //     image: 'assets/headphones.png',
+  //   //     name: 'Blackzy PRO hedphones M003',
+  //   //     description:
+  //   //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut labore et dolore magna aliqua. Nec nam aliquam sem et tortor consequat id porta nibh. Orci porta non pulvinar neque laoreet suspendisse. Id nibh tortor id aliquet. Dui sapien eget mi proin. Viverra vitae congue eu consequat ac felis donec. Etiam dignissim diam quis enim lobortis scelerisque fermentum dui faucibus. Vulputate mi sit amet mauris commodo quis imperdiet. Vel fringilla est ullamcorper eget nulla facilisi etiam dignissim. Sit amet cursus sit amet dictum sit amet justo. Mattis pellentesque id nibh tortor. Sed blandit libero volutpat sed cras ornare arcu dui. Fermentum et sollicitudin ac orci phasellus. Ipsum nunc aliquet bibendum enim facilisis gravida. Viverra suspendisse potenti nullam ac tortor. Dapibus ultrices in iaculis nunc sed. Nisi porta lorem mollis aliquam ut porttitor leo a. Phasellus egestas tellus rutrum tellus pellentesque. Et malesuada fames ac turpis egestas maecenas pharetra convallis. Commodo ullamcorper a lacus vestibulum sed arcu non odio. Urna id volutpat lacus laoreet non curabitur gravida arcu ac. Eros in cursus turpis massa. Eget mauris pharetra et ultrices neque.',
+  //   //     price: 152.99),
+  // ];
   List<Product> searchResults = [];
   int page = 1;
 
-  getListProduct(int Page, String selectedCategory, String search,String Column, String Option) async {
+  getListProduct(int Page, String selectedCategory, String search,
+      String Column, String Option) async {
     String sort = "";
     var temp;
-    if(Column == "name"){
+    if (Column == "name") {
       sort = Option == "A-Z" ? "asc" : "desc";
-    }
-    else{
+    } else {
       sort = Option == "Low to High" ? "asc" : "desc";
     }
 
-    if(selectedCategory == "0"){
+    if (selectedCategory == "0") {
       temp = await controller.getProducts(Page, search, Column, sort, []);
-    }
-    else{
-      temp = await controller.getProducts(Page, search, Column, sort, [selectedCategory]);
+    } else {
+      temp = await controller
+          .getProducts(Page, search, Column, sort, [selectedCategory]);
     }
 
     setState(() {
@@ -74,7 +77,6 @@ class _SearchPageState extends State<SearchPage>
       searchResults = temp;
     });
   }
-
 
   List<String> nameFilter = [
     'A-Z',
@@ -99,7 +101,6 @@ class _SearchPageState extends State<SearchPage>
 
   late RubberAnimationController _controller;
 
-
   @override
   void initState() {
     _controller = RubberAnimationController(
@@ -114,14 +115,58 @@ class _SearchPageState extends State<SearchPage>
     selectedCategory = "0";
     searchValue = "";
     page = 1;
-    getListProduct(page , selectedCategory, searchValue, "name", selectedPeriod);
+    getListProduct(page, selectedCategory, searchValue, "name", selectedPeriod);
+    scrollController = ScrollController()..addListener(_scrollListener);
     super.initState();
+  }
+
+  getMoreProducts(int Page, String selectedCategory, String search,
+      String Column, String Option) async {
+    String sort = "";
+    var temp;
+    if (Column == "name") {
+      sort = Option == "A-Z" ? "asc" : "desc";
+    } else {
+      sort = Option == "Low to High" ? "asc" : "desc";
+    }
+
+    if (selectedCategory == "0") {
+      temp = await controller.getProducts(Page, search, Column, sort, []);
+    } else {
+      temp = await controller
+          .getProducts(Page, search, Column, sort, [selectedCategory]);
+    }
+
+    return temp;
+  }
+
+  void _scrollListener() async {
+    if (totalRecord == searchResults.length) {
+      return;
+    }
+    if (scrollController.position.extentAfter <= 0) {
+      setState(() {
+        page++;
+      });
+      var items;
+      if (selectedPeriod != "") {
+        items = await getMoreProducts(
+            page, selectedCategory, searchValue, "name", selectedPeriod);
+      } else {
+        items = await getMoreProducts(
+            page, selectedCategory, searchValue, "price", selectedPrice);
+      }
+      setState(() {
+        searchResults.addAll(items);
+      });
+    }
   }
 
   @override
   void dispose() {
     searchController.dispose();
     _debounce?.cancel();
+    controller.removeListener(_scrollListener);
     super.dispose();
   }
 
@@ -231,6 +276,7 @@ class _SearchPageState extends State<SearchPage>
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 8.0),
                         child: ListView(
+                          controller: scrollController,
                           children: searchResults
                               .map((searchResult) => Slidable(
                                     actionPane:
@@ -283,10 +329,11 @@ class _SearchPageState extends State<SearchPage>
                                                         const EdgeInsets.only(
                                                             top: 16.0),
                                                     child: Text(
-                                                        searchResult.name.length > 20 ?
-                                                        '${searchResult.name.substring(0, 20)}...' :
                                                         searchResult.name
-                                                        ,
+                                                                    .length >
+                                                                20
+                                                            ? '${searchResult.name.substring(0, 20)}...'
+                                                            : searchResult.name,
                                                         style: const TextStyle(
                                                             fontSize: 16.0,
                                                             fontWeight:
@@ -301,13 +348,14 @@ class _SearchPageState extends State<SearchPage>
                                                     child: Row(
                                                       children: [
                                                         Text(
-                                                          '\$${searchResult.price.toString()}',
+                                                            '\$${searchResult.price.toString()}',
                                                             style: const TextStyle(
                                                                 fontSize: 16.0,
-                                                                fontWeight: FontWeight.bold,
-                                                                color: Colors.red
-                                                            )
-                                                        ),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .red)),
                                                         // const Icon(Icons.money)
                                                       ],
                                                     ),
@@ -382,10 +430,12 @@ class _SearchPageState extends State<SearchPage>
                 ),
                 child: InkWell(
                     onTap: () {
+                      page = 1;
                       setState(() {
                         selectedPeriod = nameFilter[index];
                         selectedPrice = "";
-                        getListProduct(page, selectedCategory, searchValue, "name", selectedPeriod);
+                        getListProduct(page, selectedCategory, searchValue,
+                            "name", selectedPeriod);
                       });
                     },
                     child: Container(
@@ -418,20 +468,23 @@ class _SearchPageState extends State<SearchPage>
                 ),
                 child: InkWell(
                     onTap: () {
+                      page = 1;
                       setState(() {
                         selectedCategory = categoryFilter[index].id.toString();
-                        if(selectedPeriod != ""){
-                          getListProduct(page, selectedCategory, searchValue,"name", selectedPeriod);
-                        }
-                        else{
-                          getListProduct(page, selectedCategory, searchValue,"price", selectedPrice);
+                        if (selectedPeriod != "") {
+                          getListProduct(page, selectedCategory, searchValue,
+                              "name", selectedPeriod);
+                        } else {
+                          getListProduct(page, selectedCategory, searchValue,
+                              "price", selectedPrice);
                         }
                       });
                     },
                     child: Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 4.0, horizontal: 20.0),
-                        decoration: selectedCategory == categoryFilter[index].id.toString()
+                        decoration: selectedCategory ==
+                                categoryFilter[index].id.toString()
                             ? const BoxDecoration(
                                 color: Color(0xffFDB846),
                                 borderRadius:
@@ -458,10 +511,12 @@ class _SearchPageState extends State<SearchPage>
                 ),
                 child: InkWell(
                     onTap: () {
+                      page = 1;
                       setState(() {
                         selectedPrice = priceFilter[index];
                         selectedPeriod = "";
-                        getListProduct(page, selectedCategory, searchValue ,"price", selectedPrice);
+                        getListProduct(page, selectedCategory, searchValue,
+                            "price", selectedPrice);
                       });
                     },
                     child: Container(
@@ -519,23 +574,24 @@ class _SearchPageState extends State<SearchPage>
   }
 
   //Tìm kiếm sản phẩm
-  OnSearchChanged(value){
-    if(_debounce?.isActive ?? false) _debounce?.cancel();
-      _debounce = Timer(const Duration(milliseconds: 500), (){
-        if(this.searchValue != searchController.text){
-          setState(() {
-            searchValue = value;
-            if(selectedPeriod != ""){
-              getListProduct(page, selectedCategory, searchValue,"name", selectedPeriod);
-            }
-            else{
-              getListProduct(page, selectedCategory, searchValue,"price", selectedPrice);
-            }
-          });
-        }
-        this.searchValue = searchController.text;
+  OnSearchChanged(value) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      if (this.searchValue != searchController.text) {
+        page = 1;
+        setState(() {
+          searchValue = value;
+          if (selectedPeriod != "") {
+            getListProduct(
+                page, selectedCategory, searchValue, "name", selectedPeriod);
+          } else {
+            getListProduct(
+                page, selectedCategory, searchValue, "price", selectedPrice);
+          }
+        });
       }
-    );
+      this.searchValue = searchController.text;
+    });
   }
 
   //Show Snackbar
@@ -553,16 +609,16 @@ class _SearchPageState extends State<SearchPage>
               Text(
                 message,
                 style:
-                const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               (status == "success"
                   ? const Icon(Icons.check_circle_outline_outlined,
-                  color: Colors.white, size: 20)
+                      color: Colors.white, size: 20)
                   : const Icon(
-                Icons.error_outline,
-                color: Colors.white,
-                size: 30,
-              ))
+                      Icons.error_outline,
+                      color: Colors.white,
+                      size: 30,
+                    ))
             ],
           )),
       behavior: SnackBarBehavior.floating,
@@ -574,12 +630,15 @@ class _SearchPageState extends State<SearchPage>
   DeleteProduct(BuildContext context, item) async {
     bool check;
     check = await controller.deleteProduct(item.id);
-    check ? buildFlashMessage("success", 'Xóa thành công!') : buildFlashMessage("error", 'Xóa thất bại!');
-    if(selectedPeriod != ""){
-      getListProduct(page, selectedCategory, searchValue,"name", selectedPeriod);
-    }
-    else{
-      getListProduct(page, selectedCategory, searchValue,"price", selectedPrice);
+    check
+        ? buildFlashMessage("success", 'Xóa thành công!')
+        : buildFlashMessage("error", 'Xóa thất bại!');
+    if (selectedPeriod != "") {
+      getListProduct(
+          page, selectedCategory, searchValue, "name", selectedPeriod);
+    } else {
+      getListProduct(
+          page, selectedCategory, searchValue, "price", selectedPrice);
     }
   }
 
@@ -601,14 +660,8 @@ class _SearchPageState extends State<SearchPage>
         Navigator.pop(context);
         // deleteUser(item['id']);
         DeleteProduct(context, item);
-
       },
     );
-
-
-
-
-
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
@@ -627,9 +680,4 @@ class _SearchPageState extends State<SearchPage>
       },
     );
   }
-
 }
-
-
-
-
