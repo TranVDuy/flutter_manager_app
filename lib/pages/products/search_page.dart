@@ -284,7 +284,7 @@ class _SearchPageState extends State<SearchPage>
                                                 builder: (_) => ProductEdit(
                                                       product: searchResult,
                                                     callBack: editCallBack,
-                                                  idCategory: searchResult.category,
+                                                  idCategory: searchResult.category[0].id.toString(),
                                                     ))),
                                       ),
                                       IconSlideAction(
@@ -342,7 +342,7 @@ class _SearchPageState extends State<SearchPage>
                                                     child: Row(
                                                       children: [
                                                         Text(
-                                                            '\$${searchResult.id}${searchResult.category.toString()}',
+                                                            '\$${searchResult.price.toString()}',
                                                             style: const TextStyle(
                                                                 fontSize: 16.0,
                                                                 fontWeight:

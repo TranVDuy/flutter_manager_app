@@ -241,7 +241,7 @@ class _ProductEditState extends State<ProductEdit> {
           final description = controllerDescription.text;
           final image = controllerImage.text;
 
-          var check = await product_controller.editProduct(context,
+          var check = await product_controller.editProduct(
               widget.product.id,
               widget.idCategory,
               image,

@@ -67,7 +67,7 @@ class ProductsController extends GetxController {
     return showMessage(context, "All fields is required");
   }
 
-  Future<bool> editProduct(BuildContext context,
+  Future<bool> editProduct(
       String productId,
       String idCategory,
       String photo,
@@ -88,7 +88,7 @@ class ProductsController extends GetxController {
         "name": name.toString(),
         "description": description.toString(),
         "price": price.toString(),
-        "category": idCategory.toString()
+        "category": idCategory
       });
       var response = await http.put(Uri.parse(url),
           headers: {
@@ -97,8 +97,12 @@ class ProductsController extends GetxController {
           },
           body: bodyData);
       if (response.statusCode == 200) {
+        var message = json.decode(response.body)['message'];
+        print(message);
         return true;
       } else {
+        var message = json.decode(response.body)['message'];
+        print(message);
         return false;
       }
     }

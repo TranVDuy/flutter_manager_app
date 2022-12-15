@@ -1,12 +1,14 @@
 import 'dart:convert';
 
+import 'package:product_manager/model/categoryreal.dart';
+
 class Product {
   String image;
   String name;
   String description;
   String price;
   String id;
-  String category;
+  List<CategoryReal> category;
 
   Product(
       {required this.image,
@@ -19,14 +21,16 @@ class Product {
 
 
   factory Product.fromJson(Map<String, dynamic> obj) {
-    var temp = jsonDecode(obj["category"].toString());
+
     return Product(
         image: obj["image"].toString(),
         name: obj["name"].toString(),
         description: obj["description"].toString(),
         price: obj["price"].toString(),
         id: obj['id'].toString(),
-        category: temp["id"].toString()
+        category: (obj['category'] as List)
+        .map((data) => CategoryReal.fromJson(data))
+        .toList()
     );
   }
 }
