@@ -83,15 +83,8 @@ class _UsersPageState extends State<UsersPage> {
     bool check;
     check = await controller.deleteUser(item.id);
     check
-        ? buildFlashMessage("success", 'Xóa thành công!')
-        : buildFlashMessage("error", 'Xóa thất bại!');
-    // if (selectedPeriod != "") {
-    //   getListProduct(
-    //       page, selectedCategory, searchValue, "name", selectedPeriod);
-    // } else {
-    //   getListProduct(
-    //       page, selectedCategory, searchValue, "price", selectedPrice);
-    // }
+        ? buildFlashMessage("success", 'Xóa user thành công!')
+        : buildFlashMessage("error", 'Xóa user thất bại!');
   }
 
   buildFlashMessage(String status, String message) {
@@ -160,7 +153,7 @@ class _UsersPageState extends State<UsersPage> {
           "user?page=" +
           page.toString() +
           "&limit=5&role=[]&search=${searchController.text}";
-      var response = await http.get(url);
+      var response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         setState(() {
           totalRecord = json.decode(response.body)['totalCount'];

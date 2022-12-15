@@ -1,14 +1,22 @@
 import 'dart:async';
-
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:product_manager/model/category.dart';
 import 'package:product_manager/model/product.dart';
+import 'package:product_manager/pages/products/products_controller.dart';
 import '../../app_properties.dart';
 import '../users/display_image/display_image.dart';
 
 class ProductEdit extends StatefulWidget {
   final Product product;
+  final Function callBack;
+  final idCategory;
 
-  const ProductEdit({super.key, required this.product});
+  const ProductEdit({super.key, required this.product, required this.callBack, required this.idCategory});
 
   @override
   _ProductEditState createState() => _ProductEditState();
@@ -16,10 +24,70 @@ class ProductEdit extends StatefulWidget {
 
 class _ProductEditState extends State<ProductEdit> {
   final _formKey = GlobalKey<FormState>();
+  var product_controller = Get.find<ProductsController>();
   final TextEditingController controllerName = TextEditingController();
   final TextEditingController controllerPrice = TextEditingController();
   final TextEditingController controllerImage = TextEditingController();
   final TextEditingController controllerDescription = TextEditingController();
+  final ImagePicker picker = ImagePicker();
+  File? pickedImage;
+  Uint8List? webImage;
+
+  buildFlashMessage(String status, String message) {
+    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Container(
+          height: 70,
+          padding: EdgeInsets.all(18),
+          decoration: BoxDecoration(
+              color: (status == "success" ? Colors.green : Colors.red),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                message,
+                style:
+                const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              (status == "success"
+                  ? const Icon(Icons.check_circle_outline_outlined,
+                  color: Colors.white, size: 20)
+                  : const Icon(
+                Icons.error_outline,
+                color: Colors.white,
+                size: 30,
+              ))
+            ],
+          )),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    ));
+  }
+
+  Future<void> _pickImage() async {
+    if (!kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var selected = File(image.path);
+        setState(() {
+          pickedImage = selected;
+        });
+      }
+    } else if (kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var f = await image.readAsBytes();
+        setState(() {
+          webImage = f;
+          pickedImage = File("a");
+        });
+      }
+    }
+  }
+
   @override
   void initState() {
     controllerName.text = widget.product.name;
@@ -57,16 +125,14 @@ class _ProductEditState extends State<ProductEdit> {
                       ))),
               InkWell(
                   child: DisplayImage(
-                imagePath: '${BASE_IMG}${widget.product.image}',
-                onPressed: () {},
-                canEdit: true,
-              )),
+                      imagePath: '${BASE_IMG}${widget.product.image}',
+                      callback: _pickImage,
+                      canEdit: true,
+                      webImage: webImage)),
               buildProductInfoDisplay(
                   'Name', controllerName, const Icon(Icons.people)),
               buildProductInfoDisplay(
                   'Price', controllerPrice, const Icon(Icons.money)),
-              // buildProductInfoDisplay(
-              //     'Password', controllerImage, const Icon(Icons.key)),
               buildDescription(controllerDescription),
               const SizedBox(height: 10),
               buidSubmit(context)
@@ -151,10 +217,7 @@ class _ProductEditState extends State<ProductEdit> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "$title is required";
-                  } else if (value.length < 6) {
-                    return "$title is at least 6 character";
-                  }
-                  return null;
+                  } else return null;
                 },
               ),
             ],
@@ -171,13 +234,28 @@ class _ProductEditState extends State<ProductEdit> {
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           textStyle:
               const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-      onPressed: () {
+      onPressed: () async {
         if (_formKey.currentState!.validate()) {
           final name = controllerName.text;
           final price = controllerPrice.text;
           final description = controllerDescription.text;
           final image = controllerImage.text;
+
+          var check = await product_controller.editProduct(context,
+              widget.product.id,
+              widget.idCategory,
+              image,
+              name,
+              description,
+              num.parse(price)
+          );
+          check
+              ? buildFlashMessage("success", 'Update thành công!')
+              : buildFlashMessage("error", 'Update thất bại!');
+          if (check) widget.callBack();
+          Navigator.pop(context);
         }
+
       },
       child: const Text("Update"),
     );

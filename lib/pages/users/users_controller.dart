@@ -12,7 +12,7 @@ class UsersController extends GetxController {
   Future<List<User>> getUsers(int pageNum, String search) async {
     var url =
         "${BASE_API}user?page=${pageNum.toString()}&limit=5&role=[]&search=${search.toString()}";
-    var response = await http.get(url);
+    var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       var jsonObject = jsonDecode(response.body)['data'];
@@ -41,7 +41,7 @@ class UsersController extends GetxController {
         "address": address.toString(),
         "roles": roles,
       });
-      var response = await http.post(url,
+      var response = await http.post(Uri.parse(url),
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
@@ -79,7 +79,7 @@ class UsersController extends GetxController {
         "address": address.toString(),
         "roles": roles,
       });
-      var response = await http.put(url,
+      var response = await http.put(Uri.parse(url),
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
@@ -96,14 +96,11 @@ class UsersController extends GetxController {
 
   Future<bool> deleteUser(String userId) async {
     var url = "${BASE_API}user/$userId";
-    var response = await http.delete(url, headers: {
+    var response = await http.delete(Uri.parse(url), headers: {
       "Content-Type": "application/json",
       "Accept": "application/json"
     });
     if (response.statusCode == 200) {
-      if (json.decode(response.body)['statusCode'].toString() != 200) {
-        return false;
-      }
       return true;
     } else {
       return false;

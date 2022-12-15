@@ -35,7 +35,7 @@ dependencies:
     cupertino_icons: ^1.0.2
     device_preview: ^1.1.0
     get: ^4.6.5
-    http: ^0.12.1
+    http: ^0.13.0
     flutter_slidable: "^0.5.4"
     rubber: ^1.0.1
     sidebarx: ^0.14.0
@@ -43,6 +43,7 @@ dependencies:
     font_awesome_flutter: ^10.2.1
     flutter_svg: ^1.1.6
     appinio_swiper: ^1.1.1
+    image_picker: ^0.8.6
     flutter_rating_bar: ^4.0.1
 
 dev_dependencies:

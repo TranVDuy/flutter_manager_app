@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_manager/pages/users/users_controller.dart';
@@ -75,43 +76,47 @@ class _UserCreateState extends State<UserCreate> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            children: [
-              AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                toolbarHeight: 10,
-              ),
-              const Center(
-                  child: Padding(
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: Text(
-                        'Create User',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700,
-                          color: Color.fromRGBO(64, 105, 225, 1),
-                        ),
-                      ))),
-              InkWell(
-                  child: DisplayImage(
-                imagePath: "https://robohash.org/${1}",
-                onPressed: () {},
-                canEdit: false,
-              )),
-              buildUserInfoDisplay(
-                  'First Name', controllerFirstName, const Icon(Icons.people)),
-              buildUserInfoDisplay(
-                  'Last Name', controllerLastName, const Icon(Icons.people)),
-              buildUserInfoDisplay(
-                  'Email', controllerEmail, const Icon(Icons.email)),
-              buildUserInfoDisplay(
-                  'Phone', controllerPhone, const Icon(Icons.phone)),
-              buildUserInfoDisplay(
-                  'Address', controllerAddress, const Icon(Icons.house)),
-              const SizedBox(height: 10),
-              buidSubmit(context)
-            ],
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  toolbarHeight: 10,
+                ),
+                const Center(
+                    child: Padding(
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: Text(
+                          'Create User',
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w700,
+                            color: Color.fromRGBO(64, 105, 225, 1),
+                          ),
+                        ))),
+                InkWell(
+                    child: DisplayImage(
+                  imagePath: "https://robohash.org/${1}",
+                  callback: () {},
+                  canEdit: false,
+                  webImage: null,
+                )),
+                buildUserInfoDisplay(
+                    'First Name', controllerFirstName, const Icon(Icons.people)),
+                buildUserInfoDisplay(
+                    'Last Name', controllerLastName, const Icon(Icons.people)),
+                buildUserInfoDisplay(
+                    'Email', controllerEmail, const Icon(Icons.email)),
+                buildUserInfoDisplay(
+                    'Phone', controllerPhone, const Icon(Icons.phone)),
+                buildUserInfoDisplay(
+                    'Address', controllerAddress, const Icon(Icons.house)),
+                const SizedBox(height: 10),
+                buidSubmit(context)
+              ],
+            ),
           ),
         ),
       ),

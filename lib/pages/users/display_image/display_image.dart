@@ -1,19 +1,23 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class DisplayImage extends StatelessWidget {
   final String imagePath;
-  final VoidCallback onPressed;
+  final Function callback;
   final bool canEdit;
+  final Uint8List? webImage;
 
   // Constructor
-  const DisplayImage({
-    Key? key,
-    required this.imagePath,
-    required this.onPressed,
-    required this.canEdit,
-  }) : super(key: key);
+  const DisplayImage(
+      {Key? key,
+      required this.imagePath,
+      required this.callback,
+      required this.canEdit,
+      required this.webImage})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +38,8 @@ class DisplayImage extends StatelessWidget {
 
   // Builds Profile Image
   Widget buildImage(Color color) {
-    final image = imagePath.contains('https://')
-        ? NetworkImage(imagePath)
-        : FileImage(File(imagePath));
+    final image =
+        webImage != null ? MemoryImage(webImage!) : NetworkImage(imagePath);
 
     return CircleAvatar(
       radius: 75,
@@ -50,7 +53,9 @@ class DisplayImage extends StatelessWidget {
 
   // Builds Edit Icon on Profile Picture
   Widget buildEditIcon(Color color) => GestureDetector(
-        onTap: () => this.onPressed(),
+        onTap: () async {
+          await callback();
+        },
         child: buildCircle(
             all: 8,
             child: Icon(

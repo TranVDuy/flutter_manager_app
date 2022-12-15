@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:product_manager/model/category.dart';
 import 'package:product_manager/model/product.dart';
 import 'package:http/http.dart' as http;
 import '../../app_properties.dart';
@@ -22,7 +23,7 @@ class ProductsController extends GetxController {
       url =
           "${BASE_API}products?search=$search&column=$column&options=$option&category=${category.toString()}&page=$pageNum&limit=10";
     }
-    var response = await http.get(url);
+    var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       var jsonObject = jsonDecode(response.body)['data'];
@@ -35,8 +36,12 @@ class ProductsController extends GetxController {
     }
   }
 
-  Future<Widget> createProduct(BuildContext context, String photo, String name,
-      String description, num price) async {
+  Future<Widget> createProduct(BuildContext context,
+      String photo,
+      String name,
+      String category,
+      String description,
+      num price) async {
     if (photo.isNotEmpty && name.isNotEmpty && description.isNotEmpty) {
       var url = "${BASE_API}products";
       var bodyData = jsonEncode({
@@ -45,7 +50,7 @@ class ProductsController extends GetxController {
         "description": description.toString(),
         "price": price,
       });
-      var response = await http.post(url,
+      var response = await http.post(Uri.parse(url),
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
@@ -62,36 +67,47 @@ class ProductsController extends GetxController {
     return showMessage(context, "All fields is required");
   }
 
-  Future<Widget> editProduct(BuildContext context, String productId,
-      String photo, String name, String description, num price) async {
+  Future<bool> editProduct(BuildContext context,
+      String productId,
+      String idCategory,
+      String photo,
+      String name,
+      String description,
+      num price) async {
+    print(productId);
+    print(photo);
+    print(name);
+    print(description);
+    print(price);
+    print(idCategory);
+
     if (photo.isNotEmpty && name.isNotEmpty && description.isNotEmpty) {
       var url = "${BASE_API}products/$productId";
       var bodyData = jsonEncode({
-        "photo": photo.toString(),
+        "photo": "",
         "name": name.toString(),
         "description": description.toString(),
-        "price": price,
+        "price": price.toString(),
+        "category": idCategory.toString()
       });
-      var response = await http.put(url,
+      var response = await http.put(Uri.parse(url),
           headers: {
             "Content-Type": "application/json",
             "Accept": "application/json"
           },
           body: bodyData);
       if (response.statusCode == 200) {
-        var message = json.decode(response.body)['message'];
-        return showMessage(context, message);
+        return true;
       } else {
-        var messageError = "Can not update this product!!";
-        return showMessage(context, messageError);
+        return false;
       }
     }
-    return showMessage(context, "All fields is required");
+    return true;
   }
 
   Future<bool> deleteProduct(String productId) async {
     var url = "${BASE_API}products/$productId";
-    var response = await http.delete(url, headers: {
+    var response = await http.delete(Uri.parse(url), headers: {
       "Content-Type": "application/json",
       "Accept": "application/json"
     });
