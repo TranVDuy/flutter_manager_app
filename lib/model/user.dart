@@ -22,7 +22,7 @@ class User {
       required this.address,
       required this.created_at,
       required this.updated_at}) {
-    this.picture = "https://robohash.org/${this.firstname}";
+    this.picture = "https://robohash.org/${this.id.toString()}";
   }
 
   factory User.fromJson(Map<String, dynamic> obj) {

@@ -21,7 +21,7 @@ class _UsersPageState extends State<UsersPage> {
   var controller = Get.find<UsersController>();
   TextEditingController searchController = TextEditingController();
   List<User> frequentUsers = [];
-  List<User> users = [];
+  // List<User> users = [];
   List<User> searchResults = [];
   var page = 1;
   String deleteResult = "";
@@ -38,8 +38,7 @@ class _UsersPageState extends State<UsersPage> {
   getUsers() async {
     var temp = await controller.getUsers(page, "");
     setState(() {
-      users = temp;
-      searchResults = users;
+      searchResults = temp;
     });
   }
 
@@ -141,8 +140,16 @@ class _UsersPageState extends State<UsersPage> {
     super.dispose();
   }
 
+  void editCallback() async {
+    page = 1;
+    var temp = await controller.getUsers(page, searchController.text);
+    setState(() {
+      searchResults = temp;
+    });
+  }
+
   void _scrollListener() async {
-    if (totalRecord == users.length) {
+    if (totalRecord == searchResults.length) {
       return;
     }
     if (scrollController.position.extentAfter <= 0) {
@@ -164,7 +171,7 @@ class _UsersPageState extends State<UsersPage> {
           return User.fromJson(e);
         }).toList();
         setState(() {
-          users.addAll(items);
+          searchResults.addAll(items);
         });
       }
     }
@@ -172,12 +179,9 @@ class _UsersPageState extends State<UsersPage> {
 
   OnSearchChanged(value) async {
     page = 1;
-    print(
-        "sdhajkdhasjkdahsdjkashdjkah     sdajkdahskj ${searchController.text}");
     var temp = await controller.getUsers(page, value);
     setState(() {
-      users = temp;
-      searchResults = users;
+      searchResults = temp;
     });
   }
 
@@ -366,15 +370,19 @@ class _UsersPageState extends State<UsersPage> {
                                         actionExtentRatio: 0.25,
                                         secondaryActions: <Widget>[
                                           IconSlideAction(
-                                            caption: 'Edit',
-                                            color: Colors.blueAccent,
-                                            icon: Icons.edit,
-                                            onTap: () => Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                    builder: (_) => UserEdit(
-                                                          user: user,
-                                                        ))),
-                                          ),
+                                              caption: 'Edit',
+                                              color: Colors.blueAccent,
+                                              icon: Icons.edit,
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (_) =>
+                                                            UserEdit(
+                                                              user: user,
+                                                              callBack:
+                                                                  editCallback,
+                                                            )));
+                                              }),
                                           IconSlideAction(
                                             caption: 'Delete',
                                             color: Colors.red,

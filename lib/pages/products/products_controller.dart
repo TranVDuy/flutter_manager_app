@@ -11,17 +11,17 @@ import '../../utils/utils.dart';
 class ProductsController extends GetxController {
   final String title = "Products page!!!";
 
-  Future<List<Product>> getProducts(int? pageNum, String? search, String? column,
-      String? option, List? category) async {
+  Future<List<Product>> getProducts(int? pageNum, String? search,
+      String? column, String? option, List? category) async {
     var url = "";
 
-    if((option == null || option == "") && (column==null || column == "")){
-      url = "${BASE_API}products?search=$search&category=${category.toString()}&page=$pageNum&limit=20";
+    if ((option == null || option == "") && (column == null || column == "")) {
+      url =
+          "${BASE_API}products?search=$search&category=${category.toString()}&page=$pageNum&limit=10";
+    } else {
+      url =
+          "${BASE_API}products?search=$search&column=$column&options=$option&category=${category.toString()}&page=$pageNum&limit=10";
     }
-    else{
-      url = "${BASE_API}products?search=$search&column=$column&options=$option&category=${category.toString()}&page=$pageNum&limit=20";
-    }
-
     var response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -111,8 +111,7 @@ class ProductsController extends GetxController {
       //   }
       // }
       return true;
-    }
-    else{
+    } else {
       return false;
     }
   }
