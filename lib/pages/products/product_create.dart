@@ -4,37 +4,31 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:product_manager/model/product.dart';
 import 'package:product_manager/pages/products/products_controller.dart';
 import '../../app_properties.dart';
 import '../categories/categories_controller.dart';
 import '../users/display_image/display_image.dart';
-import 'package:flutter/services.dart';
 
-class ProductEdit extends StatefulWidget {
-  final Product product;
+class ProductCreate extends StatefulWidget {
   final Function callBack;
-  final idCategory;
 
-  const ProductEdit(
-      {super.key,
-      required this.product,
-      required this.callBack,
-      required this.idCategory});
+  const ProductCreate({super.key, required this.callBack});
 
   @override
-  _ProductEditState createState() => _ProductEditState();
+  _ProductCreateState createState() => _ProductCreateState();
 }
 
-class _ProductEditState extends State<ProductEdit> {
+class _ProductCreateState extends State<ProductCreate> {
   var categoriesController = Get.find<CategoriesController>();
-  late var Cate = widget.idCategory;
   bool isLoading = false;
+  var Cate = 1;
   final _formKey = GlobalKey<FormState>();
   var product_controller = Get.find<ProductsController>();
   final TextEditingController controllerName = TextEditingController();
   final TextEditingController controllerPrice = TextEditingController();
+  final TextEditingController controllerImage = TextEditingController();
   final TextEditingController controllerDescription = TextEditingController();
   final ImagePicker picker = ImagePicker();
   File? pickedImage;
@@ -97,9 +91,6 @@ class _ProductEditState extends State<ProductEdit> {
 
   @override
   void initState() {
-    controllerName.text = widget.product.name;
-    controllerPrice.text = widget.product.price.toString();
-    controllerDescription.text = widget.product.description;
     super.initState();
   }
 
@@ -121,7 +112,7 @@ class _ProductEditState extends State<ProductEdit> {
                   child: Padding(
                       padding: EdgeInsets.only(bottom: 20),
                       child: Text(
-                        'Edit Product',
+                        'Create Product',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w700,
@@ -140,7 +131,7 @@ class _ProductEditState extends State<ProductEdit> {
                       children: [
                         InkWell(
                             child: DisplayImage(
-                                imagePath: '${BASE_IMG}${widget.product.image}',
+                                imagePath: '',
                                 callback: _pickImage,
                                 canEdit: true,
                                 webImage: webImage)),
@@ -289,22 +280,25 @@ class _ProductEditState extends State<ProductEdit> {
           final name = controllerName.text;
           final price = controllerPrice.text;
           final description = controllerDescription.text;
+          final image = controllerImage.text;
+          final category = Cate;
           setState(() {
             isLoading = true;
           });
-          var check = await product_controller.editProduct(widget.product.id,
-              Cate.toString(), name, description, num.parse(price), webImage);
+          var check = await product_controller.createProduct(webImage, name,
+              category.toString(), description, num.parse(price));
           setState(() {
             isLoading = false;
           });
           check
-              ? buildFlashMessage("success", 'Update thành công!')
-              : buildFlashMessage("error", 'Update thất bại!');
+              ? buildFlashMessage("success", 'Create thành công!')
+              : buildFlashMessage("error", 'Create thất bại!');
           if (check) widget.callBack();
+
           Navigator.pop(context);
         }
       },
-      child: const Text("Update"),
+      child: const Text("Create"),
     );
   }
 
@@ -339,9 +333,9 @@ class _ProductEditState extends State<ProductEdit> {
               },
               items: categoriesController.categories
                   .map((e) => DropdownMenuItem(
-                child: Text(e.category),
-                value: e.id,
-              ))
+                        child: Text(e.category),
+                        value: e.id,
+                      ))
                   .toList(),
             ),
           ),

@@ -42,40 +42,39 @@ class ProductsController extends GetxController {
 
 
   Future<bool> createProduct(
-      String photo,
+      Uint8List? imageCreate,
       String name,
       String category,
       String description,
       num price) async {
-    if (photo.isNotEmpty && name.isNotEmpty && description.isNotEmpty) {
+    if (name.isNotEmpty && price > 0 && description.isNotEmpty) {
       var url = "${BASE_API}products";
-      var bodyData = jsonEncode({
-        "photo": "",
-        "name": name.toString(),
-        "description": description.toString(),
-        "category": category.toString(),
-        "price": price,
-      });
-      var response = await http.post(Uri.parse(url),
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: bodyData);
+      var request = await http.MultipartRequest("POST", Uri.parse(url));
+      request.fields['name'] = name.toString();
+      request.fields['description'] = description.toString();
+      request.fields['price'] = price.toString();
+      request.fields['category'] = category.toString();
+
+      if (imageCreate != null) {
+        request.files.add(http.MultipartFile.fromBytes('photo', imageCreate!,
+            filename: 'createImage.jpg',
+            contentType: new MediaType('image', 'jpg')));
+      }
+      var response = await request.send();
+
       if (response.statusCode == 201) {
-        // var message = json.decode(response.body)['message'];
-        // return showMessage(context, message);
+
         return true;
       } else {
         return false;
       }
     }
-    return true;
+    return false;
   }
 
   Future<bool> editProduct(String productId, String idCategory, String name,
       String description, num price, Uint8List? imageUpdate) async {
-    if (name.isNotEmpty && description.isNotEmpty) {
+    if (name.isNotEmpty && price > 0 && description.isNotEmpty) {
       var url = "${BASE_API}products/$productId";
 
       var request = await http.MultipartRequest("PUT", Uri.parse(url));
@@ -96,7 +95,7 @@ class ProductsController extends GetxController {
         return false;
       }
     }
-    return true;
+    return false;
   }
 
   Future<bool> deleteProduct(String productId) async {

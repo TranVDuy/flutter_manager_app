@@ -7,7 +7,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:product_manager/model/category.dart';
 import 'package:product_manager/pages/products/product_edit.dart';
-import 'package:product_manager/pages/products/productcreate.dart';
+import 'package:product_manager/pages/products/product_create.dart';
 import 'package:product_manager/pages/products/products_controller.dart';
 import 'package:product_manager/pages/products/view_product_page.dart';
 import 'package:rubber/rubber.dart';
@@ -204,25 +204,6 @@ class _SearchPageState extends State<SearchPage>
               child: TextField(
                 controller: searchController,
                 onChanged: (value) {
-                  // if (value.isNotEmpty) {
-                  //   List<Product> tempList = [];
-                  //   products.forEach((product) {
-                  //     if (product.name.toLowerCase().contains(value)) {
-                  //       tempList.add(product);
-                  //     }
-                  //   });
-                  //   setState(() {
-                  //     searchResults = [];
-                  //     searchResults.addAll(tempList);
-                  //   });
-                  //   return;
-                  // } else {
-                  //   setState(() {
-                  //     searchResults = [];
-                  //     searchResults.addAll(products);
-                  //   });
-                  // }
-                  // OnSearchChanged(value);
                   OnSearchChanged(value);
                 },
                 decoration: const InputDecoration(
@@ -245,23 +226,6 @@ class _SearchPageState extends State<SearchPage>
               ),
             ),
           ),
-          // Flexible(
-          //   child: Container(
-          //     color: Colors.orange[50],
-          //     child: ListView.builder(
-          //         itemCount: searchResults.length,
-          //         itemBuilder: (_, index) => Padding(
-          //             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          //             child: ListTile(
-          //               onTap: () =>
-          //                   Navigator.of(context).push(MaterialPageRoute(
-          //                       builder: (_) => ViewProductPage(
-          //                             product: searchResults[index],
-          //                           ))),
-          //               title: Text(searchResults[index].name),
-          //             ))),
-          //   ),
-          // ),
           Expanded(
               flex: 2,
               child: Center(
@@ -300,7 +264,7 @@ class _SearchPageState extends State<SearchPage>
                                                 builder: (_) => ProductEdit(
                                                       product: searchResult,
                                                     callBack: editCallBack,
-                                                  idCategory: searchResult.category[0].id.toString(),
+                                                  idCategory: searchResult.category[0].id,
                                                     ))),
                                       ),
                                       IconSlideAction(
@@ -560,20 +524,6 @@ class _SearchPageState extends State<SearchPage>
         top: true,
         bottom: false,
         child: Scaffold(
-//          bottomSheet: ClipRRect(
-//            borderRadius: BorderRadius.only(
-//                topRight: Radius.circular(25), topLeft: Radius.circular(25)),
-//            child: BottomSheet(
-//                onClosing: () {},
-//                builder: (_) => Container(
-//                      padding: EdgeInsets.all(16.0),
-//                      child: Row(
-//                          mainAxisAlignment: MainAxisAlignment.center,
-//                          children: <Widget>[Text('Filters')]),
-//                      color: Colors.white,
-//                      width: MediaQuery.of(context).size.height,
-//                    )),
-//          ),
             body: RubberBottomSheet(
           lowerLayer: _getLowerLayer(), // The underlying page (Widget)
           upperLayer: _getUpperLayer(), // The bottomsheet content (Widget)
