@@ -36,7 +36,7 @@ class ProductsController extends GetxController {
     }
   }
 
-  Future<Widget> createProduct(BuildContext context,
+  Future<bool> createProduct(
       String photo,
       String name,
       String category,
@@ -45,9 +45,10 @@ class ProductsController extends GetxController {
     if (photo.isNotEmpty && name.isNotEmpty && description.isNotEmpty) {
       var url = "${BASE_API}products";
       var bodyData = jsonEncode({
-        "photo": photo.toString(),
+        "photo": "",
         "name": name.toString(),
         "description": description.toString(),
+        "category": category.toString(),
         "price": price,
       });
       var response = await http.post(Uri.parse(url),
@@ -57,14 +58,14 @@ class ProductsController extends GetxController {
           },
           body: bodyData);
       if (response.statusCode == 201) {
-        var message = json.decode(response.body)['message'];
-        return showMessage(context, message);
+        // var message = json.decode(response.body)['message'];
+        // return showMessage(context, message);
+        return true;
       } else {
-        var messageError = "Can not create new product!!";
-        return showMessage(context, messageError);
+        return false;
       }
     }
-    return showMessage(context, "All fields is required");
+    return true;
   }
 
   Future<bool> editProduct(
@@ -84,7 +85,7 @@ class ProductsController extends GetxController {
     if (photo.isNotEmpty && name.isNotEmpty && description.isNotEmpty) {
       var url = "${BASE_API}products/$productId";
       var bodyData = jsonEncode({
-        "photo": "",
+        "photo": photo,
         "name": name.toString(),
         "description": description.toString(),
         "price": price.toString(),

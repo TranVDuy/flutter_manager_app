@@ -7,6 +7,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:product_manager/model/category.dart';
 import 'package:product_manager/pages/products/product_edit.dart';
+import 'package:product_manager/pages/products/productcreate.dart';
 import 'package:product_manager/pages/products/products_controller.dart';
 import 'package:product_manager/pages/products/view_product_page.dart';
 import 'package:rubber/rubber.dart';
@@ -161,15 +162,30 @@ class _SearchPageState extends State<SearchPage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(vertical: 16.0),
-            child: Text(
-              'Products List',
-              style: TextStyle(
-                color: darkGrey,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Product List',
+                  style: TextStyle(
+                    color: darkGrey,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                GestureDetector(
+                  child: const Icon(
+                    Icons.add,
+                    size: 22,
+                  ),
+                  onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => ProductCreate(
+                        callBack: editCallBack,
+                      ))),
+                )
+              ],
             ),
           ),
           Container(

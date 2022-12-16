@@ -4,25 +4,22 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:product_manager/model/product.dart';
 import 'package:product_manager/pages/products/products_controller.dart';
 import '../../app_properties.dart';
 import '../users/display_image/display_image.dart';
-import 'package:flutter/services.dart';
 
-class ProductEdit extends StatefulWidget {
-  final Product product;
+
+class  ProductCreate extends StatefulWidget {
   final Function callBack;
-  final idCategory;
 
-  const ProductEdit({super.key, required this.product, required this.callBack, required this.idCategory});
-
+  const ProductCreate({super.key, required this.callBack});
   @override
-  _ProductEditState createState() => _ProductEditState();
+  _ProductCreateState createState() => _ProductCreateState();
 }
 
-class _ProductEditState extends State<ProductEdit> {
+class _ProductCreateState extends State< ProductCreate> {
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   var product_controller = Get.find<ProductsController>();
@@ -91,10 +88,10 @@ class _ProductEditState extends State<ProductEdit> {
 
   @override
   void initState() {
-    controllerName.text = widget.product.name;
-    controllerPrice.text = widget.product.price.toString();
-    controllerImage.text = widget.product.image;
-    controllerDescription.text = widget.product.description;
+    // controllerName.text = widget.product.name;
+    // controllerPrice.text = widget.product.price.toString();
+    // controllerImage.text = widget.product.image;
+    // controllerDescription.text = widget.product.description;
 
     super.initState();
   }
@@ -136,7 +133,7 @@ class _ProductEditState extends State<ProductEdit> {
                 children: [
                   InkWell(
                       child: DisplayImage(
-                          imagePath: '${BASE_IMG}${widget.product.image}',
+                          imagePath: '',
                           callback: _pickImage,
                           canEdit: true,
                           webImage: webImage)),
@@ -179,9 +176,9 @@ class _ProductEditState extends State<ProductEdit> {
                 decoration: const BoxDecoration(
                     border: Border(
                         bottom: BorderSide(
-                  color: Colors.grey,
-                  width: 1,
-                ))),
+                          color: Colors.grey,
+                          width: 1,
+                        ))),
                 child: Expanded(
                     child: TextFormField(
                         controller: textController,
@@ -192,7 +189,7 @@ class _ProductEditState extends State<ProductEdit> {
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
+                              BorderRadius.all(Radius.circular(10))),
                           hintText: "Description",
                         )))),
           ],
@@ -201,7 +198,7 @@ class _ProductEditState extends State<ProductEdit> {
 
   // Widget builds the display item with the proper formatting to display the user's info
   Widget buildProductInfoDisplay(
-          String title, TextEditingController textController, Icon icon) =>
+      String title, TextEditingController textController, Icon icon) =>
       Padding(
           padding: const EdgeInsets.only(bottom: 10),
           child: Column(
@@ -252,22 +249,20 @@ class _ProductEditState extends State<ProductEdit> {
           minimumSize: const Size.fromHeight(50),
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
           textStyle:
-              const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
       onPressed: () async {
         if (_formKey.currentState!.validate()) {
           final name = controllerName.text;
           final price = controllerPrice.text;
           final description = controllerDescription.text;
           final image = controllerImage.text;
-
           setState(() {
             isLoading = true;
           });
-          var check = await product_controller.editProduct(
-              widget.product.id,
-              widget.idCategory,
-              image,
+          var check = await product_controller.createProduct(
+              "",
               name,
+              1.toString(),
               description,
               num.parse(price)
           );
@@ -275,14 +270,15 @@ class _ProductEditState extends State<ProductEdit> {
             isLoading = false;
           });
           check
-              ? buildFlashMessage("success", 'Update thành công!')
-              : buildFlashMessage("error", 'Update thất bại!');
+              ? buildFlashMessage("success", 'Create thành công!')
+              : buildFlashMessage("error", 'Create thất bại!');
           if (check) widget.callBack();
+
           Navigator.pop(context);
         }
 
       },
-      child: const Text("Update"),
+      child: const Text("Create"),
     );
   }
 }
