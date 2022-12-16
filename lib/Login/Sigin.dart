@@ -3,12 +3,65 @@ import 'package:get/get.dart';
 import 'package:product_manager/Login/Signup.dart';
 
 import '../pages/dashboard/dashboard.dart';
+import 'auth_controller.dart';
 
-class Signin extends StatelessWidget {
-  final TextEditingController _userName = TextEditingController();
-  final TextEditingController _password = TextEditingController();
+class Signin extends StatefulWidget {
+  @override
+  State<Signin> createState() => _SigninState();
+}
+
+class _SigninState extends State<Signin> {
+  var controller = Get.find<authController>();
+  final TextEditingController _userName =
+      TextEditingController(text: "admin@gmail.com");
+
+  final TextEditingController _password =
+      TextEditingController(text: "123456789");
 
   var _formUserName = GlobalKey<FormState>();
+
+  Login(BuildContext context) async {
+    bool check;
+    check = await controller.login(_userName.text, _password.text);
+    if (check) {
+      buildFlashMessage("success", 'Đăng Nhập Thành Công!');
+      Get.to(Dashboard());
+    } else {
+      buildFlashMessage("error", 'Đăng Nhập Thất Bại, thử lại sau!');
+    }
+  }
+
+  buildFlashMessage(String status, String message) {
+    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Container(
+          height: 70,
+          padding: EdgeInsets.all(18),
+          decoration: BoxDecoration(
+              color: (status == "success" ? Colors.green : Colors.red),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                message,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              (status == "success"
+                  ? const Icon(Icons.check_circle_outline_outlined,
+                      color: Colors.white, size: 20)
+                  : const Icon(
+                      Icons.error_outline,
+                      color: Colors.white,
+                      size: 30,
+                    ))
+            ],
+          )),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +195,7 @@ class Signin extends StatelessWidget {
                     //   name: "/", page: ()=>Dashboard(),
                     //   binding: DashboardBinding()
                     // );
-                    Get.to(Dashboard());
+                    Login(context);
                   },
                   child: const Icon(
                     Icons.arrow_right_alt,

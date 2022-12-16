@@ -9,6 +9,7 @@ import 'package:product_manager/pages/orders/orders_controller.dart';
 import 'package:product_manager/pages/roles/roles_controller.dart';
 import 'package:product_manager/pages/users/users_controller.dart';
 
+import 'Login/auth_controller.dart';
 import 'pages/products/products_controller.dart';
 
 void main() async {
@@ -27,4 +28,5 @@ Future<void> init() async {
   Get.lazyPut<ProductsController>(() => ProductsController());
   Get.lazyPut<RolesController>(() => RolesController());
   Get.lazyPut<UsersController>(() => UsersController());
+  Get.lazyPut<authController>(() => authController());
 }
