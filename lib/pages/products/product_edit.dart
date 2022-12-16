@@ -16,7 +16,11 @@ class ProductEdit extends StatefulWidget {
   final Function callBack;
   final idCategory;
 
-  const ProductEdit({super.key, required this.product, required this.callBack, required this.idCategory});
+  const ProductEdit(
+      {super.key,
+      required this.product,
+      required this.callBack,
+      required this.idCategory});
 
   @override
   _ProductEditState createState() => _ProductEditState();
@@ -28,7 +32,6 @@ class _ProductEditState extends State<ProductEdit> {
   var product_controller = Get.find<ProductsController>();
   final TextEditingController controllerName = TextEditingController();
   final TextEditingController controllerPrice = TextEditingController();
-  final TextEditingController controllerImage = TextEditingController();
   final TextEditingController controllerDescription = TextEditingController();
   final ImagePicker picker = ImagePicker();
   File? pickedImage;
@@ -48,16 +51,16 @@ class _ProductEditState extends State<ProductEdit> {
               Text(
                 message,
                 style:
-                const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
               (status == "success"
                   ? const Icon(Icons.check_circle_outline_outlined,
-                  color: Colors.white, size: 20)
+                      color: Colors.white, size: 20)
                   : const Icon(
-                Icons.error_outline,
-                color: Colors.white,
-                size: 30,
-              ))
+                      Icons.error_outline,
+                      color: Colors.white,
+                      size: 30,
+                    ))
             ],
           )),
       behavior: SnackBarBehavior.floating,
@@ -93,7 +96,6 @@ class _ProductEditState extends State<ProductEdit> {
   void initState() {
     controllerName.text = widget.product.name;
     controllerPrice.text = widget.product.price.toString();
-    controllerImage.text = widget.product.image;
     controllerDescription.text = widget.product.description;
 
     super.initState();
@@ -236,7 +238,8 @@ class _ProductEditState extends State<ProductEdit> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "$title is required";
-                  } else return null;
+                  } else
+                    return null;
                 },
               ),
             ],
@@ -258,29 +261,14 @@ class _ProductEditState extends State<ProductEdit> {
           final name = controllerName.text;
           final price = controllerPrice.text;
           final description = controllerDescription.text;
-          final image = controllerImage.text;
-
-          setState(() {
-            isLoading = true;
-          });
-          var check = await product_controller.editProduct(
-              widget.product.id,
-              widget.idCategory,
-              image,
-              name,
-              description,
-              num.parse(price)
-          );
-          setState(() {
-            isLoading = false;
-          });
+          var check = await product_controller.editProduct(widget.product.id,
+              widget.idCategory, name, description, num.parse(price), webImage);
           check
               ? buildFlashMessage("success", 'Update thành công!')
               : buildFlashMessage("error", 'Update thất bại!');
           if (check) widget.callBack();
           Navigator.pop(context);
         }
-
       },
       child: const Text("Update"),
     );

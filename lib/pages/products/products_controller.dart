@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 // import 'dart:ffi';
-
+import 'package:http_parser/http_parser.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_manager/model/category.dart';
@@ -36,6 +40,7 @@ class ProductsController extends GetxController {
     }
   }
 
+
   Future<bool> createProduct(
       String photo,
       String name,
@@ -68,42 +73,26 @@ class ProductsController extends GetxController {
     return true;
   }
 
-  Future<bool> editProduct(
-      String productId,
-      String idCategory,
-      String photo,
-      String name,
-      String description,
-      num price) async {
-    print(productId);
-    print(photo);
-    print(name);
-    print(description);
-    print(price);
-    print(idCategory);
-
-    if (photo.isNotEmpty && name.isNotEmpty && description.isNotEmpty) {
+  Future<bool> editProduct(String productId, String idCategory, String name,
+      String description, num price, Uint8List? imageUpdate) async {
+    if (name.isNotEmpty && description.isNotEmpty) {
       var url = "${BASE_API}products/$productId";
-      var bodyData = jsonEncode({
-        "photo": photo,
-        "name": name.toString(),
-        "description": description.toString(),
-        "price": price.toString(),
-        "category": idCategory
-      });
-      var response = await http.put(Uri.parse(url),
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: bodyData);
+
+      var request = await http.MultipartRequest("PUT", Uri.parse(url));
+      request.fields['name'] = name.toString();
+      request.fields['description'] = description.toString();
+      request.fields['price'] = price.toString();
+      request.fields['category'] = idCategory;
+
+      if (imageUpdate != null) {
+        request.files.add(http.MultipartFile.fromBytes('photo', imageUpdate!,
+            filename: 'updateImage.jpg',
+            contentType: new MediaType('image', 'jpg')));
+      }
+      var response = await request.send();
       if (response.statusCode == 200) {
-        var message = json.decode(response.body)['message'];
-        print(message);
         return true;
       } else {
-        var message = json.decode(response.body)['message'];
-        print(message);
         return false;
       }
     }
@@ -117,20 +106,6 @@ class ProductsController extends GetxController {
       "Accept": "application/json"
     });
     if (response.statusCode == 200) {
-      // List<Product> result = [];
-      // for (int i = 1; i <= pageNum; i++) {
-      //   var url =
-      //       "${BASE_API}products?search=$search&column=$column&options=$option&category=$category&page=$pageNum&limit=20";
-      //   var response = await http.get(url);
-      //   if (response.statusCode == 200) {
-      //     var jsonObject = jsonDecode(response.body)['data'];
-      //     var productsObject = jsonObject as List;
-      //     List<Product> items = productsObject.map((e) {
-      //       return Product.fromJson(e);
-      //     }).toList();
-      //     result.addAll(items);
-      //   }
-      // }
       return true;
     } else {
       return false;
