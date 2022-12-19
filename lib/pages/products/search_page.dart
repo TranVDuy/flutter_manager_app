@@ -180,10 +180,10 @@ class _SearchPageState extends State<SearchPage>
                     Icons.add,
                     size: 22,
                   ),
-                  onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => ProductCreate(
-                        callBack: editCallBack,
-                      ))),
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => ProductCreate(
+                            callBack: editCallBack,
+                          ))),
                 )
               ],
             ),
@@ -231,124 +231,141 @@ class _SearchPageState extends State<SearchPage>
               child: Center(
                 child: searchResults.length == 0
                     ? Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "No Results",
-                        style: TextStyle(color: Colors.grey.shade400 ),
-                      ),
-                    )
+                        alignment: Alignment.center,
+                        child: Text(
+                          "No Results",
+                          style: TextStyle(color: Colors.grey.shade400),
+                        ),
+                      )
                     : Container(
                         color: Colors.white,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 8.0),
-                        child: isLoading ? Opacity(
-                            opacity:  0.80,
-                            child: Container(
-                              alignment: Alignment.center,
-                              color: Colors.white70,
-                              child: const CircularProgressIndicator(),
-                              )
-                            )  : ListView(
-                          children: searchResults
-                              .map((searchResult) => Slidable(
-                                    actionPane:
-                                        const SlidableDrawerActionPane(),
-                                    actionExtentRatio: 0.25,
-                                    secondaryActions: <Widget>[
-                                      IconSlideAction(
-                                        caption: 'Edit',
-                                        color: Colors.blueAccent,
-                                        icon: Icons.edit,
-                                        onTap: () => Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                                builder: (_) => ProductEdit(
-                                                      product: searchResult,
-                                                    callBack: editCallBack,
-                                                  idCategory: searchResult.category[0].id,
-                                                    ))),
-                                      ),
-                                      IconSlideAction(
-                                        caption: 'Delete',
-                                        color: Colors.red,
-                                        icon: Icons.delete,
-                                        onTap: () => showDeleteAlert(
-                                            context, searchResult),
-                                      )
-                                    ],
-                                    child: InkWell(
-                                      onTap: () => Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                              builder: (_) => ViewProductPage(
-                                                    product: searchResult,
-                                                  ))),
-                                      child: Column(
-                                        children: <Widget>[
-                                          Row(
-                                            children: <Widget>[
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 16.0),
-                                                child: CircleAvatar(
-                                                  maxRadius: 24,
-                                                  backgroundImage: NetworkImage(
-                                                      "${BASE_IMG}${searchResult.image}"),
-                                                ),
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 16.0),
-                                                    child: Text(
-                                                        searchResult.name
-                                                                    .length >
-                                                                20
-                                                            ? '${searchResult.name.substring(0, 20)}...'
-                                                            : searchResult.name,
-                                                        style: const TextStyle(
-                                                            fontSize: 16.0,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 8.0,
-                                                            bottom: 16.0),
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                            '\$${searchResult.price.toString()}',
-                                                            style: const TextStyle(
-                                                                fontSize: 16.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .red)),
-                                                        // const Icon(Icons.money)
+                        child: isLoading
+                            ? Opacity(
+                                opacity: 0.80,
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  color: Colors.white70,
+                                  child: const CircularProgressIndicator(),
+                                ))
+                            : ListView(
+                                controller: scrollController,
+                                children: searchResults
+                                    .map((searchResult) => Slidable(
+                                          actionPane:
+                                              const SlidableDrawerActionPane(),
+                                          actionExtentRatio: 0.25,
+                                          secondaryActions: <Widget>[
+                                            IconSlideAction(
+                                              caption: 'Edit',
+                                              color: Colors.blueAccent,
+                                              icon: Icons.edit,
+                                              onTap: () => Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          ProductEdit(
+                                                            product:
+                                                                searchResult,
+                                                            callBack:
+                                                                editCallBack,
+                                                            idCategory:
+                                                                searchResult
+                                                                    .category[0]
+                                                                    .id,
+                                                          ))),
+                                            ),
+                                            IconSlideAction(
+                                              caption: 'Delete',
+                                              color: Colors.red,
+                                              icon: Icons.delete,
+                                              onTap: () => showDeleteAlert(
+                                                  context, searchResult),
+                                            )
+                                          ],
+                                          child: InkWell(
+                                            onTap: () => Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: (_) =>
+                                                        ViewProductPage(
+                                                          product: searchResult,
+                                                        ))),
+                                            child: Column(
+                                              children: <Widget>[
+                                                Row(
+                                                  children: <Widget>[
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              right: 16.0),
+                                                      child: CircleAvatar(
+                                                        maxRadius: 24,
+                                                        backgroundImage:
+                                                            NetworkImage(
+                                                                "${BASE_IMG}${searchResult.image}"),
+                                                      ),
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: <Widget>[
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 16.0),
+                                                          child: Text(
+                                                              searchResult.name
+                                                                          .length >
+                                                                      20
+                                                                  ? '${searchResult.name.substring(0, 20)}...'
+                                                                  : searchResult
+                                                                      .name,
+                                                              style: const TextStyle(
+                                                                  fontSize:
+                                                                      16.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold)),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 8.0,
+                                                                  bottom: 16.0),
+                                                          child: Row(
+                                                            children: [
+                                                              Text(
+                                                                  '\$${searchResult.price.toString()}',
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          16.0,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: Colors
+                                                                          .red)),
+                                                              // const Icon(Icons.money)
+                                                            ],
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                                  ],
+                                                ),
+                                                const Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: 64.0),
+                                                  child: Divider(),
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                          const Padding(
-                                            padding:
-                                                EdgeInsets.only(left: 64.0),
-                                            child: Divider(),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ))
-                              .toList(),
-                        ),
+                                        ))
+                                    .toList(),
+                              ),
                       ),
               )),
         ],
@@ -370,7 +387,7 @@ class _SearchPageState extends State<SearchPage>
           color: Colors.white),
       child: ListView(
         physics: const NeverScrollableScrollPhysics(),
-//          controller: _scrollController,
+        //  controller: _scrollController,
         children: <Widget>[
           Align(
             alignment: Alignment.center,
@@ -587,14 +604,14 @@ class _SearchPageState extends State<SearchPage>
     ));
   }
 
-
   //Load list product
-  RerenderList(){
-    if(selectedPeriod != ""){
-      getListProduct(page, selectedCategory, searchValue,"name", selectedPeriod);
-    }
-    else{
-      getListProduct(page, selectedCategory, searchValue,"price", selectedPrice);
+  RerenderList() {
+    if (selectedPeriod != "") {
+      getListProduct(
+          page, selectedCategory, searchValue, "name", selectedPeriod);
+    } else {
+      getListProduct(
+          page, selectedCategory, searchValue, "price", selectedPrice);
     }
   }
 
@@ -607,11 +624,10 @@ class _SearchPageState extends State<SearchPage>
     setState(() {
       isLoading = false;
     });
-    if(check){
+    if (check) {
       RerenderList();
       buildFlashMessage("success", 'Xóa thành công!');
-    }
-    else{
+    } else {
       buildFlashMessage("error", 'Xóa thất bại!');
     }
   }

@@ -155,6 +155,7 @@ class Signup extends StatelessWidget {
             //Password
             child: TextFormField(
               controller: _password,
+              obscureText: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "Vui lòng nhập mật khẩu";

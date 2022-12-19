@@ -82,7 +82,6 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                         setState(() {
                           rating = value;
                         });
-                        print(value);
                       },
                     ),
                     const Padding(
@@ -164,7 +163,6 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                                       setState(() {
                                         rating = value;
                                       });
-                                      print(value);
                                     },
                                   ),
                                 ),

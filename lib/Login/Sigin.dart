@@ -154,6 +154,7 @@ class _SigninState extends State<Signin> {
             //Username
             child: TextFormField(
               controller: _password,
+              obscureText: true,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return "Vui lòng nhập mật khẩu";
