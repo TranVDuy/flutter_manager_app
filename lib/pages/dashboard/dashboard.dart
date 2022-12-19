@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_manager/pages/categories/categories.dart';
 import 'package:product_manager/pages/dashboard/dashboard_controller.dart';
-import 'package:product_manager/pages/orders/orders.dart';
 import 'package:product_manager/pages/orders/search_page_order.dart';
 import 'package:product_manager/pages/products/search_page_product.dart';
 import 'package:product_manager/pages/roles/roles.dart';

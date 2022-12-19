@@ -16,8 +16,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await init();
   runApp(DevicePreview(
-      builder: (context) =>
-          GetMaterialApp(debugShowCheckedModeBanner: false, home: Signin())));
+      builder: (context) => GetMaterialApp(
+          useInheritedMediaQuery: true,
+          builder: DevicePreview.appBuilder,
+          locale: Get.locale,
+          debugShowCheckedModeBanner: false,
+          home: Signin())));
 }
 
 Future<void> init() async {
