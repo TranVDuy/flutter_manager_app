@@ -16,18 +16,18 @@ import '../../app_properties.dart';
 import '../../model/product.dart';
 import '../categories/categories_controller.dart';
 
-class SearchPage extends StatefulWidget {
+class SearchPageProduct extends StatefulWidget {
   @override
-  _SearchPageState createState() => _SearchPageState();
+  _SearchPageProductState createState() => _SearchPageProductState();
 }
 
-class _SearchPageState extends State<SearchPage>
+class _SearchPageProductState extends State<SearchPageProduct>
     with SingleTickerProviderStateMixin {
   var controller = Get.find<ProductsController>();
   var categoriesController = Get.find<CategoriesController>();
   bool isLoading = false;
   ScrollController scrollController = ScrollController();
-  int totalRecord = 0;
+  // int totalRecord = 0;
 
   String selectedPeriod = "";
   String selectedCategory = "";
@@ -122,9 +122,9 @@ class _SearchPageState extends State<SearchPage>
   }
 
   void _scrollListener() async {
-    if (totalRecord == searchResults.length) {
-      return;
-    }
+    // if (totalRecord == searchResults.length) {
+    //   return;
+    // }
     if (scrollController.position.extentAfter <= 0) {
       setState(() {
         page++;

@@ -11,7 +11,7 @@ class UsersController extends GetxController {
 
   Future<List<User>> getUsers(int pageNum, String search) async {
     var url =
-        "${BASE_API}user?page=${pageNum.toString()}&limit=5&role=[]&search=${search.toString()}";
+        "${BASE_API}user?page=${pageNum.toString()}&limit=10&role=[]&search=${search.toString()}";
     var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {

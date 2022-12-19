@@ -40,13 +40,8 @@ class ProductsController extends GetxController {
     }
   }
 
-
-  Future<bool> createProduct(
-      Uint8List? imageCreate,
-      String name,
-      String category,
-      String description,
-      num price) async {
+  Future<bool> createProduct(Uint8List? imageCreate, String name,
+      String category, String description, num price) async {
     if (name.isNotEmpty && price > 0 && description.isNotEmpty) {
       var url = "${BASE_API}products";
       var request = await http.MultipartRequest("POST", Uri.parse(url));
@@ -63,7 +58,6 @@ class ProductsController extends GetxController {
       var response = await request.send();
 
       if (response.statusCode == 201) {
-
         return true;
       } else {
         return false;

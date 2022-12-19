@@ -152,7 +152,7 @@ class _UsersPageState extends State<UsersPage> {
       var url = BASE_API +
           "user?page=" +
           page.toString() +
-          "&limit=5&role=[]&search=${searchController.text}";
+          "&limit=10&role=[]&search=${searchController.text}";
       var response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         setState(() {

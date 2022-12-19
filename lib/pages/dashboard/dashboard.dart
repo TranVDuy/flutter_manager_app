@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:product_manager/pages/categories/categories.dart';
 import 'package:product_manager/pages/dashboard/dashboard_controller.dart';
 import 'package:product_manager/pages/orders/orders.dart';
-import 'package:product_manager/pages/products/search_page.dart';
+import 'package:product_manager/pages/orders/search_page_order.dart';
+import 'package:product_manager/pages/products/search_page_product.dart';
 import 'package:product_manager/pages/roles/roles.dart';
 import 'package:product_manager/model/product.dart';
 
@@ -97,8 +98,8 @@ class _DashboardState extends State<Dashboard> {
     List<Widget> pages = [
       // HomePage(),
       CategoriesPage(),
-      SearchPage(),
-      OrdersPage(),
+      SearchPageProduct(),
+      SearchPageOrder(),
       UsersPage(),
       RolesPage()
     ];
