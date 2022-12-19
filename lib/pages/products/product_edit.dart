@@ -339,9 +339,9 @@ class _ProductEditState extends State<ProductEdit> {
               },
               items: categoriesController.categories
                   .map((e) => DropdownMenuItem(
-                child: Text(e.category),
-                value: e.id,
-              ))
+                        child: Text(e.category),
+                        value: e.id,
+                      ))
                   .toList(),
             ),
           ),

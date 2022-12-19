@@ -17,6 +17,7 @@ import 'package:get/get.dart';
 import '../../app_properties.dart';
 import '../../model/product.dart';
 import '../categories/categories_controller.dart';
+import 'order_edit.dart';
 
 class SearchPageOrder extends StatefulWidget {
   @override
@@ -239,6 +240,10 @@ class _SearchPageOrderState extends State<SearchPageOrder>
                                               //                       .category[0]
                                               //                       .id,
                                               //             ))),
+                                              onTap: () => Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                      builder: (_) =>
+                                                          OrderEdit())),
                                             ),
                                             IconSlideAction(
                                               caption: 'Delete',

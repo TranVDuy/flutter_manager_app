@@ -672,6 +672,8 @@ class _SearchPageProductState extends State<SearchPageProduct>
   }
 
   void editCallBack() {
-    RerenderList();
+    var future = new Future.delayed(const Duration(milliseconds: 10));
+    var subscription = future.asStream().listen(RerenderList());
+    subscription.cancel();
   }
 }
