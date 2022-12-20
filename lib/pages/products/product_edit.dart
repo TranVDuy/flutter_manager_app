@@ -178,7 +178,7 @@ class _ProductEditState extends State<ProductEdit> {
             const SizedBox(height: 1),
             Container(
                 width: 350,
-                height: 200,
+                height: 150,
                 decoration: const BoxDecoration(
                     border: Border(
                         bottom: BorderSide(

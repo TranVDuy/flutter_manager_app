@@ -72,7 +72,6 @@ class _UserCreateState extends State<UserCreate> {
         iconTheme: const IconThemeData(color: darkGrey),
       ),
       body: Container(
-        margin: const EdgeInsets.only(top: kToolbarHeight),
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Form(
           key: _formKey,
@@ -103,8 +102,8 @@ class _UserCreateState extends State<UserCreate> {
                   canEdit: false,
                   webImage: null,
                 )),
-                buildUserInfoDisplay(
-                    'First Name', controllerFirstName, const Icon(Icons.people)),
+                buildUserInfoDisplay('First Name', controllerFirstName,
+                    const Icon(Icons.people)),
                 buildUserInfoDisplay(
                     'Last Name', controllerLastName, const Icon(Icons.people)),
                 buildUserInfoDisplay(

@@ -242,8 +242,9 @@ class _SearchPageOrderState extends State<SearchPageOrder>
                                               //             ))),
                                               onTap: () => Navigator.of(context)
                                                   .push(MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          OrderEdit())),
+                                                      builder: (_) => OrderEdit(
+                                                          order: searchResult
+                                                              .order_id))),
                                             ),
                                             IconSlideAction(
                                               caption: 'Delete',

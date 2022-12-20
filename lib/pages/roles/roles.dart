@@ -28,42 +28,46 @@ class RolesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     _loadCards();
     return Scaffold(
-      body: Container(
-        margin: const EdgeInsets.only(top: kToolbarHeight),
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Carousel(),
-              const Text(
-                'Roles',
-                style: TextStyle(
-                  color: darkGrey,
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+      body: SafeArea(
+        top: true,
+        bottom: false,
+        child: Container(
+          margin: const EdgeInsets.only(top: kToolbarHeight),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Carousel(),
+                const Text(
+                  'Roles',
+                  style: TextStyle(
+                    color: darkGrey,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              CupertinoPageScaffold(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 350,
-                      child: AppinioSwiper(
-                        unlimitedUnswipe: true,
-                        controller: AppinioController,
-                        cards: cards,
-                        padding: const EdgeInsets.only(
-                          left: 15,
-                          right: 15,
-                          top: 25,
+                CupertinoPageScaffold(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 350,
+                        child: AppinioSwiper(
+                          unlimitedUnswipe: true,
+                          controller: AppinioController,
+                          cards: cards,
+                          padding: const EdgeInsets.only(
+                            left: 15,
+                            right: 15,
+                            top: 25,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

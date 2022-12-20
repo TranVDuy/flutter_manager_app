@@ -6,6 +6,13 @@ import 'drawer/home_drawer.dart';
 import 'orders_controller.dart';
 
 class OrderEdit extends StatefulWidget {
+  final num order;
+
+  const OrderEdit({
+    super.key,
+    required this.order,
+  });
+
   @override
   State<OrderEdit> createState() => _OrderEditState();
 }
