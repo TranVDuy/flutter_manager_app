@@ -282,6 +282,10 @@ class _HomeDrawerState extends State<HomeDrawer>
                                                                       ? '${searchResult.name.substring(0, 15)}...'
                                                                       : searchResult
                                                                           .name,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  maxLines: 1,
                                                                   style: const TextStyle(
                                                                       fontSize:
                                                                           16.0,
@@ -299,7 +303,14 @@ class _HomeDrawerState extends State<HomeDrawer>
                                                               child: Row(
                                                                 children: [
                                                                   Text(
-                                                                      '\$${searchResult.price.toString()}',
+                                                                      '\$${searchResult.price.toString()}'.length > 15
+                                                                          ? '${'\$${searchResult.price.toString()}'.substring(0, 15)}...'
+                                                                          : '\$${searchResult.price.toString()}',
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      maxLines:
+                                                                          1,
                                                                       style: const TextStyle(
                                                                           fontSize:
                                                                               16.0,
@@ -307,7 +318,6 @@ class _HomeDrawerState extends State<HomeDrawer>
                                                                               .bold,
                                                                           color:
                                                                               Colors.red)),
-                                                                  // const Icon(Icons.money)
                                                                 ],
                                                               ),
                                                             ),

@@ -9,9 +9,10 @@ class DrawerUserController extends StatefulWidget {
     Key? key,
     this.drawerWidth = 250,
     this.screenView,
-    this.animatedIconData = AnimatedIcons.arrow_menu,
+    this.animatedIconData = AnimatedIcons.close_menu,
     this.menuView,
     this.drawerIsOpen,
+    this.title,
   }) : super(key: key);
 
   final double drawerWidth;
@@ -19,6 +20,7 @@ class DrawerUserController extends StatefulWidget {
   final Function(bool)? drawerIsOpen;
   final AnimatedIconData? animatedIconData;
   final Widget? menuView;
+  final String? title;
 
   @override
   _DrawerUserControllerState createState() => _DrawerUserControllerState();
@@ -91,11 +93,20 @@ class _DrawerUserControllerState extends State<DrawerUserController>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          widget.title ?? 'Order',
+          style: TextStyle(
+            color: darkGrey,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         iconTheme: const IconThemeData(color: darkGrey),
         actions: <Widget>[
-          Material(
+          Container(
+            margin: const EdgeInsets.only(right: 10),
             color: Colors.transparent,
             child: InkWell(
               borderRadius:

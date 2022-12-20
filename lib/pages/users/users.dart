@@ -304,6 +304,9 @@ class _UsersPageState extends State<UsersPage> {
                                                         : user.firstname +
                                                             " " +
                                                             user.lastname,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 1,
                                                     style: const TextStyle(
                                                       fontSize: 14.0,
                                                     )),
@@ -331,7 +334,7 @@ class _UsersPageState extends State<UsersPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Users List',
+                        'User List',
                         style: TextStyle(
                           color: darkGrey,
                           fontSize: 22,

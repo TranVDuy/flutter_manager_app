@@ -42,7 +42,8 @@ class _MoreProductsState extends State<MoreProducts> {
 
   @override
   initState() {
-    getListProduct(1, "0", "", "name", "0");
+    getListProduct(
+        1, widget.product.category[0].id.toString(), "", "name", "0");
     super.initState();
   }
 

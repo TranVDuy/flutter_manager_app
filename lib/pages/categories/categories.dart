@@ -41,7 +41,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 child: Padding(
                   padding: EdgeInsets.only(bottom: 16.0),
                   child: const Text(
-                    'Categories List',
+                    'Category List',
                     style: TextStyle(
                       color: darkGrey,
                       fontSize: 22,
