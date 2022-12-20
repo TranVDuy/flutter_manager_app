@@ -75,17 +75,14 @@ class _DrawerUserControllerState extends State<DrawerUserController>
             curve: Curves.fastOutSlowIn);
       }
     });
-    print("vao");
     WidgetsBinding.instance.addPostFrameCallback((_) => getInitState());
     super.initState();
   }
 
   Future<bool> getInitState() async {
-    print("adu ${scrollController} ${widget.drawerWidth}");
     scrollController?.jumpTo(
       widget.drawerWidth,
     );
-    print("ra");
 
     return true;
   }
@@ -120,7 +117,6 @@ class _DrawerUserControllerState extends State<DrawerUserController>
           ),
         ],
       ),
-      backgroundColor: AppTheme.white,
       body: SingleChildScrollView(
         controller: scrollController,
         scrollDirection: Axis.horizontal,

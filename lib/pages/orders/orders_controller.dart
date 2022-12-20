@@ -25,15 +25,43 @@ class OrdersController extends GetxController {
     }
   }
 
+  Future<Order?> findOneOrder(num orderId) async {
+    var url = "${BASE_API}orders/$orderId";
+    var response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      var jsonObject = jsonDecode(response.body)['data'];
+      var ordersObject = jsonObject;
+      return Order.fromJson(ordersObject);
+    } else {
+      return null;
+    }
+  }
+
   //create
 
   //update
 
   Future<bool> deleteOrder(
-    String orderId,
+    num orderId,
   ) async {
     var url = "${BASE_API}orders/$orderId";
     var response = await http.delete(Uri.parse(url), headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    });
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> payOrder(
+    num orderId,
+  ) async {
+    var url = "${BASE_API}orders/paying/$orderId";
+    var response = await http.put(Uri.parse(url), headers: {
       "Content-Type": "application/json",
       "Accept": "application/json"
     });

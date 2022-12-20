@@ -44,7 +44,6 @@ class _SearchPageOrderState extends State<SearchPageOrder>
       Column,
       sort,
     );
-
     setState(() {
       searchResults = temp;
     });
@@ -224,6 +223,20 @@ class _SearchPageOrderState extends State<SearchPageOrder>
                                           actionExtentRatio: 0.25,
                                           secondaryActions: <Widget>[
                                             IconSlideAction(
+                                                caption: 'Pay',
+                                                color: searchResult.status !=
+                                                        "payment"
+                                                    ? Colors.green
+                                                    : Colors.grey,
+                                                icon: Icons.payment,
+                                                onTap: () {
+                                                  if (searchResult.status !=
+                                                      "payment") {
+                                                    showPayAlert(
+                                                        context, searchResult);
+                                                  }
+                                                }),
+                                            IconSlideAction(
                                               caption: 'Edit',
                                               color: Colors.blueAccent,
                                               icon: Icons.edit,
@@ -243,16 +256,23 @@ class _SearchPageOrderState extends State<SearchPageOrder>
                                               onTap: () => Navigator.of(context)
                                                   .push(MaterialPageRoute(
                                                       builder: (_) => OrderEdit(
-                                                          order: searchResult
+                                                          order_id: searchResult
                                                               .order_id))),
                                             ),
                                             IconSlideAction(
-                                              caption: 'Delete',
-                                              color: Colors.red,
-                                              icon: Icons.delete,
-                                              onTap: () => showDeleteAlert(
-                                                  context, searchResult),
-                                            )
+                                                caption: 'Delete',
+                                                color: searchResult.status !=
+                                                        "payment"
+                                                    ? Colors.red
+                                                    : Colors.grey,
+                                                icon: Icons.delete,
+                                                onTap: () {
+                                                  if (searchResult.status !=
+                                                      "payment") {
+                                                    showDeleteAlert(
+                                                        context, searchResult);
+                                                  }
+                                                })
                                           ],
                                           child: InkWell(
                                             // onTap: () => Navigator.of(context)
@@ -264,66 +284,80 @@ class _SearchPageOrderState extends State<SearchPageOrder>
                                             child: Column(
                                               children: <Widget>[
                                                 Row(
-                                                  children: <Widget>[
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              right: 16.0),
-                                                      child: CircleAvatar(
-                                                        maxRadius: 24,
-                                                        backgroundImage:
-                                                            NetworkImage(
-                                                                "${BASE_IMG}${"/api/uploads/1671180125591-cat-1192026_960_720.jpg"}"),
-                                                      ),
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Row(
                                                       children: <Widget>[
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
                                                                       .only(
-                                                                  top: 16.0),
-                                                          child: Text(
-                                                              searchResult.firstname
-                                                                          .length >
-                                                                      20
-                                                                  ? '${searchResult.firstname.substring(0, 20)}...'
-                                                                  : searchResult
-                                                                      .firstname,
-                                                              style: const TextStyle(
-                                                                  fontSize:
-                                                                      16.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold)),
+                                                                  right: 16.0),
+                                                          child: CircleAvatar(
+                                                            maxRadius: 24,
+                                                            backgroundImage:
+                                                                NetworkImage(
+                                                                    "https://robohash.org/${searchResult.user_id}"),
+                                                          ),
                                                         ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  top: 8.0,
-                                                                  bottom: 16.0),
-                                                          child: Row(
-                                                            children: [
-                                                              Text(
-                                                                  '\$${searchResult.total_price}',
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: <Widget>[
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      top:
+                                                                          16.0),
+                                                              child: Text(
+                                                                  "${searchResult.firstname} - ${searchResult.order_id}"
+                                                                              .length >
+                                                                          20
+                                                                      ? '${"${searchResult.firstname} - ${searchResult.order_id}".substring(0, 20)}...'
+                                                                      : "${searchResult.firstname} - ${searchResult.order_id}",
                                                                   style: const TextStyle(
                                                                       fontSize:
                                                                           16.0,
                                                                       fontWeight:
                                                                           FontWeight
+                                                                              .bold)),
+                                                            ),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      top: 8.0,
+                                                                      bottom:
+                                                                          16.0),
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(
+                                                                      '\$${searchResult.total_price}',
+                                                                      style: const TextStyle(
+                                                                          fontSize:
+                                                                              16.0,
+                                                                          fontWeight: FontWeight
                                                                               .bold,
-                                                                      color: Colors
-                                                                          .red)),
-                                                              // const Icon(Icons.money)
-                                                            ],
-                                                          ),
+                                                                          color:
+                                                                              Colors.red)),
+                                                                  // const Icon(Icons.money)
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ],
                                                     ),
+                                                    Text(searchResult.status,
+                                                        style: const TextStyle(
+                                                            fontSize: 16.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold))
                                                   ],
                                                 ),
                                                 const Padding(
@@ -492,20 +526,37 @@ class _SearchPageOrderState extends State<SearchPageOrder>
     getListOrder(page, searchValue, "firstname", selectedPeriod);
   }
 
-  DeleteOrder(BuildContext context, item) async {
+  DeleteOrder(BuildContext context, Order item) async {
     bool check;
     setState(() {
       isLoading = true;
     });
-    check = await controller.deleteOrder(item.id);
+    check = await controller.deleteOrder(item.order_id);
     setState(() {
       isLoading = false;
     });
     if (check) {
-      RerenderList();
       buildFlashMessage("success", 'Xóa thành công!');
+      RerenderList();
     } else {
       buildFlashMessage("error", 'Xóa thất bại!');
+    }
+  }
+
+  PayOrder(BuildContext context, Order item) async {
+    bool check;
+    setState(() {
+      isLoading = true;
+    });
+    check = await controller.payOrder(item.order_id);
+    setState(() {
+      isLoading = false;
+    });
+    if (check) {
+      buildFlashMessage("success", 'Thanh toán thành công!');
+      RerenderList();
+    } else {
+      buildFlashMessage("error", 'Thanh toán thất bại!');
     }
   }
 
@@ -525,7 +576,6 @@ class _SearchPageOrderState extends State<SearchPageOrder>
       child: const Text("Yes", style: TextStyle(color: Colors.red)),
       onPressed: () {
         Navigator.pop(context);
-        // deleteUser(item['id']);
         DeleteOrder(context, item);
       },
     );
@@ -533,7 +583,46 @@ class _SearchPageOrderState extends State<SearchPageOrder>
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: const Text("Message"),
-      content: const Text("Would you like to delete this product?"),
+      content: const Text("Would you like to delete this order?"),
+      actions: [
+        noButton,
+        yesButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showPayAlert(BuildContext context, item) {
+    // set up the buttons
+    Widget noButton = TextButton(
+      child: const Text(
+        "No",
+        style: TextStyle(color: Colors.blue),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    Widget yesButton = TextButton(
+      child: const Text("Yes", style: TextStyle(color: Colors.red)),
+      onPressed: () {
+        Navigator.pop(context);
+        PayOrder(context, item);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Message"),
+      content: const Text(
+          "Would you like to change status of this order to payment?"),
       actions: [
         noButton,
         yesButton,
