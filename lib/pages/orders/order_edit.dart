@@ -39,7 +39,7 @@ class _OrderEditState extends State<OrderEdit> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: DrawerUserController(
-        drawerWidth: MediaQuery.of(context).size.width * 0.75,
+        drawerWidth: MediaQuery.of(context).size.width * 0.9,
         screenView: OrdersPage(context),
         //we replace screen view as we need on navigate starting screens like MyHomePage, HelpScreen, FeedbackScreen, etc...
       ),
