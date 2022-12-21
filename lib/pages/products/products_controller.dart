@@ -92,16 +92,17 @@ class ProductsController extends GetxController {
     return false;
   }
 
-  Future<bool> deleteProduct(String productId) async {
+  Future<int> deleteProduct(String productId) async {
     var url = "${BASE_API}products/$productId";
     var response = await http.delete(Uri.parse(url), headers: {
       "Content-Type": "application/json",
       "Accept": "application/json"
     });
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
+    // if (response.statusCode == 200) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
+    return response.statusCode;
   }
 }

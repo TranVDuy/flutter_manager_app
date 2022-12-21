@@ -585,8 +585,12 @@ class _SearchPageProductState extends State<SearchPageProduct>
             children: [
               Text(
                 message,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style:(
+                  status == "success" ?
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 18) :
+                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)
+                )
+
               ),
               (status == "success"
                   ? const Icon(Icons.check_circle_outline_outlined,
@@ -616,7 +620,7 @@ class _SearchPageProductState extends State<SearchPageProduct>
   }
 
   DeleteProduct(BuildContext context, item) async {
-    bool check;
+    int check;
     setState(() {
       isLoading = true;
     });
@@ -624,12 +628,19 @@ class _SearchPageProductState extends State<SearchPageProduct>
     setState(() {
       isLoading = false;
     });
-    if (check) {
+
+    if (check == 200) {
       RerenderList();
       buildFlashMessage("success", 'Xóa thành công!');
     } else {
-      buildFlashMessage("error", 'Xóa thất bại!');
+      if(check == 409){
+        buildFlashMessage("warning", 'Product đang có trong Order Details,\nkhông thể xóa');
+      }
+      else{
+        buildFlashMessage("error", 'Xóa thất bại!');
+      }
     }
+
   }
 
   showDeleteAlert(BuildContext context, item) {
