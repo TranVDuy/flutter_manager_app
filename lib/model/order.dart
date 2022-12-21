@@ -45,7 +45,7 @@ class OrderProduct {
   String name;
   int quantity;
   int price;
-  int subprice;
+  // int subprice;
   String image;
 
   OrderProduct(
@@ -53,16 +53,17 @@ class OrderProduct {
       required this.name,
       required this.quantity,
       required this.price,
-      required this.subprice,
+      // required this.subprice,
       required this.image});
 
   factory OrderProduct.fromJson(Map<String, dynamic> obj) {
     return OrderProduct(
-        id: obj["id"],
-        name: obj["name"].toString(),
-        quantity: obj["quantity"],
-        price: obj["price"],
-        image: obj["image"].toString(),
-        subprice: obj["subprice"]);
+      id: obj["id"],
+      name: obj["name"].toString(),
+      quantity: obj["quantity"],
+      price: obj["price"],
+      image: obj["image"].toString(),
+      // subprice: obj["subprice"]
+    );
   }
 }

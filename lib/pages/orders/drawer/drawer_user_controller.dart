@@ -5,7 +5,7 @@ import 'package:product_manager/app_properties.dart';
 import 'package:product_manager/pages/orders/drawer/home_drawer.dart';
 
 class DrawerUserController extends StatefulWidget {
-  const DrawerUserController({
+  DrawerUserController({
     Key? key,
     this.drawerWidth = 250,
     this.screenView,
@@ -13,6 +13,7 @@ class DrawerUserController extends StatefulWidget {
     this.menuView,
     this.drawerIsOpen,
     this.title,
+    required this.onAddOrUpdate,
   }) : super(key: key);
 
   final double drawerWidth;
@@ -21,6 +22,7 @@ class DrawerUserController extends StatefulWidget {
   final AnimatedIconData? animatedIconData;
   final Widget? menuView;
   final String? title;
+  Function onAddOrUpdate;
 
   @override
   _DrawerUserControllerState createState() => _DrawerUserControllerState();
@@ -150,6 +152,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
                       transform: Matrix4.translationValues(
                           scrollController!.offset, 0.0, 0.0),
                       child: HomeDrawer(
+                        onAddOrUpdate: widget.onAddOrUpdate,
                         iconAnimationController: iconAnimationController,
                       ),
                     );

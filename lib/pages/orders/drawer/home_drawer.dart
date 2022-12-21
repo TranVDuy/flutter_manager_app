@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:product_manager/model/category.dart';
+import 'package:product_manager/pages/orders/orders_controller.dart';
 import 'package:product_manager/pages/products/product_edit.dart';
 import 'package:product_manager/pages/products/product_create.dart';
 import 'package:product_manager/pages/products/products_controller.dart';
@@ -19,10 +20,13 @@ import '../../../model/product.dart';
 import '../../categories/categories_controller.dart';
 
 class HomeDrawer extends StatefulWidget {
-  const HomeDrawer({
+  HomeDrawer({
     Key? key,
     this.iconAnimationController,
+    required this.onAddOrUpdate,
   }) : super(key: key);
+
+  Function onAddOrUpdate;
 
   final AnimationController? iconAnimationController;
 
@@ -33,6 +37,7 @@ class HomeDrawer extends StatefulWidget {
 class _HomeDrawerState extends State<HomeDrawer>
     with SingleTickerProviderStateMixin {
   var controller = Get.find<ProductsController>();
+  var orderController = Get.find<OrdersController>();
   var categoriesController = Get.find<CategoriesController>();
   bool isLoading = false;
   ScrollController scrollController = ScrollController();
@@ -325,7 +330,21 @@ class _HomeDrawerState extends State<HomeDrawer>
                                                         ),
                                                       ],
                                                     ),
-                                                    Icon(Icons.add),
+                                                    GestureDetector(
+                                                        onTap: () {
+                                                          orderController
+                                                              .addOrUpdate(
+                                                                  searchResult,
+                                                                  1);
+                                                          widget
+                                                              .onAddOrUpdate();
+                                                        },
+                                                        child: Padding(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    10),
+                                                            child: Icon(
+                                                                Icons.add))),
                                                   ],
                                                 ),
                                                 const Padding(

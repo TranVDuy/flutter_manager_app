@@ -45,6 +45,9 @@ class _OrderEditState extends State<OrderEdit> {
         title: "${order?.firstname} - ${order?.order_id}",
         drawerWidth: MediaQuery.of(context).size.width * 0.9,
         screenView: OrdersPage(context),
+        onAddOrUpdate: () {
+          setState(() {});
+        },
         //we replace screen view as we need on navigate starting screens like MyHomePage, HelpScreen, FeedbackScreen, etc...
       ),
     );
@@ -171,7 +174,6 @@ class _OrderEditState extends State<OrderEdit> {
     return SizedBox(
       width: size.width,
       child: ListView.builder(
-        physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
         itemCount: controller.orderEdit?.product.length,
         itemBuilder: (context, i) {
@@ -188,7 +190,7 @@ class _OrderEditState extends State<OrderEdit> {
         vertical: size.height * 0.015,
       ),
       child: Container(
-        height: size.height * 0.08,
+        height: size.height * 0.12,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: const BorderRadius.all(
@@ -258,25 +260,6 @@ class _OrderEditState extends State<OrderEdit> {
                         ),
                       ),
                       Text(
-                        controller.orderEdit?.product[i].price.toString() ?? "",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: size.width * 0.03,
-                          color: Colors.black.withOpacity(0.7),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: size.height * 0.019,
-                    horizontal: size.width * 0.012,
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
                         "${controller.orderEdit?.product[i].price}\$"
                             .toString(),
                         textAlign: TextAlign.left,
@@ -294,7 +277,40 @@ class _OrderEditState extends State<OrderEdit> {
                           fontSize: size.width * 0.03,
                           color: Colors.black.withOpacity(0.7),
                         ),
-                      )
+                      ),
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: size.height * 0.019,
+                    horizontal: size.width * 0.012,
+                  ),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () => {
+                          controller.addOrUpdate1(
+                              controller.orderEdit!.product[i], 1),
+                          setState(() {})
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(Icons.arrow_upward_outlined, size: 20),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => {
+                          controller.addOrUpdate1(
+                              controller.orderEdit!.product[i], -1),
+                          setState(() {})
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(Icons.arrow_downward_outlined, size: 20),
+                        ),
+                      ),
                     ],
                   ),
                 ),
