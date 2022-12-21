@@ -57,8 +57,8 @@ class _OrderEditState extends State<OrderEdit> {
         color: const Color(0xffebebeb),
         child: Column(
           children: [
-            buildBestSellingProduct(size),
-            Expanded(child: buildShoesSlider(size)),
+            buildOrderProductInfo(size),
+            Expanded(child: buildOrderProductSlider(size)),
             buildSubmit(context)
           ],
         ),
@@ -66,7 +66,7 @@ class _OrderEditState extends State<OrderEdit> {
     );
   }
 
-  Padding buildBestSellingProduct(Size size) {
+  Padding buildOrderProductInfo(Size size) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: size.width * 0.035,
@@ -167,7 +167,7 @@ class _OrderEditState extends State<OrderEdit> {
     );
   }
 
-  SizedBox buildShoesSlider(Size size) {
+  SizedBox buildOrderProductSlider(Size size) {
     return SizedBox(
       width: size.width,
       child: ListView.builder(
@@ -175,13 +175,13 @@ class _OrderEditState extends State<OrderEdit> {
         scrollDirection: Axis.vertical,
         itemCount: controller.orderEdit?.product.length,
         itemBuilder: (context, i) {
-          return buildShoes(size, i);
+          return buidOrderProduct(size, i);
         },
       ),
     );
   }
 
-  Padding buildShoes(Size size, int i) {
+  Padding buidOrderProduct(Size size, int i) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: size.width * 0.03,
@@ -245,7 +245,11 @@ class _OrderEditState extends State<OrderEdit> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${controller.orderEdit?.product[i].name ?? ""}",
+                        "${controller.orderEdit?.product[i].name ?? ""}"
+                                    .length >
+                                20
+                            ? "${controller.orderEdit?.product[i].name.substring(0, 20) ?? ""}..."
+                            : "${controller.orderEdit?.product[i].name ?? ""}",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           fontSize: size.width * 0.035,
