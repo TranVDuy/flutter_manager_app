@@ -238,29 +238,26 @@ class _SearchPageOrderState extends State<SearchPageOrder>
                                                 }),
                                             IconSlideAction(
                                               caption: 'Edit',
-                                              color: Colors.blueAccent,
+                                              color: searchResult.status !=
+                                                      "payment"
+                                                  ? Colors.blueAccent
+                                                  : Colors.grey,
                                               icon: Icons.edit,
-                                              // onTap: () => Navigator.of(context)
-                                              //     .push(MaterialPageRoute(
-                                              //         builder: (_) =>
-                                              //             ProductEdit(
-                                              //               product:
-                                              //                   searchResult,
-                                              //               callBack:
-                                              //                   editCallBack,
-                                              //               idCategory:
-                                              //                   searchResult
-                                              //                       .category[0]
-                                              //                       .id,
-                                              //             ))),
-                                              onTap: () => Navigator.of(context)
-                                                  .push(MaterialPageRoute(
-                                                      builder: (_) => OrderEdit(
-                                                          callBack: () {
-                                                            RerenderList();
-                                                          },
-                                                          order_id: searchResult
-                                                              .order_id))),
+                                              onTap: () {
+                                                if (searchResult.status !=
+                                                    "payment") {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              OrderEdit(
+                                                                  callBack: () {
+                                                                    RerenderList();
+                                                                  },
+                                                                  order_id:
+                                                                      searchResult
+                                                                          .order_id)));
+                                                }
+                                              },
                                             ),
                                             IconSlideAction(
                                                 caption: 'Delete',

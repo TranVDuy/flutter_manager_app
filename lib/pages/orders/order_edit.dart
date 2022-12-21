@@ -251,8 +251,8 @@ class _OrderEditState extends State<OrderEdit> {
                       Text(
                         "${controller.orderEdit?.product[i].name ?? ""}"
                                     .length >
-                                20
-                            ? "${controller.orderEdit?.product[i].name.substring(0, 20) ?? ""}..."
+                                15
+                            ? "${controller.orderEdit?.product[i].name.substring(0, 15) ?? ""}..."
                             : "${controller.orderEdit?.product[i].name ?? ""}",
                         textAlign: TextAlign.left,
                         style: TextStyle(
