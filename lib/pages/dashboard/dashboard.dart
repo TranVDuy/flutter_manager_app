@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:product_manager/pages/categories/categories.dart';
 import 'package:product_manager/pages/dashboard/dashboard_controller.dart';
@@ -49,7 +50,7 @@ class _DashboardState extends State<Dashboard> {
         //   textAlign: TextAlign.center,
         // ),
         BottomNavyBarItem(
-          icon: const Icon(Icons.message),
+          icon: const Icon(FontAwesomeIcons.shirt),
           title: const Text(
             'Categories ',
           ),
@@ -58,32 +59,32 @@ class _DashboardState extends State<Dashboard> {
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
-          icon: const Icon(Icons.message),
+          icon: const Icon(FontAwesomeIcons.boxOpen),
           title: const Text(
             'Products ',
           ),
-          activeColor: Colors.pink,
+          activeColor: Colors.blueAccent,
           inactiveColor: _inactiveColor,
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
-          icon: const Icon(Icons.message),
+          icon: const Icon(FontAwesomeIcons.clipboard),
           title: const Text(
             'Orders ',
           ),
-          activeColor: Colors.pink,
+          activeColor: Colors.green,
           inactiveColor: _inactiveColor,
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
-          icon: const Icon(Icons.people),
+          icon: const Icon(FontAwesomeIcons.users),
           title: const Text('Users'),
           activeColor: Colors.purpleAccent,
           inactiveColor: _inactiveColor,
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
-          icon: const Icon(Icons.settings),
+          icon: const Icon(FontAwesomeIcons.gear),
           title: const Text('Roles'),
           activeColor: Colors.blue,
           inactiveColor: _inactiveColor,

@@ -26,7 +26,7 @@ class CategoriesController extends GetxController {
       const Color(0xffFF7375),
       3,
       'Clothes',
-      'assets/jeans.png',
+      'assets/jeans_3.png',
     ),
     Category(
       const Color(0xff00E9DA),
