@@ -1,5 +1,7 @@
 # Flutter Manager App
+
 Contributors:
+
 <ol>
 	<li>Võ Xuân An</li>
 	<li>Trần Văn Duy</li>
@@ -7,7 +9,9 @@ Contributors:
 </ol>
 
 # To run this app
+
 Type the command and hit enter:
+
 ```
 flutter run --no-sound-null-safety
 ```
@@ -21,6 +25,7 @@ flutter run --no-sound-null-safety
 <img src="assets/preview/5.png" alt="preview-img" />
 <img src="assets/preview/6.png" alt="preview-img" />
 <img src="assets/preview/7.png" alt="preview-img" />
+<img src="assets/preview/14.png" alt="preview-img" />
 <img src="assets/preview/8.png" alt="preview-img" />
 <img src="assets/preview/9.png" alt="preview-img" />
 <img src="assets/preview/10.png" alt="preview-img" />
