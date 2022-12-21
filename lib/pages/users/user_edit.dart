@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:product_manager/pages/users/users_controller.dart';
 import '../../app_properties.dart';
@@ -137,6 +138,31 @@ class _UserEditState extends State<UserEdit> {
               const SizedBox(
                 height: 1,
               ),
+              title == "Phone" ?
+              TextFormField(
+                controller: textController,
+                obscureText: title == "Password",
+                enableSuggestions: false,
+                autocorrect: false,
+                style: const TextStyle(color: Colors.black),
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                ],
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  hintText: title.toString(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "$title is required";
+                  } else if (value.length < 2) {
+                    return "$title is at least 2 character";
+                  }
+                  return null;
+                },
+              ) :
               TextFormField(
                 controller: textController,
                 obscureText: title == "Password",
