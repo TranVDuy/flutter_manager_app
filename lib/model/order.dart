@@ -1,8 +1,8 @@
 class Order {
   num order_id;
   num user_id;
-  String created_at;
-  String updated_at;
+  String create_at;
+  String update_at;
   String firstname;
   String total_price;
   String status;
@@ -11,8 +11,8 @@ class Order {
   Order(
       {required this.order_id,
       required this.user_id,
-      required this.created_at,
-      required this.updated_at,
+      required this.create_at,
+      required this.update_at,
       required this.firstname,
       required this.total_price,
       required this.status,
@@ -28,8 +28,8 @@ class Order {
     return Order(
       order_id: obj["order_id"],
       user_id: obj["user_id"],
-      created_at: obj["created_at"].toString(),
-      updated_at: obj["updated_at"].toString(),
+      create_at: obj["create_at"].toString(),
+      update_at: obj["update_at"].toString(),
       firstname: obj["firstname"],
       total_price: obj["total_price"],
       status: obj["status"],

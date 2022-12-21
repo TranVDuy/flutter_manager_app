@@ -7,6 +7,7 @@ import '../../model/order.dart';
 
 class OrdersController extends GetxController {
   final String title = "Orders page!!!";
+  Order? orderEdit;
 
   Future<List<Order>> getOrders(
       int pageNum, String search, String key, String sort) async {
