@@ -89,9 +89,23 @@ class OrdersController extends GetxController {
     }
   }
 
-  //create
-
-  //update
+  Future<bool> updateOrder(
+    num orderId,
+  ) async {
+    var url = "${BASE_API}orders/$orderId";
+    var bodyData = jsonEncode(orderEdit!.toJson());
+    var response = await http.put(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: bodyData);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   Future<bool> deleteOrder(
     num orderId,

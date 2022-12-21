@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Order {
   num order_id;
   num user_id;
@@ -37,7 +39,11 @@ class Order {
     );
   }
 
-  // Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() {
+    return {
+      "product": product.map((e) => e.toJson()).toList(),
+    };
+  }
 }
 
 class OrderProduct {
@@ -65,5 +71,12 @@ class OrderProduct {
       image: obj["image"].toString(),
       // subprice: obj["subprice"]
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": this.id,
+      "quantity": this.quantity,
+    };
   }
 }

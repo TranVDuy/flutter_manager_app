@@ -256,6 +256,9 @@ class _SearchPageOrderState extends State<SearchPageOrder>
                                               onTap: () => Navigator.of(context)
                                                   .push(MaterialPageRoute(
                                                       builder: (_) => OrderEdit(
+                                                          callBack: () {
+                                                            RerenderList();
+                                                          },
                                                           order_id: searchResult
                                                               .order_id))),
                                             ),

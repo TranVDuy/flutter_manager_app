@@ -10,10 +10,12 @@ import 'orders_controller.dart';
 
 class OrderEdit extends StatefulWidget {
   final num order_id;
+  Function callBack;
 
-  const OrderEdit({
+  OrderEdit({
     super.key,
     required this.order_id,
+    required this.callBack,
   });
 
   @override
@@ -322,6 +324,38 @@ class _OrderEditState extends State<OrderEdit> {
     );
   }
 
+  buildFlashMessage(String status, String message) {
+    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Container(
+          height: 70,
+          padding: EdgeInsets.all(18),
+          decoration: BoxDecoration(
+              color: (status == "success" ? Colors.green : Colors.red),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                message,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              (status == "success"
+                  ? const Icon(Icons.check_circle_outline_outlined,
+                      color: Colors.white, size: 20)
+                  : const Icon(
+                      Icons.error_outline,
+                      color: Colors.white,
+                      size: 30,
+                    ))
+            ],
+          )),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+    ));
+  }
+
   Widget buildSubmit(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(18.0),
@@ -336,24 +370,12 @@ class _OrderEditState extends State<OrderEdit> {
             textStyle:
                 const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         onPressed: () async {
-          // if (_formKey.currentState!.validate()) {
-          //   final name = controllerName.text;
-          //   final price = controllerPrice.text;
-          //   final description = controllerDescription.text;
-          //   setState(() {
-          //     isLoading = true;
-          //   });
-          //   var check = await product_controller.editProduct(widget.product.id,
-          //       Cate.toString(), name, description, num.parse(price), webImage);
-          //   setState(() {
-          //     isLoading = false;
-          //   });
-          //   check
-          //       ? buildFlashMessage("success", 'Update thành công!')
-          //       : buildFlashMessage("error", 'Update thất bại!');
-          //   if (check) widget.callBack();
-          //   Navigator.pop(context);
-          // }
+          var check = await controller.updateOrder(widget.order_id);
+          if (check) widget.callBack();
+          check
+              ? buildFlashMessage("success", 'Update thành công!')
+              : buildFlashMessage("error", 'Update thất bại!');
+
           Navigator.pop(context);
         },
         child: const Text("Update"),
