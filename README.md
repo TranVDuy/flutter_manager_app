@@ -5,8 +5,8 @@ Contributors:
 	<li>Trần Văn Duy</li>
 	<li>Trương Thụy Quang Nhật</li>
 </ol>
-# To run this app
 
+# To run this app
 Type the command and hit enter:
 ```
 flutter run --no-sound-null-safety
