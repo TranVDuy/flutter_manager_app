@@ -1,10 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:product_manager/model/category.dart';
 import 'package:product_manager/pages/dashboard/dashboard_controller.dart';
 import 'package:product_manager/pages/products/product_edit.dart';
@@ -538,8 +534,10 @@ class _SearchPageProductState extends State<SearchPageProduct>
   Widget build(BuildContext context) {
     var dashboardController = Get.find<DashboardController>();
     if (dashboardController.categoryfilter.value.toString() !=
-        selectedCategory) {
+            selectedCategory &&
+        dashboardController.reRenderProductPage as bool == true) {
       selectedCategory = dashboardController.categoryfilter.value.toString();
+      dashboardController.reRenderProductPage = RxBool(false);
       RerenderList();
     }
     return Material(
