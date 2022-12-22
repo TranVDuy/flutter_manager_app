@@ -84,11 +84,6 @@ class CategoryCard extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Get.find<DashboardController>().changeTabIndex(1, id);
-                  // Get.find<ProductsController>().changeCategoryFilter(id);
-
-                  // Get.to(SearchPageProduct(
-                  //   categorySelected: id,
-                  // ));
                 },
                 child: Container(
                   decoration: const BoxDecoration(

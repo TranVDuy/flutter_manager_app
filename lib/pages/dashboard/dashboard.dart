@@ -97,9 +97,7 @@ class _DashboardState extends State<Dashboard> {
     List<Widget> pages = [
       // HomePage(),
       CategoriesPage(),
-      SearchPageProduct(
-        categorySelected: mp.categoryfilter.value,
-      ),
+      SearchPageProduct(),
       SearchPageOrder(),
       UsersPage(),
       RolesPage()
