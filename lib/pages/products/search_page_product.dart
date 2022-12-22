@@ -17,6 +17,12 @@ import '../../model/product.dart';
 import '../categories/categories_controller.dart';
 
 class SearchPageProduct extends StatefulWidget {
+  final categorySelected;
+
+  const SearchPageProduct({
+    required this.categorySelected
+  });
+
   @override
   _SearchPageProductState createState() => _SearchPageProductState();
 }
@@ -30,7 +36,7 @@ class _SearchPageProductState extends State<SearchPageProduct>
   // int totalRecord = 0;
 
   String selectedPeriod = "";
-  String selectedCategory = "";
+  late String selectedCategory = widget.categorySelected.toString();
   String selectedPrice = "";
 
   List<Product> searchResults = [];
@@ -93,7 +99,7 @@ class _SearchPageProductState extends State<SearchPageProduct>
     categoryFilter.addAll(categoriesController.categories);
     selectedPeriod = "A-Z";
     selectedPrice = "";
-    selectedCategory = "0";
+    selectedCategory = widget.categorySelected.toString();
     searchValue = "";
     page = 1;
     getListProduct(page, selectedCategory, searchValue, "name", selectedPeriod);

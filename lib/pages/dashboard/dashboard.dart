@@ -20,7 +20,8 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  int _currentIndex = 0;
+  late int _currentIndex = Get.find<DashboardController>().currentIndex;
+
   final _inactiveColor = Colors.grey;
   @override
   Widget build(BuildContext context) {
@@ -98,7 +99,7 @@ class _DashboardState extends State<Dashboard> {
     List<Widget> pages = [
       // HomePage(),
       CategoriesPage(),
-      SearchPageProduct(),
+      SearchPageProduct(categorySelected: 0,),
       SearchPageOrder(),
       UsersPage(),
       RolesPage()

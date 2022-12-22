@@ -113,6 +113,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       end: searchResults[index].end,
                       categoryName: searchResults[index].category,
                       assetPath: searchResults[index].image,
+                      id: searchResults[index].id
                     ),
                   ),
                 ),

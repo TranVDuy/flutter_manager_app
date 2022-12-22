@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:product_manager/pages/dashboard/dashboard_controller.dart';
+import 'package:product_manager/pages/products/search_page_product.dart';
 
 class CategoryCard extends StatelessWidget {
   final Color begin;
   final Color end;
   final String categoryName;
   final String assetPath;
+  final int id;
 
   CategoryCard({
     required this.controller,
@@ -12,6 +16,7 @@ class CategoryCard extends StatelessWidget {
     required this.end,
     required this.categoryName,
     required this.assetPath,
+    required this.id
   })  : height = Tween<double>(begin: 150, end: 250.0).animate(
           CurvedAnimation(
             parent: controller,
@@ -75,15 +80,21 @@ class CategoryCard extends StatelessWidget {
                   assetPath,
                 ),
               ),
-              Container(
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(24))),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Text(
-                  'View more',
-                  style: TextStyle(color: end, fontWeight: FontWeight.bold),
+              GestureDetector(
+                onTap: (){
+                  Get.find<DashboardController>().changeTabIndex(1);
+                  Get.to(SearchPageProduct(categorySelected: id,));
+                },
+                child: Container(
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(24))),
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: Text(
+                    'View more',
+                    style: TextStyle(color: end, fontWeight: FontWeight.bold),
+                  ),
                 ),
               )
             ],
@@ -107,12 +118,14 @@ class StaggeredCardCard extends StatefulWidget {
   final Color end;
   final String categoryName;
   final String assetPath;
+  final int id;
 
   const StaggeredCardCard({
     required this.begin,
     required this.end,
     required this.categoryName,
     required this.assetPath,
+    required this.id
   });
 
   @override
@@ -168,6 +181,7 @@ class _StaggeredCardCardState extends State<StaggeredCardCard>
         begin: widget.begin,
         end: widget.end,
         assetPath: widget.assetPath,
+        id: widget.id,
       ),
     );
   }
