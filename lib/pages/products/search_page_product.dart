@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:product_manager/model/category.dart';
+import 'package:product_manager/pages/dashboard/dashboard_controller.dart';
 import 'package:product_manager/pages/products/product_edit.dart';
 import 'package:product_manager/pages/products/product_create.dart';
 import 'package:product_manager/pages/products/products_controller.dart';
@@ -19,9 +20,7 @@ import '../categories/categories_controller.dart';
 class SearchPageProduct extends StatefulWidget {
   final categorySelected;
 
-  const SearchPageProduct({
-    required this.categorySelected
-  });
+  const SearchPageProduct({required this.categorySelected});
 
   @override
   _SearchPageProductState createState() => _SearchPageProductState();
@@ -541,6 +540,15 @@ class _SearchPageProductState extends State<SearchPageProduct>
 
   @override
   Widget build(BuildContext context) {
+    var dashboardController = Get.find<DashboardController>();
+    print(selectedCategory);
+    print(dashboardController.categoryfilter.value.toString());
+    if (dashboardController.categoryfilter.value.toString() !=
+        selectedCategory) {
+      selectedCategory = dashboardController.categoryfilter.value.toString();
+      RerenderList();
+    }
+    print("cc $selectedCategory");
     return Material(
       color: Colors.white,
       child: SafeArea(
@@ -589,15 +597,12 @@ class _SearchPageProductState extends State<SearchPageProduct>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                message,
-                style:(
-                  status == "success" ?
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 18) :
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)
-                )
-
-              ),
+              Text(message,
+                  style: (status == "success"
+                      ? const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 18)
+                      : const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15))),
               (status == "success"
                   ? const Icon(Icons.check_circle_outline_outlined,
                       color: Colors.white, size: 20)
@@ -639,14 +644,13 @@ class _SearchPageProductState extends State<SearchPageProduct>
       RerenderList();
       buildFlashMessage("success", 'Xóa thành công!');
     } else {
-      if(check == 409){
-        buildFlashMessage("warning", 'Product đang có trong Order Details,\nkhông thể xóa');
-      }
-      else{
+      if (check == 409) {
+        buildFlashMessage(
+            "warning", 'Product đang có trong Order Details,\nkhông thể xóa');
+      } else {
         buildFlashMessage("error", 'Xóa thất bại!');
       }
     }
-
   }
 
   showDeleteAlert(BuildContext context, item) {

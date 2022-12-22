@@ -20,28 +20,26 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  late int _currentIndex = Get.find<DashboardController>().currentIndex;
-
   final _inactiveColor = Colors.grey;
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<DashboardController>();
-    return Scaffold(
-        body: getBody(), bottomNavigationBar: _buildBottomBar(controller));
+    return GetBuilder<DashboardController>(
+        builder: (mp) => Scaffold(
+            body: getBody(mp),
+            bottomNavigationBar: _buildBottomBar(controller)));
   }
 
   Widget _buildBottomBar(DashboardController controller) {
     return CustomAnimatedBottomBar(
       containerHeight: 70,
       backgroundColor: Colors.white,
-      selectedIndex: _currentIndex,
+      selectedIndex: controller.currentIndex.value,
       showElevation: true,
       itemCornerRadius: 24,
       curve: Curves.easeIn,
-      onItemSelected: (index) => {
-        controller.changeTabIndex(index),
-        setState(() => _currentIndex = index)
-      },
+      onItemSelected: (index) =>
+          {controller.changeTabIndex(index, 0), setState(() {})},
       items: <BottomNavyBarItem>[
         // BottomNavyBarItem(
         //   icon: const Icon(Icons.apps),
@@ -95,17 +93,20 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  Widget getBody() {
+  Widget getBody(DashboardController mp) {
     List<Widget> pages = [
       // HomePage(),
       CategoriesPage(),
-      SearchPageProduct(categorySelected: 0,),
+      SearchPageProduct(
+        categorySelected: mp.categoryfilter.value,
+      ),
       SearchPageOrder(),
       UsersPage(),
       RolesPage()
     ];
+
     return IndexedStack(
-      index: _currentIndex,
+      index: mp.currentIndex.value,
       children: pages,
     );
   }

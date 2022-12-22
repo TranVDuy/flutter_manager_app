@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_manager/pages/dashboard/dashboard_controller.dart';
+import 'package:product_manager/pages/products/products_controller.dart';
 import 'package:product_manager/pages/products/search_page_product.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -10,14 +11,14 @@ class CategoryCard extends StatelessWidget {
   final String assetPath;
   final int id;
 
-  CategoryCard({
-    required this.controller,
-    required this.begin,
-    required this.end,
-    required this.categoryName,
-    required this.assetPath,
-    required this.id
-  })  : height = Tween<double>(begin: 150, end: 250.0).animate(
+  CategoryCard(
+      {required this.controller,
+      required this.begin,
+      required this.end,
+      required this.categoryName,
+      required this.assetPath,
+      required this.id})
+      : height = Tween<double>(begin: 150, end: 250.0).animate(
           CurvedAnimation(
             parent: controller,
             curve: const Interval(
@@ -81,16 +82,20 @@ class CategoryCard extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: (){
-                  Get.find<DashboardController>().changeTabIndex(1);
-                  Get.to(SearchPageProduct(categorySelected: id,));
+                onTap: () {
+                  Get.find<DashboardController>().changeTabIndex(1, id);
+                  // Get.find<ProductsController>().changeCategoryFilter(id);
+
+                  // Get.to(SearchPageProduct(
+                  //   categorySelected: id,
+                  // ));
                 },
                 child: Container(
                   decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(24))),
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
                   child: Text(
                     'View more',
                     style: TextStyle(color: end, fontWeight: FontWeight.bold),
@@ -120,13 +125,12 @@ class StaggeredCardCard extends StatefulWidget {
   final String assetPath;
   final int id;
 
-  const StaggeredCardCard({
-    required this.begin,
-    required this.end,
-    required this.categoryName,
-    required this.assetPath,
-    required this.id
-  });
+  const StaggeredCardCard(
+      {required this.begin,
+      required this.end,
+      required this.categoryName,
+      required this.assetPath,
+      required this.id});
 
   @override
   _StaggeredCardCardState createState() => _StaggeredCardCardState();

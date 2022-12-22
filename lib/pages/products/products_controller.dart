@@ -15,6 +15,12 @@ import '../../utils/utils.dart';
 
 class ProductsController extends GetxController {
   final String title = "Products page!!!";
+  var categoryFilter = 0.obs;
+
+  void changeCategoryFilter(int index) {
+    categoryFilter = RxInt(index);
+    update();
+  }
 
   Future<List<Product>> getProducts(int? pageNum, String? search,
       String? column, String? option, List? category) async {
