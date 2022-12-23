@@ -101,6 +101,7 @@ class UsersController extends GetxController {
       "Accept": "application/json"
     });
     if (response.statusCode == 200) {
+      if (jsonDecode(response.body)['statusCode'] != null) return false;
       return true;
     } else {
       return false;

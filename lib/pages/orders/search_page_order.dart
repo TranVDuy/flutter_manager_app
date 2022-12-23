@@ -256,6 +256,7 @@ class _SearchPageOrderState extends State<SearchPageOrder>
                                                                   order_id:
                                                                       searchResult
                                                                           .order_id)));
+                                                  RerenderList();
                                                 }
                                               },
                                             ),
@@ -523,6 +524,7 @@ class _SearchPageOrderState extends State<SearchPageOrder>
 
   //Load list product
   RerenderList() {
+    page = 1;
     getListOrder(page, searchValue, "firstname", selectedPeriod);
   }
 
