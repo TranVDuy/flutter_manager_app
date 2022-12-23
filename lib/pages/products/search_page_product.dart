@@ -535,7 +535,7 @@ class _SearchPageProductState extends State<SearchPageProduct>
     var dashboardController = Get.find<DashboardController>();
     if (dashboardController.categoryfilter.value.toString() !=
             selectedCategory &&
-        dashboardController.reRenderProductPage as bool == true) {
+        dashboardController.reRenderProductPage == RxBool(true)) {
       selectedCategory = dashboardController.categoryfilter.value.toString();
       dashboardController.reRenderProductPage = RxBool(false);
       RerenderList();
