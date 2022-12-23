@@ -11,6 +11,7 @@ class Signin extends StatefulWidget {
 }
 
 class _SigninState extends State<Signin> {
+  var isLoading = false;
   var controller = Get.find<authController>();
   final TextEditingController _userName =
       TextEditingController(text: "admin@gmail.com");
@@ -22,7 +23,13 @@ class _SigninState extends State<Signin> {
 
   Login(BuildContext context) async {
     bool check;
+    setState(() {
+      isLoading = true;
+    });
     check = await controller.login(_userName.text, _password.text);
+    setState(() {
+      isLoading = false;
+    });
     if (check) {
       buildFlashMessage("success", 'Đăng Nhập Thành Công!');
       Get.to(Dashboard());
@@ -72,7 +79,7 @@ class _SigninState extends State<Signin> {
           children: [
             buildWelcome(context),
             const SizedBox(height: 70),
-            buildSignForm(context),
+            buildSignForm(context, isLoading),
             const SizedBox(
               height: 43,
             ),
@@ -108,7 +115,7 @@ class _SigninState extends State<Signin> {
     );
   }
 
-  buildSignForm(BuildContext context) {
+  buildSignForm(BuildContext context, var isLoading) {
     return Container(
       padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
       child: Form(
@@ -189,26 +196,33 @@ class _SigninState extends State<Signin> {
               SizedBox(
                 width: 70,
                 height: 70,
-                child: ElevatedButton(
-                  //handle Login
-                  onPressed: () {
-                    // GetPage(
-                    //   name: "/", page: ()=>Dashboard(),
-                    //   binding: DashboardBinding()
-                    // );
-                    Login(context);
-                  },
-                  child: const Icon(
-                    Icons.arrow_right_alt,
-                    size: 40,
-                  ),
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(35)))),
-                ),
+                child: isLoading
+                    ? CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                        valueColor:
+                            new AlwaysStoppedAnimation<Color>(Colors.blue),
+                      )
+                    : ElevatedButton(
+                        //handle Login
+                        onPressed: () {
+                          // GetPage(
+                          //   name: "/", page: ()=>Dashboard(),
+                          //   binding: DashboardBinding()
+                          // );
+                          Login(context);
+                        },
+                        child: const Icon(
+                          Icons.arrow_right_alt,
+                          size: 40,
+                        ),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.black),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(35)))),
+                      ),
               )
             ],
           ),

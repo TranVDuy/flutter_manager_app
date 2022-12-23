@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:product_manager/Login/Sigin.dart';
 import 'package:product_manager/model/category.dart';
 import 'package:product_manager/pages/categories/categories_controller.dart';
 import 'package:product_manager/pages/categories/staggered_category_card.dart';
@@ -36,17 +38,32 @@ class _CategoriesPageState extends State<CategoriesPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              const Align(
-                alignment: Alignment(-1, 0),
+               Align(
+                alignment: const Alignment(-1, 0),
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 16.0),
-                  child: const Text(
-                    'Category List',
-                    style: TextStyle(
-                      color: darkGrey,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                     const Text(
+                        'Category List',
+                        style: TextStyle(
+                          color: darkGrey,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          const Text("Sign out"),
+                          IconButton(onPressed: (){
+                            showSignOutAlert();
+                          }
+                          , icon: const Icon(FontAwesomeIcons.arrowRightFromBracket)
+                          ),
+                        ],
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -122,6 +139,44 @@ class _CategoriesPageState extends State<CategoriesPage> {
           ),
         ),
       ),
+    );
+  }
+
+  showSignOutAlert() {
+    // set up the buttons
+    Widget noButton = TextButton(
+      child: const Text(
+        "No",
+        style: TextStyle(color: Colors.red),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+
+    Widget yesButton = TextButton(
+      child: const Text("Yes", style: TextStyle(color: Colors.blue)),
+      onPressed: () {
+        Navigator.pop(context);
+        Get.to(Signin());
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: const Text("Sign out"),
+      content: const Text("Đăng xuất hệ thống?"),
+      actions: [
+        noButton,
+        yesButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
