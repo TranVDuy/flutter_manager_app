@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import '../../app_properties.dart';
 import '../../model/product.dart';
 import '../categories/categories_controller.dart';
+import 'view_product_controller.dart';
 
 class SearchPageProduct extends StatefulWidget {
   @override
@@ -24,6 +25,7 @@ class _SearchPageProductState extends State<SearchPageProduct>
   var categoriesController = Get.find<CategoriesController>();
   bool isLoading = false;
   ScrollController scrollController = ScrollController();
+
   // int totalRecord = 0;
 
   String selectedPeriod = "";
@@ -281,12 +283,10 @@ class _SearchPageProductState extends State<SearchPageProduct>
                                             )
                                           ],
                                           child: InkWell(
-                                            onTap: () => Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        ViewProductPage(
-                                                          product: searchResult,
-                                                        ))),
+                                            onTap: () => {
+                                              Get.put(ViewProductController()).handleChangeProductView(searchResult),
+                                              Get.to(ViewProductPage())
+                                            },
                                             child: Column(
                                               children: <Widget>[
                                                 Row(

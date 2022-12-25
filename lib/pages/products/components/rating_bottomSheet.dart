@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:product_manager/model/product.dart';
 
 import '../../../app_properties.dart';
 
 class RatingBottomSheet extends StatefulWidget {
+  final Product product;
+
+  RatingBottomSheet({required this.product});
   @override
   _RatingBottomSheetState createState() => _RatingBottomSheetState();
 }
@@ -33,13 +37,13 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                     shape: BoxShape.circle,
                     boxShadow: shadow,
                     border: Border.all(width: 8.0, color: Colors.white)),
-                child: Image.asset('assets/headphones.png'),
+                child: Image.network('${BASE_IMG}${widget.product.image}',)
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 72.0, vertical: 16.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 72.0, vertical: 16.0),
                 child: Text(
-                  'Boat Rockerz 350 On-Ear Bluetooth Headphones',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  widget.product.description,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
               )
@@ -115,7 +119,7 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                             child: CircleAvatar(
                               maxRadius: 14,
                               backgroundImage:
-                                  AssetImage('assets/background.jpg'),
+                                  AssetImage('assets/anavatar.png'),
                             ),
                           ),
                           Expanded(
@@ -126,13 +130,13 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    const Text(
-                                      'Billy Holand',
+                                  children: const <Widget>[
+                                    Text(
+                                      'An đẹp trai',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    const Text(
+                                    Text(
                                       '10 am, Via iOS',
                                       style: TextStyle(
                                           color: Colors.grey, fontSize: 10.0),
@@ -167,7 +171,7 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                                   ),
                                 ),
                                 const Text(
-                                  'Not as I expected! ... I`m really sad',
+                                  'Đep quá!!!!!!!!!!',
                                   style: TextStyle(
                                     color: Colors.grey,
                                   ),

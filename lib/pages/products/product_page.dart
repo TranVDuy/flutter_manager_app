@@ -28,7 +28,7 @@ class _ProductPageState extends State<ProductPage> {
     Widget viewProductButton = InkWell(
       onTap: () => Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => ViewProductPage(
-                product: product,
+                // product: product,
               ))),
       child: Container(
         height: 80,

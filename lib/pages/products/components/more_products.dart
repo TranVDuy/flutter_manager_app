@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_manager/pages/products/components/product_card.dart';
+import 'package:product_manager/pages/products/view_product_controller.dart';
 
 import '../../../app_properties.dart';
 import '../../../model/product.dart';
 import '../products_controller.dart';
 
 class MoreProducts extends StatefulWidget {
-  final Product product;
-  MoreProducts({required this.product});
+  // final Product product;
+  // MoreProducts({required this.product});
 
   @override
   State<MoreProducts> createState() => _MoreProductsState();
@@ -16,6 +17,7 @@ class MoreProducts extends StatefulWidget {
 
 class _MoreProductsState extends State<MoreProducts> {
   late List<Product> products = [];
+  var controllerView = Get.find<ViewProductController>();
   var controller = Get.find<ProductsController>();
 
   getListProduct(int Page, String selectedCategory, String search,
@@ -43,7 +45,7 @@ class _MoreProductsState extends State<MoreProducts> {
   @override
   initState() {
     getListProduct(
-        1, widget.product.category[0].id.toString(), "", "name", "0");
+        1, controllerView.productView.category[0].id.toString(), "", "name", "0");
     super.initState();
   }
 
@@ -67,9 +69,6 @@ class _MoreProductsState extends State<MoreProducts> {
             itemCount: products.length,
             itemBuilder: (_, index) {
               return Padding(
-
-                  ///calculates the left and right margins
-                  ///to be even with the screen margin
                   padding: index == 0
                       ? const EdgeInsets.only(left: 24.0, right: 8.0)
                       : index == 4

@@ -12,6 +12,7 @@ import 'package:product_manager/pages/orders/orders_controller.dart';
 import 'package:product_manager/pages/products/product_edit.dart';
 import 'package:product_manager/pages/products/product_create.dart';
 import 'package:product_manager/pages/products/products_controller.dart';
+import 'package:product_manager/pages/products/view_product_controller.dart';
 import 'package:product_manager/pages/products/view_product_page.dart';
 import 'package:rubber/rubber.dart';
 import 'package:get/get.dart';
@@ -242,12 +243,10 @@ class _HomeDrawerState extends State<HomeDrawer>
                                 children: searchResults
                                     .map((searchResult) => Container(
                                           child: InkWell(
-                                            onTap: () => Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        ViewProductPage(
-                                                          product: searchResult,
-                                                        ))),
+                                            onTap: () {
+                                              Get.put(ViewProductController()).handleChangeProductView(searchResult);
+                                              Get.to(ViewProductPage());
+                                            },
                                             child: Column(
                                               children: <Widget>[
                                                 Row(

@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../view_product_controller.dart';
+import 'package:product_manager/pages/products/view_product_page.dart';
 
 import '../../../app_properties.dart';
 import '../../../model/product.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
+  var controller = Get.find<ViewProductController>();
 
   ProductCard(this.product);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: null,
+        onTap: (){
+          controller.handleChangeProductView(product);
+        },
         child: Container(
             height: 250,
             width: MediaQuery.of(context).size.width / 2 - 29,
