@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_manager/Login/Sigin.dart';
@@ -11,20 +12,23 @@ class Signup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(color: Colors.orange[300]),
-        child: Column(
-          children: [
-            buildCreatAccount(context),
-            const SizedBox(
-              height: 27,
-            ),
-            buildFormCreateAccount(context),
-            const SizedBox(
-              height: 5,
-            ),
-            buildTextSignin(context)
-          ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          decoration: BoxDecoration(color: Colors.orange[300]),
+          child: Column(
+            children: [
+              buildCreatAccount(context),
+              const SizedBox(
+                height: 27,
+              ),
+              buildFormCreateAccount(context),
+              const SizedBox(
+                height: 5,
+              ),
+              buildTextSignin(context)
+            ],
+          ),
         ),
       ),
     );

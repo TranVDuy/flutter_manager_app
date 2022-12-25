@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_manager/Login/Signup.dart';
@@ -73,18 +74,21 @@ class _SigninState extends State<Signin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(color: Colors.orange[300]),
-        child: Column(
-          children: [
-            buildWelcome(context),
-            const SizedBox(height: 70),
-            buildSignForm(context, isLoading),
-            const SizedBox(
-              height: 43,
-            ),
-            buildTextSignUp(context)
-          ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          decoration: BoxDecoration(color: Colors.orange[300]),
+          child: Column(
+            children: [
+              buildWelcome(context),
+              const SizedBox(height: 70),
+              buildSignForm(context, isLoading),
+              const SizedBox(
+                height: 43,
+              ),
+              buildTextSignUp(context)
+            ],
+          ),
         ),
       ),
     );
