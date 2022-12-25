@@ -29,7 +29,7 @@ class _UsersPageState extends State<UsersPage> {
   int totalRecord = 0;
 
   getFrequentUsers() async {
-    var temp = await controller.getUsers(page, "");
+    var temp = await controller.getUsers(1, "");
     setState(() {
       frequentUsers = temp;
     });
@@ -83,7 +83,7 @@ class _UsersPageState extends State<UsersPage> {
     bool check;
     check = await controller.deleteUser(item.id);
     check
-        ? buildFlashMessage("success", 'Xóa user thành công!')
+        ? {buildFlashMessage("success", 'Xóa user thành công!'), RerenderList()}
         : buildFlashMessage("error", 'Xóa user thất bại!');
   }
 
@@ -136,6 +136,15 @@ class _UsersPageState extends State<UsersPage> {
   void editCallback() async {
     page = 1;
     var temp = await controller.getUsers(page, searchController.text);
+    setState(() {
+      searchResults = temp;
+    });
+  }
+
+  RerenderList() async {
+    page = 1;
+    var temp = await controller.getUsers(page, searchController.text);
+    getFrequentUsers();
     setState(() {
       searchResults = temp;
     });
@@ -346,8 +355,11 @@ class _UsersPageState extends State<UsersPage> {
                           Icons.add,
                           size: 22,
                         ),
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(builder: (_) => UserCreate())),
+                        onTap: () {
+                          Navigator.of(context).push(
+                              MaterialPageRoute(builder: (_) => UserCreate()));
+                          RerenderList();
+                        },
                       )
                     ],
                   ),
@@ -382,6 +394,7 @@ class _UsersPageState extends State<UsersPage> {
                                                                 callBack:
                                                                     editCallback,
                                                               )));
+                                                  RerenderList();
                                                 }),
                                             IconSlideAction(
                                               caption: 'Delete',

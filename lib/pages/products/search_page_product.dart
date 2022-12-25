@@ -612,6 +612,7 @@ class _SearchPageProductState extends State<SearchPageProduct>
 
   //Load list product
   RerenderList() {
+    page = 1;
     if (selectedPeriod != "") {
       getListProduct(
           page, selectedCategory, searchValue, "name", selectedPeriod);
@@ -632,8 +633,8 @@ class _SearchPageProductState extends State<SearchPageProduct>
     });
 
     if (check == 200) {
-      RerenderList();
       buildFlashMessage("success", 'Xóa thành công!');
+      RerenderList();
     } else {
       if (check == 409) {
         buildFlashMessage(
