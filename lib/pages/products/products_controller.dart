@@ -64,13 +64,9 @@ class ProductsController extends GetxController {
 
       if (!kIsWeb) {
         if (pickedImage != null) {
-          File imageFile = File(pickedImage.toString());
-          var stream =
-              new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
-          var length = await imageFile.length();
-          var multipartFile = new http.MultipartFile("photo", stream, length,
-              filename: basename(imageFile.path));
-          request.files.add(multipartFile);
+          var pic =
+              await http.MultipartFile.fromPath("photo", pickedImage.path);
+          request.files.add(pic);
         }
       }
       var response = await request.send();
@@ -111,13 +107,9 @@ class ProductsController extends GetxController {
 
       if (!kIsWeb) {
         if (pickedImage != null) {
-          File imageFile = File(pickedImage.toString());
-          var stream =
-              new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
-          var length = await imageFile.length();
-          var multipartFile = new http.MultipartFile("photo", stream, length,
-              filename: basename(imageFile.path));
-          request.files.add(multipartFile);
+          var pic =
+              await http.MultipartFile.fromPath("photo", pickedImage.path);
+          request.files.add(pic);
         }
       }
 
