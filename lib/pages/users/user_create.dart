@@ -102,6 +102,7 @@ class _UserCreateState extends State<UserCreate> {
                   callback: () {},
                   canEdit: false,
                   webImage: null,
+                  pickedImage: null,
                 )),
                 buildUserInfoDisplay('First Name', controllerFirstName,
                     const Icon(Icons.people)),
@@ -142,51 +143,53 @@ class _UserCreateState extends State<UserCreate> {
               const SizedBox(
                 height: 1,
               ),
-              title == "Phone" ?
-                  TextFormField(
-                    controller: textController,
-                    obscureText: title == "Password",
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    style: const TextStyle(color: Colors.black),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                    ],
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      hintText: title.toString(),
+              title == "Phone"
+                  ? TextFormField(
+                      controller: textController,
+                      obscureText: title == "Password",
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      style: const TextStyle(color: Colors.black),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        hintText: title.toString(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "$title is required";
+                        } else if (value.length < 2) {
+                          return "$title is at least 2 character";
+                        }
+                        return null;
+                      },
+                    )
+                  : TextFormField(
+                      controller: textController,
+                      obscureText: title == "Password",
+                      enableSuggestions: false,
+                      autocorrect: false,
+                      style: const TextStyle(color: Colors.black),
+                      decoration: InputDecoration(
+                        border: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        hintText: title.toString(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "$title is required";
+                        } else if (value.length < 2) {
+                          return "$title is at least 2 character";
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "$title is required";
-                      } else if (value.length < 2) {
-                        return "$title is at least 2 character";
-                      }
-                      return null;
-                    },
-                  ) :
-              TextFormField(
-                controller: textController,
-                obscureText: title == "Password",
-                enableSuggestions: false,
-                autocorrect: false,
-                style: const TextStyle(color: Colors.black),
-                decoration: InputDecoration(
-                  border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  hintText: title.toString(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "$title is required";
-                  } else if (value.length < 2) {
-                    return "$title is at least 2 character";
-                  }
-                  return null;
-                },
-              ),
             ],
           ));
 

@@ -140,10 +140,12 @@ class _ProductEditState extends State<ProductEdit> {
                       children: [
                         InkWell(
                             child: DisplayImage(
-                                imagePath: '${BASE_IMG}${widget.product.image}',
-                                callback: _pickImage,
-                                canEdit: true,
-                                webImage: webImage)),
+                          imagePath: '${BASE_IMG}${widget.product.image}',
+                          callback: _pickImage,
+                          canEdit: true,
+                          webImage: webImage,
+                          pickedImage: pickedImage,
+                        )),
                         buildDroplistCategory(Cate),
                         buildProductInfoDisplay(
                             'Name', controllerName, const Icon(Icons.people)),
@@ -177,7 +179,6 @@ class _ProductEditState extends State<ProductEdit> {
             ),
             const SizedBox(height: 1),
             Container(
-                width: 350,
                 height: 150,
                 decoration: const BoxDecoration(
                     border: Border(
@@ -292,8 +293,14 @@ class _ProductEditState extends State<ProductEdit> {
           setState(() {
             isLoading = true;
           });
-          var check = await product_controller.editProduct(widget.product.id,
-              Cate.toString(), name, description, num.parse(price), webImage);
+          var check = await product_controller.editProduct(
+              widget.product.id,
+              Cate.toString(),
+              name,
+              description,
+              num.parse(price),
+              webImage,
+              pickedImage);
           setState(() {
             isLoading = false;
           });

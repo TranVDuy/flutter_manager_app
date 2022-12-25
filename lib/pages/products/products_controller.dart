@@ -1,6 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:path/path.dart';
+import 'package:async/async.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 // import 'dart:ffi';
 import 'package:http_parser/http_parser.dart';
 import 'package:path_provider/path_provider.dart';
@@ -41,7 +45,7 @@ class ProductsController extends GetxController {
   }
 
   Future<bool> createProduct(Uint8List? imageCreate, String name,
-      String category, String description, num price) async {
+      String category, String description, num price, File? pickedImage) async {
     if (name.isNotEmpty && price > 0 && description.isNotEmpty) {
       var url = "${BASE_API}products";
       var request = await http.MultipartRequest("POST", Uri.parse(url));
@@ -50,10 +54,23 @@ class ProductsController extends GetxController {
       request.fields['price'] = price.toString();
       request.fields['category'] = category.toString();
 
-      if (imageCreate != null) {
-        request.files.add(http.MultipartFile.fromBytes('photo', imageCreate!,
-            filename: 'createImage.jpg',
-            contentType: new MediaType('image', 'jpg')));
+      if (kIsWeb) {
+        if (imageCreate != null) {
+          request.files.add(http.MultipartFile.fromBytes('photo', imageCreate,
+              filename: 'updateImage.jpg',
+              contentType: new MediaType('image', 'jpg')));
+        }
+      }
+
+      if (!kIsWeb) {
+        if (pickedImage != null) {
+          var stream = new http.ByteStream(
+              DelegatingStream.typed(pickedImage.openRead()));
+          var length = await pickedImage.length();
+          var multipartFile = new http.MultipartFile('file', stream, length,
+              filename: basename(pickedImage.path));
+          request.files.add(multipartFile);
+        }
       }
       var response = await request.send();
 
@@ -66,8 +83,14 @@ class ProductsController extends GetxController {
     return false;
   }
 
-  Future<bool> editProduct(String productId, String idCategory, String name,
-      String description, num price, Uint8List? imageUpdate) async {
+  Future<bool> editProduct(
+      String productId,
+      String idCategory,
+      String name,
+      String description,
+      num price,
+      Uint8List? imageUpdate,
+      File? pickedImage) async {
     if (name.isNotEmpty && price > 0 && description.isNotEmpty) {
       var url = "${BASE_API}products/$productId";
 
@@ -77,11 +100,25 @@ class ProductsController extends GetxController {
       request.fields['price'] = price.toString();
       request.fields['category'] = idCategory;
 
-      if (imageUpdate != null) {
-        request.files.add(http.MultipartFile.fromBytes('photo', imageUpdate!,
-            filename: 'updateImage.jpg',
-            contentType: new MediaType('image', 'jpg')));
+      if (kIsWeb) {
+        if (imageUpdate != null) {
+          request.files.add(http.MultipartFile.fromBytes('photo', imageUpdate,
+              filename: 'updateImage.jpg',
+              contentType: new MediaType('image', 'jpg')));
+        }
       }
+
+      if (!kIsWeb) {
+        if (pickedImage != null) {
+          var stream = new http.ByteStream(
+              DelegatingStream.typed(pickedImage.openRead()));
+          var length = await pickedImage.length();
+          var multipartFile = new http.MultipartFile('file', stream, length,
+              filename: basename(pickedImage.path));
+          request.files.add(multipartFile);
+        }
+      }
+
       var response = await request.send();
       if (response.statusCode == 200) {
         return true;

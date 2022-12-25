@@ -134,6 +134,7 @@ class _ProductCreateState extends State<ProductCreate> {
                                 imagePath: '',
                                 callback: _pickImage,
                                 canEdit: true,
+                                pickedImage: pickedImage,
                                 webImage: webImage)),
                         buildDroplistCategory(Cate),
                         buildProductInfoDisplay(
@@ -168,7 +169,6 @@ class _ProductCreateState extends State<ProductCreate> {
             ),
             const SizedBox(height: 1),
             Container(
-                width: 350,
                 height: 150,
                 decoration: const BoxDecoration(
                     border: Border(
@@ -286,7 +286,7 @@ class _ProductCreateState extends State<ProductCreate> {
             isLoading = true;
           });
           var check = await product_controller.createProduct(webImage, name,
-              category.toString(), description, num.parse(price));
+              category.toString(), description, num.parse(price), pickedImage);
           setState(() {
             isLoading = false;
           });

@@ -1,4 +1,3 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:product_manager/Login/Sigin.dart';
@@ -15,13 +14,7 @@ import 'pages/products/products_controller.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await init();
-  runApp(DevicePreview(
-      builder: (context) => GetMaterialApp(
-          useInheritedMediaQuery: true,
-          builder: DevicePreview.appBuilder,
-          locale: Get.locale,
-          debugShowCheckedModeBanner: false,
-          home: Signin())));
+  runApp(GetMaterialApp(debugShowCheckedModeBanner: false, home: Signin()));
 }
 
 Future<void> init() async {

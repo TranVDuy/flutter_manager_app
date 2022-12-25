@@ -29,18 +29,20 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
           Column(
             children: <Widget>[
               Container(
-                padding: const EdgeInsets.all(8.0),
-                height: 92,
-                width: 92,
-                decoration: BoxDecoration(
-                    color: yellow,
-                    shape: BoxShape.circle,
-                    boxShadow: shadow,
-                    border: Border.all(width: 8.0, color: Colors.white)),
-                child: Image.network('${BASE_IMG}${widget.product.image}',)
-              ),
+                  padding: const EdgeInsets.all(8.0),
+                  height: 92,
+                  width: 92,
+                  decoration: BoxDecoration(
+                      color: yellow,
+                      shape: BoxShape.circle,
+                      boxShadow: shadow,
+                      border: Border.all(width: 8.0, color: Colors.white)),
+                  child: Image.network(
+                    '${BASE_IMG}${widget.product.image}',
+                  )),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 72.0, vertical: 16.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 72.0, vertical: 16.0),
                 child: Text(
                   widget.product.description,
                   style: const TextStyle(fontWeight: FontWeight.bold),
@@ -189,13 +191,6 @@ class _RatingBottomSheetState extends State<RatingBottomSheet> {
                                             color: Colors.grey[400],
                                             fontSize: 10.0),
                                       ),
-                                      const Text(
-                                        '1 Comment',
-                                        style: TextStyle(
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 10.0),
-                                      )
                                     ],
                                   ),
                                 )

@@ -78,7 +78,7 @@ class _OrderEditState extends State<OrderEdit> {
         vertical: size.height * 0.025,
       ),
       child: Container(
-        height: size.height * 0.19,
+        height: 175,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: const BorderRadius.all(
