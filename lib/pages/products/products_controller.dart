@@ -45,7 +45,7 @@ class ProductsController extends GetxController {
   }
 
   Future<bool> createProduct(Uint8List? imageCreate, String name,
-      String category, String description, num price, File? pickedImage) async {
+      String category, String description, num price, String imagePath) async {
     if (name.isNotEmpty && price > 0 && description.isNotEmpty) {
       var url = "${BASE_API}products";
       var request = await http.MultipartRequest("POST", Uri.parse(url));
@@ -63,9 +63,12 @@ class ProductsController extends GetxController {
       }
 
       if (!kIsWeb) {
-        if (pickedImage != null) {
-          var pic =
-              await http.MultipartFile.fromPath("photo", pickedImage.path);
+        if (imagePath != "") {
+          var pic = await http.MultipartFile.fromPath(
+            "photo",
+            imagePath,
+            filename: 'updateImage.jpg',
+          );
           request.files.add(pic);
         }
       }
@@ -87,7 +90,7 @@ class ProductsController extends GetxController {
       String description,
       num price,
       Uint8List? imageUpdate,
-      File? pickedImage) async {
+      String imagePath) async {
     if (name.isNotEmpty && price > 0 && description.isNotEmpty) {
       var url = "${BASE_API}products/$productId";
 
@@ -105,10 +108,16 @@ class ProductsController extends GetxController {
         }
       }
 
+      print("anhantestcainay");
+      print(kIsWeb);
+      print(imagePath);
       if (!kIsWeb) {
-        if (pickedImage != null) {
-          var pic =
-              await http.MultipartFile.fromPath("photo", pickedImage.path);
+        if (imagePath != "") {
+          var pic = await http.MultipartFile.fromPath(
+            "photo",
+            imagePath,
+            filename: 'updateImage.jpg',
+          );
           request.files.add(pic);
         }
       }

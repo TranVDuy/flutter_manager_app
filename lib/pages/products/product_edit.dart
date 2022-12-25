@@ -39,6 +39,7 @@ class _ProductEditState extends State<ProductEdit> {
   final ImagePicker picker = ImagePicker();
   File? pickedImage;
   Uint8List? webImage;
+  String imagePath = "";
 
   buildFlashMessage(String status, String message) {
     return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -77,6 +78,7 @@ class _ProductEditState extends State<ProductEdit> {
       final ImagePicker _picker = ImagePicker();
       XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
+        imagePath = image.path;
         var selected = File(image.path);
         setState(() {
           pickedImage = selected;
@@ -86,6 +88,7 @@ class _ProductEditState extends State<ProductEdit> {
       final ImagePicker _picker = ImagePicker();
       XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
+        imagePath = "";
         var f = await image.readAsBytes();
         setState(() {
           webImage = f;
@@ -300,7 +303,7 @@ class _ProductEditState extends State<ProductEdit> {
               description,
               num.parse(price),
               webImage,
-              pickedImage);
+              imagePath);
           setState(() {
             isLoading = false;
           });

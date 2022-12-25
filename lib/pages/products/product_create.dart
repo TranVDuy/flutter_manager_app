@@ -32,6 +32,7 @@ class _ProductCreateState extends State<ProductCreate> {
   final TextEditingController controllerDescription = TextEditingController();
   final ImagePicker picker = ImagePicker();
   File? pickedImage;
+  String imagePath = "";
   Uint8List? webImage;
 
   buildFlashMessage(String status, String message) {
@@ -71,6 +72,7 @@ class _ProductCreateState extends State<ProductCreate> {
       final ImagePicker _picker = ImagePicker();
       XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
+        imagePath = image.path;
         var selected = File(image.path);
         setState(() {
           pickedImage = selected;
@@ -80,6 +82,7 @@ class _ProductCreateState extends State<ProductCreate> {
       final ImagePicker _picker = ImagePicker();
       XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
+        imagePath = "";
         var f = await image.readAsBytes();
         setState(() {
           webImage = f;
@@ -286,7 +289,7 @@ class _ProductCreateState extends State<ProductCreate> {
             isLoading = true;
           });
           var check = await product_controller.createProduct(webImage, name,
-              category.toString(), description, num.parse(price), pickedImage);
+              category.toString(), description, num.parse(price), imagePath);
           setState(() {
             isLoading = false;
           });
