@@ -99,7 +99,6 @@ class _UserEditState extends State<UserEdit> {
                 callback: () {},
                 canEdit: false,
                 webImage: null,
-                pickedImage: null,
               )),
               buildUserInfoDisplay(
                   'First Name', controllerFirstName, const Icon(Icons.people)),

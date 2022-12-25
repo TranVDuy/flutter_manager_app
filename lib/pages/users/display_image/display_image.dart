@@ -9,17 +9,15 @@ class DisplayImage extends StatelessWidget {
   final Function callback;
   final bool canEdit;
   final Uint8List? webImage;
-  final File? pickedImage;
 
   // Constructor
-  const DisplayImage(
-      {Key? key,
-      required this.imagePath,
-      required this.callback,
-      required this.canEdit,
-      required this.webImage,
-      required this.pickedImage})
-      : super(key: key);
+  const DisplayImage({
+    Key? key,
+    required this.imagePath,
+    required this.callback,
+    required this.canEdit,
+    required this.webImage,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,14 +38,8 @@ class DisplayImage extends StatelessWidget {
 
   // Builds Profile Image
   Widget buildImage(Color color) {
-    var image;
-    if (kIsWeb)
-      image =
-          webImage != null ? MemoryImage(webImage!) : NetworkImage(imagePath);
-    if (!kIsWeb)
-      image = pickedImage != null
-          ? FileImage(pickedImage!)
-          : NetworkImage(imagePath);
+    var image =
+        webImage != null ? MemoryImage(webImage!) : NetworkImage(imagePath);
 
     return CircleAvatar(
       radius: 75,

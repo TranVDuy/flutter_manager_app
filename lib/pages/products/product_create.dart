@@ -31,8 +31,6 @@ class _ProductCreateState extends State<ProductCreate> {
   final TextEditingController controllerImage = TextEditingController();
   final TextEditingController controllerDescription = TextEditingController();
   final ImagePicker picker = ImagePicker();
-  File? pickedImage;
-  String imagePath = "";
   Uint8List? webImage;
 
   buildFlashMessage(String status, String message) {
@@ -72,21 +70,18 @@ class _ProductCreateState extends State<ProductCreate> {
       final ImagePicker _picker = ImagePicker();
       XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
-        imagePath = image.path;
-        var selected = File(image.path);
+        var f = await image.readAsBytes();
         setState(() {
-          pickedImage = selected;
+          webImage = f;
         });
       }
     } else if (kIsWeb) {
       final ImagePicker _picker = ImagePicker();
       XFile? image = await _picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
-        imagePath = "";
         var f = await image.readAsBytes();
         setState(() {
           webImage = f;
-          pickedImage = File("a");
         });
       }
     }
@@ -137,7 +132,6 @@ class _ProductCreateState extends State<ProductCreate> {
                                 imagePath: '',
                                 callback: _pickImage,
                                 canEdit: true,
-                                pickedImage: pickedImage,
                                 webImage: webImage)),
                         buildDroplistCategory(Cate),
                         buildProductInfoDisplay(
@@ -289,7 +283,7 @@ class _ProductCreateState extends State<ProductCreate> {
             isLoading = true;
           });
           var check = await product_controller.createProduct(webImage, name,
-              category.toString(), description, num.parse(price), imagePath);
+              category.toString(), description, num.parse(price));
           setState(() {
             isLoading = false;
           });

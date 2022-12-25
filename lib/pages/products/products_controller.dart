@@ -45,7 +45,7 @@ class ProductsController extends GetxController {
   }
 
   Future<bool> createProduct(Uint8List? imageCreate, String name,
-      String category, String description, num price, String imagePath) async {
+      String category, String description, num price) async {
     if (name.isNotEmpty && price > 0 && description.isNotEmpty) {
       var url = "${BASE_API}products";
       var request = await http.MultipartRequest("POST", Uri.parse(url));
@@ -54,24 +54,12 @@ class ProductsController extends GetxController {
       request.fields['price'] = price.toString();
       request.fields['category'] = category.toString();
 
-      if (kIsWeb) {
-        if (imageCreate != null) {
-          request.files.add(http.MultipartFile.fromBytes('photo', imageCreate,
-              filename: 'updateImage.jpg',
-              contentType: new MediaType('image', 'jpg')));
-        }
+      if (imageCreate != null) {
+        request.files.add(http.MultipartFile.fromBytes('photo', imageCreate,
+            filename: 'updateImage.jpg',
+            contentType: new MediaType('image', 'jpg')));
       }
 
-      if (!kIsWeb) {
-        if (imagePath != "") {
-          var pic = await http.MultipartFile.fromPath(
-            "photo",
-            imagePath,
-            filename: 'updateImage.jpg',
-          );
-          request.files.add(pic);
-        }
-      }
       var response = await request.send();
 
       if (response.statusCode == 201) {
@@ -84,13 +72,13 @@ class ProductsController extends GetxController {
   }
 
   Future<bool> editProduct(
-      String productId,
-      String idCategory,
-      String name,
-      String description,
-      num price,
-      Uint8List? imageUpdate,
-      String imagePath) async {
+    String productId,
+    String idCategory,
+    String name,
+    String description,
+    num price,
+    Uint8List? imageUpdate,
+  ) async {
     if (name.isNotEmpty && price > 0 && description.isNotEmpty) {
       var url = "${BASE_API}products/$productId";
 
@@ -100,26 +88,10 @@ class ProductsController extends GetxController {
       request.fields['price'] = price.toString();
       request.fields['category'] = idCategory;
 
-      if (kIsWeb) {
-        if (imageUpdate != null) {
-          request.files.add(http.MultipartFile.fromBytes('photo', imageUpdate,
-              filename: 'updateImage.jpg',
-              contentType: new MediaType('image', 'jpg')));
-        }
-      }
-
-      print("anhantestcainay");
-      print(kIsWeb);
-      print(imagePath);
-      if (!kIsWeb) {
-        if (imagePath != "") {
-          var pic = await http.MultipartFile.fromPath(
-            "photo",
-            imagePath,
+      if (imageUpdate != null) {
+        request.files.add(http.MultipartFile.fromBytes('photo', imageUpdate,
             filename: 'updateImage.jpg',
-          );
-          request.files.add(pic);
-        }
+            contentType: new MediaType('image', 'jpg')));
       }
 
       var response = await request.send();

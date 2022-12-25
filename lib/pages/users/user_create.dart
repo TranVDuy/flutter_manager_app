@@ -102,7 +102,6 @@ class _UserCreateState extends State<UserCreate> {
                   callback: () {},
                   canEdit: false,
                   webImage: null,
-                  pickedImage: null,
                 )),
                 buildUserInfoDisplay('First Name', controllerFirstName,
                     const Icon(Icons.people)),
