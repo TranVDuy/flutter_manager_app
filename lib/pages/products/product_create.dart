@@ -100,50 +100,54 @@ class _ProductCreateState extends State<ProductCreate> {
         elevation: 0.0,
         iconTheme: const IconThemeData(color: darkGrey),
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              const Center(
-                  child: Padding(
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: Text(
-                        'Create Product',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700,
-                          color: Color.fromRGBO(64, 105, 225, 1),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const Center(
+                      child: Padding(
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: Text(
+                            'Create Product',
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700,
+                              color: Color.fromRGBO(64, 105, 225, 1),
+                            ),
+                          ))),
+                  isLoading
+                      ? Opacity(
+                          opacity: 0.80,
+                          child: Container(
+                            alignment: Alignment.center,
+                            color: Colors.white70,
+                            child: const CircularProgressIndicator(),
+                          ))
+                      : Column(
+                          children: [
+                            InkWell(
+                                child: DisplayImage(
+                                    imagePath: '',
+                                    callback: _pickImage,
+                                    canEdit: true,
+                                    webImage: webImage)),
+                            buildDroplistCategory(Cate),
+                            buildProductInfoDisplay('Name', controllerName,
+                                const Icon(Icons.people)),
+                            buildProductInfoDisplay('Price', controllerPrice,
+                                const Icon(Icons.money)),
+                            buildDescription(controllerDescription),
+                            const SizedBox(height: 10),
+                            buildSubmit(context)
+                          ],
                         ),
-                      ))),
-              isLoading
-                  ? Opacity(
-                      opacity: 0.80,
-                      child: Container(
-                        alignment: Alignment.center,
-                        color: Colors.white70,
-                        child: const CircularProgressIndicator(),
-                      ))
-                  : Column(
-                      children: [
-                        InkWell(
-                            child: DisplayImage(
-                                imagePath: '',
-                                callback: _pickImage,
-                                canEdit: true,
-                                webImage: webImage)),
-                        buildDroplistCategory(Cate),
-                        buildProductInfoDisplay(
-                            'Name', controllerName, const Icon(Icons.people)),
-                        buildProductInfoDisplay(
-                            'Price', controllerPrice, const Icon(Icons.money)),
-                        buildDescription(controllerDescription),
-                        const SizedBox(height: 10),
-                        buildSubmit(context)
-                      ],
-                    ),
-            ],
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -295,7 +299,7 @@ class _ProductCreateState extends State<ProductCreate> {
           Navigator.pop(context);
         }
       },
-      child: const Text("Create"),
+      child: const Text("Create", overflow: TextOverflow.ellipsis),
     );
   }
 

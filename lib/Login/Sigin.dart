@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:product_manager/Login/Signup.dart';
 
 import '../pages/dashboard/dashboard.dart';
 import 'auth_controller.dart';
@@ -86,7 +85,6 @@ class _SigninState extends State<Signin> {
               const SizedBox(
                 height: 43,
               ),
-              buildTextSignUp(context)
             ],
           ),
         ),
@@ -231,31 +229,6 @@ class _SigninState extends State<Signin> {
             ],
           ),
         ]),
-      ),
-    );
-  }
-
-  buildTextSignUp(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: () {
-              //  Chuyển qua signup
-              Get.to(Signup());
-            },
-            child: const Text(
-              "Sign up",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                decoration: TextDecoration.underline,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }
