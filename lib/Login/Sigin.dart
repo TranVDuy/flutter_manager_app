@@ -34,7 +34,7 @@ class _SigninState extends State<Signin> {
       buildFlashMessage("success", 'Đăng Nhập Thành Công!');
       Get.to(Dashboard());
     } else {
-      buildFlashMessage("error", 'Đăng Nhập Thất Bại, thử lại sau!');
+      buildFlashMessage("error", 'Đăng Nhập Thất Bại!');
     }
   }
 
@@ -83,7 +83,7 @@ class _SigninState extends State<Signin> {
               const SizedBox(height: 70),
               buildSignForm(context, isLoading),
               const SizedBox(
-                height: 43,
+                height: 92,
               ),
             ],
           ),
