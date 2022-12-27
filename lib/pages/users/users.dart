@@ -266,7 +266,7 @@ class _UsersPageState extends State<UsersPage> {
                     ),
                   ),
                 ),
-                Expanded(
+                Container(
                     child: Center(
                   child: frequentUsers.length == 0
                       ? const CupertinoActivityIndicator()
