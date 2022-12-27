@@ -19,7 +19,6 @@ class authController extends GetxController {
           "Accept": "application/json"
         },
         body: bodyData);
-
     if (response.statusCode == 200) {
       return true;
     } else {

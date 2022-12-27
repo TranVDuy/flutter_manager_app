@@ -96,8 +96,8 @@ class _OrderEditState extends State<OrderEdit> {
                     vertical: size.height * 0.023,
                     horizontal: size.width * 0.025,
                   ),
-                  child: Image.asset(
-                    "duytran.jpg",
+                  child: Image.network(
+                    "https://i.imgur.com/4EZ252n.jpg",
                     errorBuilder: (context, error, stackTrace) {
                       return const CircularProgressIndicator.adaptive();
                     },

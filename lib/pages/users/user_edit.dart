@@ -76,43 +76,47 @@ class _UserEditState extends State<UserEdit> {
         elevation: 0.0,
         iconTheme: const IconThemeData(color: darkGrey),
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              const Center(
-                  child: Padding(
-                      padding: EdgeInsets.only(bottom: 20),
-                      child: Text(
-                        'Edit User',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700,
-                          color: Color.fromRGBO(64, 105, 225, 1),
-                        ),
-                      ))),
-              InkWell(
-                  child: DisplayImage(
-                imagePath: widget.user.picture!,
-                callback: () {},
-                canEdit: false,
-                webImage: null,
-              )),
-              buildUserInfoDisplay(
-                  'First Name', controllerFirstName, const Icon(Icons.people)),
-              buildUserInfoDisplay(
-                  'Last Name', controllerLastName, const Icon(Icons.people)),
-              buildUserInfoDisplay(
-                  'Email', controllerEmail, const Icon(Icons.email)),
-              buildUserInfoDisplay(
-                  'Phone', controllerPhone, const Icon(Icons.phone)),
-              buildUserInfoDisplay(
-                  'Address', controllerAddress, const Icon(Icons.house)),
-              const SizedBox(height: 10),
-              buidSubmit(context)
-            ],
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const Center(
+                      child: Padding(
+                          padding: EdgeInsets.only(bottom: 20),
+                          child: Text(
+                            'Edit User',
+                            style: TextStyle(
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700,
+                              color: Color.fromRGBO(64, 105, 225, 1),
+                            ),
+                          ))),
+                  InkWell(
+                      child: DisplayImage(
+                    imagePath: widget.user.picture!,
+                    callback: () {},
+                    canEdit: false,
+                    webImage: null,
+                  )),
+                  buildUserInfoDisplay('First Name', controllerFirstName,
+                      const Icon(Icons.people)),
+                  buildUserInfoDisplay('Last Name', controllerLastName,
+                      const Icon(Icons.people)),
+                  buildUserInfoDisplay(
+                      'Email', controllerEmail, const Icon(Icons.email)),
+                  buildUserInfoDisplay(
+                      'Phone', controllerPhone, const Icon(Icons.phone)),
+                  buildUserInfoDisplay(
+                      'Address', controllerAddress, const Icon(Icons.house)),
+                  const SizedBox(height: 10),
+                  buidSubmit(context)
+                ],
+              ),
+            ),
           ),
         ),
       ),
