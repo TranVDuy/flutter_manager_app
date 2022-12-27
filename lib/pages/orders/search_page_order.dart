@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get_navigation/src/routes/circular_reveal_clipper.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,11 +33,13 @@ class _SearchPageOrderState extends State<SearchPageOrder>
   ScrollController scrollController = ScrollController();
   // int totalRecord = 0;
   String selectedPeriod = "";
+  String selectOrders = "";
+  bool isSearching = false;
 
   List<Order> searchResults = [];
   int page = 1;
 
-  getListOrder(int Page, String search, String Column, String Option) async {
+  getListOrder(int Page, String search, String Column, String Option, String pay) async {
     String sort = Option == "A-Z" ? "asc" : "desc";
 
     var temp = await controller.getOrders(
@@ -43,6 +47,7 @@ class _SearchPageOrderState extends State<SearchPageOrder>
       search,
       Column,
       sort,
+      pay
     );
     setState(() {
       searchResults = temp;
@@ -54,6 +59,8 @@ class _SearchPageOrderState extends State<SearchPageOrder>
     'Z-A',
   ];
 
+  List<String> listFilter = <String>[ "all", 'draft', 'payment'];
+
   List<Category> categoryFilter = [
     Category(
       const Color(0xffFCE183),
@@ -64,13 +71,14 @@ class _SearchPageOrderState extends State<SearchPageOrder>
     ),
   ];
 
-  List<String> priceFilter = ['Low to High', 'High to Low'];
 
   TextEditingController searchController = TextEditingController();
   Timer? _debounce;
   String searchValue = "";
 
   late RubberAnimationController _controller;
+
+
 
   @override
   void initState() {
@@ -81,14 +89,15 @@ class _SearchPageOrderState extends State<SearchPageOrder>
         lowerBoundValue: AnimationControllerValue(pixel: 50),
         duration: const Duration(milliseconds: 200));
     selectedPeriod = "A-Z";
+    selectOrders = "all";
     searchValue = "";
     page = 1;
-    getListOrder(page, searchValue, "firstname", selectedPeriod);
+    getListOrder(page, searchValue, "firstname", selectedPeriod,"");
     scrollController = ScrollController()..addListener(_scrollListener);
     super.initState();
   }
 
-  getMoreOrders(int Page, String search, String Column, String Option) async {
+  getMoreOrders(int Page, String search, String Column, String Option, String pay) async {
     String sort = Option == "A-Z" ? "asc" : "desc";
 
     var temp = await controller.getOrders(
@@ -96,6 +105,7 @@ class _SearchPageOrderState extends State<SearchPageOrder>
       search,
       Column,
       sort,
+      pay
     );
 
     return temp;
@@ -110,7 +120,7 @@ class _SearchPageOrderState extends State<SearchPageOrder>
         page++;
       });
       var items =
-          await getMoreOrders(page, searchValue, "firstname", selectedPeriod);
+          await getMoreOrders(page, searchValue, "firstname", selectedPeriod, selectOrders);
 
       setState(() {
         searchResults.addAll(items);
@@ -141,8 +151,8 @@ class _SearchPageOrderState extends State<SearchPageOrder>
             padding: EdgeInsets.symmetric(vertical: 16.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
+              children: const [
+                Text(
                   'Order List',
                   style: TextStyle(
                     color: darkGrey,
@@ -171,13 +181,27 @@ class _SearchPageOrderState extends State<SearchPageOrder>
                 onChanged: (value) {
                   OnSearchChanged(value);
                 },
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   hintText: "Search Order",
+                  suffixIcon: isSearching ?
+                   SizedBox(child: CupertinoActivityIndicator(), height: 15, width: 15) :
+                    ((searchController.text != "") ? IconButton(
+                      hoverColor: Colors.transparent,
+                      iconSize: 20,
+                      icon: Icon(FontAwesomeIcons.circleXmark),
+                      onPressed: () {
+                        setState(() {
+                          searchController.text = "";
+                          OnSearchChanged("");
+                        });
+                      },
+                    ) : null)
+                  ,
                   prefixIcon: Icon(Icons.search),
                   hintStyle: TextStyle(
                     fontSize: 14,
@@ -431,7 +455,7 @@ class _SearchPageOrderState extends State<SearchPageOrder>
                       setState(() {
                         selectedPeriod = nameFilter[index];
                         getListOrder(
-                            page, searchValue, "firstname", selectedPeriod);
+                            page, searchValue, "firstname", selectedPeriod, selectOrders);
                       });
                     },
                     child: Container(
@@ -452,6 +476,54 @@ class _SearchPageOrderState extends State<SearchPageOrder>
               scrollDirection: Axis.horizontal,
             ),
           ),
+
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.only(left: 32.0, top: 16.0, bottom: 16.0),
+              child: Text(
+                'Filter By',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+
+          //Sort by Draft OR Payment
+          Container(
+            height: 50,
+            child: ListView.builder(
+              itemBuilder: (_, index) => Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                    ),
+                    child: InkWell(
+                        onTap: () {
+                          page = 1;
+                          setState(() {
+                            selectOrders = listFilter[index];
+                            getListOrder(
+                                page, searchValue, "firstname", selectedPeriod, selectOrders);
+                          });
+                        },
+                        child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 4.0, horizontal: 20.0),
+                            decoration: selectOrders == listFilter[index]
+                                ? const BoxDecoration(
+                                color: Color(0xffFDB846),
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(45)))
+                                : const BoxDecoration(),
+                            child: Text(
+                              listFilter[index],
+                              style: const TextStyle(fontSize: 16.0),
+                            ))),
+                  )),
+              itemCount: listFilter.length,
+              scrollDirection: Axis.horizontal,
+            ),
+          )
         ],
       ),
     );
@@ -482,7 +554,11 @@ class _SearchPageOrderState extends State<SearchPageOrder>
         page = 1;
         setState(() {
           searchValue = value;
-          getListOrder(page, searchValue, "firstname", selectedPeriod);
+          isSearching = true;
+          getListOrder(page, searchValue, "firstname", selectedPeriod, selectOrders);
+        });
+        setState(() {
+          isSearching = false;
         });
       }
       this.searchValue = searchController.text;
@@ -525,7 +601,7 @@ class _SearchPageOrderState extends State<SearchPageOrder>
   //Load list product
   RerenderList() {
     page = 1;
-    getListOrder(page, searchValue, "firstname", selectedPeriod);
+    getListOrder(page, searchValue, "firstname", selectedPeriod, selectOrders);
   }
 
   DeleteOrder(BuildContext context, Order item) async {
@@ -642,4 +718,5 @@ class _SearchPageOrderState extends State<SearchPageOrder>
   void editCallBack() {
     RerenderList();
   }
+
 }

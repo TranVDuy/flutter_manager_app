@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:product_manager/model/category.dart';
 import 'package:product_manager/pages/dashboard/dashboard_controller.dart';
 import 'package:product_manager/pages/products/product_edit.dart';
@@ -24,6 +26,7 @@ class _SearchPageProductState extends State<SearchPageProduct>
   var controller = Get.find<ProductsController>();
   var categoriesController = Get.find<CategoriesController>();
   bool isLoading = false;
+  bool isSearching = false;
   ScrollController scrollController = ScrollController();
 
   // int totalRecord = 0;
@@ -205,13 +208,26 @@ class _SearchPageProductState extends State<SearchPageProduct>
                 onChanged: (value) {
                   OnSearchChanged(value);
                 },
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   hintText: "Search Product",
+                  suffixIcon: isSearching ?
+                  SizedBox(child: CupertinoActivityIndicator(), height: 15, width: 15) :
+                  ((searchController.text != "") ? IconButton(
+                    hoverColor: Colors.transparent,
+                    iconSize: 20,
+                    icon: Icon(FontAwesomeIcons.circleXmark),
+                    onPressed: () {
+                      setState(() {
+                        searchController.text = "";
+                        OnSearchChanged("");
+                      });
+                    },
+                  ) : null),
                   prefixIcon: Icon(Icons.search),
                   hintStyle: TextStyle(
                     fontSize: 14,
@@ -563,6 +579,7 @@ class _SearchPageProductState extends State<SearchPageProduct>
         page = 1;
         setState(() {
           searchValue = value;
+          isSearching = true;
           if (selectedPeriod != "") {
             getListProduct(
                 page, selectedCategory, searchValue, "name", selectedPeriod);
@@ -570,6 +587,10 @@ class _SearchPageProductState extends State<SearchPageProduct>
             getListProduct(
                 page, selectedCategory, searchValue, "price", selectedPrice);
           }
+        });
+
+        setState(() {
+          isSearching = false;
         });
       }
       this.searchValue = searchController.text;

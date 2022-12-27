@@ -11,9 +11,10 @@ class OrdersController extends GetxController {
   Order? orderEdit;
 
   Future<List<Order>> getOrders(
-      int pageNum, String search, String key, String sort) async {
+      int pageNum, String search, String key, String sort, String pay) async {
+    String payy = (pay=="all" ? "" : pay);
     var url =
-        "${BASE_API}orders?search=$search&key=$key&sort=$sort&page=$pageNum&limit=10";
+        "${BASE_API}orders?search=$search&key=$key&sort=$sort&page=$pageNum&limit=10&pay=$payy";
     var response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {

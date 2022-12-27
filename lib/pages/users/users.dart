@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +21,14 @@ class _UsersPageState extends State<UsersPage> {
   var controller = Get.find<UsersController>();
   TextEditingController searchController = TextEditingController();
   List<User> frequentUsers = [];
+
   // List<User> users = [];
   List<User> searchResults = [];
   var page = 1;
   String deleteResult = "";
   ScrollController scrollController = ScrollController();
   int totalRecord = 0;
+  bool isSearching = false;
 
   getFrequentUsers() async {
     var temp = await controller.getUsers(1, "");
@@ -211,27 +214,10 @@ class _UsersPageState extends State<UsersPage> {
                   child: Center(
                     child: TextField(
                       onChanged: (value) {
-                        // if (value.isNotEmpty) {
-                        //   List<User> tempList = [];
-                        //   for (var user in users) {
-                        //     if (user.email.toLowerCase().contains(value)) {
-                        //       tempList.add(user);
-                        //     }
-                        //   }
-                        //   setState(() {
-                        //     searchResults = [];
-                        //     searchResults.addAll(tempList);
-                        //   });
-                        // } else {
-                        //   setState(() {
-                        //     searchResults = [];
-                        //     searchResults.addAll(users);
-                        //   });
-                        // }
                         OnSearchChanged(value);
                       },
                       controller: searchController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                         border: InputBorder.none,
@@ -239,6 +225,24 @@ class _UsersPageState extends State<UsersPage> {
                         enabledBorder: InputBorder.none,
                         hintText: "Search User",
                         prefixIcon: Icon(Icons.search),
+                        suffixIcon: isSearching
+                            ? SizedBox(
+                                child: CupertinoActivityIndicator(),
+                                height: 15,
+                                width: 15)
+                            : ((searchController.text != "")
+                                ? IconButton(
+                                    hoverColor: Colors.transparent,
+                                    iconSize: 20,
+                                    icon: Icon(FontAwesomeIcons.circleXmark),
+                                    onPressed: () {
+                                      setState(() {
+                                        searchController.text = "";
+                                        OnSearchChanged("");
+                                      });
+                                    },
+                                  )
+                                : null),
                         hintStyle: TextStyle(
                           fontSize: 14,
                           color: Color(0xFFBDBDBD),
@@ -367,7 +371,13 @@ class _UsersPageState extends State<UsersPage> {
                     flex: 2,
                     child: Center(
                       child: searchResults.length == 0
-                          ? const CupertinoActivityIndicator()
+                          ? Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "No Results",
+                                style: TextStyle(color: Colors.grey.shade400),
+                              ),
+                            )
                           : Container(
                               color: Colors.white,
                               padding: const EdgeInsets.symmetric(

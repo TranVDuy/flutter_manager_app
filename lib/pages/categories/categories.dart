@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,6 +18,7 @@ class CategoriesPage extends StatefulWidget {
 class _CategoriesPageState extends State<CategoriesPage> {
   List<Category> searchResults = [];
   var controller = Get.find<CategoriesController>();
+  bool isSearching = false;
   TextEditingController searchController = TextEditingController();
 
   @override
@@ -82,7 +84,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       if (value.isNotEmpty) {
                         List<Category> tempList = [];
                         for (var category in controller.categories) {
-                          if (category.category.toLowerCase().contains(value)) {
+                          if (category.category.toLowerCase().contains(value.toLowerCase())) {
                             tempList.add(category);
                           }
                         }
@@ -98,7 +100,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       }
                     },
                     controller: searchController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       contentPadding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 18),
                       border: InputBorder.none,
@@ -106,6 +108,21 @@ class _CategoriesPageState extends State<CategoriesPage> {
                       enabledBorder: InputBorder.none,
                       hintText: "Search Category",
                       prefixIcon: Icon(Icons.search),
+                      suffixIcon: isSearching ?
+                      SizedBox(child: CupertinoActivityIndicator(), height: 15, width: 15) :
+                      ((searchController.text != "") ? IconButton(
+                        hoverColor: Colors.transparent,
+                        iconSize: 20,
+                        icon: Icon(FontAwesomeIcons.circleXmark),
+                        onPressed: () {
+                          setState(() {
+                            searchController.text = "";
+                            searchResults = [];
+                            searchResults.addAll(controller.categories);
+                          });
+                        },
+                      ) : null)
+                      ,
                       hintStyle: TextStyle(
                         fontSize: 14,
                         color: Color(0xFFBDBDBD),
